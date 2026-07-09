@@ -1,0 +1,590 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Proof</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <style>
+    body {
+      margin: 0;
+      background: #f7f7f4;
+      color: #1f2328;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.62;
+    }
+    main {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 40px 28px 80px;
+      background: #fff;
+      min-height: 100vh;
+      box-shadow: 0 0 0 1px #e4e4df;
+    }
+    h1, h2, h3 { line-height: 1.25; margin-top: 1.7em; }
+    h1 { font-size: 30px; }
+    h2 { font-size: 24px; border-bottom: 1px solid #e5e5e0; padding-bottom: 4px; }
+    h3 { font-size: 19px; }
+    p { margin: 0 0 1em; }
+    blockquote {
+      border-left: 4px solid #b8c4d6;
+      margin: 1.2em 0;
+      padding: 0.2em 1em;
+      background: #f7f9fc;
+    }
+    pre {
+      overflow-x: auto;
+      background: #f2f2ee;
+      padding: 12px;
+      border-radius: 6px;
+    }
+    code {
+      background: #f2f2ee;
+      padding: 1px 4px;
+      border-radius: 4px;
+    }
+    pre code {
+      background: none;
+      padding: 0;
+    }
+    .math-block {
+      overflow-x: auto;
+      margin: 1.1em 0;
+      padding: 0.2em 0;
+    }
+    mjx-container {
+      overflow-x: auto;
+      overflow-y: hidden;
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <p>Below I first point out the genuine gap in the previous proof and then give a complete proof with that gap filled.</p>
+<p>The earlier proof’s main unproved point was the lattice-counting assertion: one needs upper and lower estimates for lattice points of \(\sigma(\mathcal O_K)\) inside high-dimensional \(\ell^p\)-quasi-balls.  The fix is to use the codifferent lattice and a standard transference bound to control the covering radius of \(\sigma(\mathcal O_K)\).  This gives volume-counting estimates strong enough for the construction.</p>
+<p>We use two standard external inputs:</p>
+<ol>
+<li>Martinet’s theorem: there are totally real number fields of arbitrarily large degree and bounded root discriminant.</li>
+<li><p>The Euclidean transference bound</p>
+<div class="math-block">\[
+\rho_2(\Lambda)\lambda_1(\Lambda^*)\le \frac d2
+\]</div>
+<p>for a full-rank lattice \(\Lambda\subset \mathbb R^d\).</p></li>
+</ol>
+<p>Everything else is proved below.</p>
+<hr>
+<h1>Proof</h1>
+<p>Let \(K/\mathbb Q\) be totally real of degree \(d\), with embeddings</p>
+<div class="math-block">\[
+\sigma_1,\dots,\sigma_d:K\hookrightarrow \mathbb R.
+\]</div>
+<p>Write</p>
+<div class="math-block">\[
+\sigma(\alpha)=(\sigma_1(\alpha),\dots,\sigma_d(\alpha)).
+\]</div>
+<p>For \(s&gt;0\), define</p>
+<div class="math-block">\[
+B_{s,d}(R)
+=
+\left\{
+x\in\mathbb R^d:\sum_{j=1}^d |x_j|^s\le R^s
+\right\}.
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+V_{s,d}:=\operatorname{vol}(B_{s,d}(1)).
+\]</div>
+<p>We use the formula</p>
+<div class="math-block">\[
+V_{s,d}
+=
+\frac{\left(2\Gamma(1+1/s)\right)^d}{\Gamma(1+d/s)}.
+\tag{1}
+\]</div>
+<p>This follows by evaluating</p>
+<div class="math-block">\[
+\int_{\mathbb R^d} e^{-\sum |x_j|^s}\,dx
+\]</div>
+<p>both as a product of one-dimensional integrals and by radial integration.</p>
+<hr>
+<h2>1. Volume saving under multiplication</h2>
+<p>For \(0&lt;p\le 1\), define</p>
+<div class="math-block">\[
+M_{p,d}:=
+\left(\frac{V_{p,d}^2}{V_{p/2,d}}\right)^{1/d}.
+\]</div>
+<p>Using (1) and Stirling’s formula, for fixed \(p\),</p>
+<div class="math-block">\[
+M_{p,d}\to m_p
+\]</div>
+<p>as \(d\to\infty\), where</p>
+<div class="math-block">\[
+m_p
+=
+2^{1+2/p}
+\frac{\Gamma(1+1/p)^2}{\Gamma(1+2/p)}.
+\tag{2}
+\]</div>
+<p>Moreover,</p>
+<div class="math-block">\[
+m_p\sim 2\sqrt{\frac{\pi}{p}}
+\qquad(p\to0).
+\tag{3}
+\]</div>
+<p>Hence \(m_p\to\infty\) as \(p\to0\).</p>
+<hr>
+<h2>2. Additive and multiplicative containment</h2>
+<p>For \(0&lt;p\le1\),</p>
+<div class="math-block">\[
+|u+v|^p\le |u|^p+|v|^p.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+B_{p,d}(R)+B_{p,d}(R)
+\subseteq
+B_{p,d}(2^{1/p}R).
+\tag{4}
+\]</div>
+<p>Also, if \(x,y\in B_{p,d}(R)\), then by Cauchy–Schwarz,</p>
+<div class="math-block">\[
+\sum_{j=1}^d |x_jy_j|^{p/2}
+\le
+\left(\sum |x_j|^p\right)^{1/2}
+\left(\sum |y_j|^p\right)^{1/2}
+\le R^p.
+\]</div>
+<p>Since \((R^2)^{p/2}=R^p\), this gives</p>
+<div class="math-block">\[
+B_{p,d}(R)\odot B_{p,d}(R)
+\subseteq
+B_{p/2,d}(R^2),
+\tag{5}
+\]</div>
+<p>where \(\odot\) denotes coordinatewise multiplication.</p>
+<hr>
+<h2>3. Counting algebraic integers in \(B_{s,d}(R)\)</h2>
+<p>Let</p>
+<div class="math-block">\[
+\Lambda_K:=\sigma(\mathcal O_K)\subset\mathbb R^d.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+\det(\Lambda_K)=|D_K|^{1/2}=:\Delta_K.
+\]</div>
+<p>Assume \(K\) has root discriminant bounded by \(B\), i.e.</p>
+<div class="math-block">\[
+|D_K|^{1/d}\le B.
+\]</div>
+<p>We prove the following counting estimate.</p>
+<h3>Lemma</h3>
+<p>For \(0&lt;s\le1\), set</p>
+<div class="math-block">\[
+\mu_s:=\frac B2 d^{1/s}.
+\]</div>
+<p>Then for every \(R&gt;\mu_s\),</p>
+<div class="math-block">\[
+\frac{V_{s,d}R^d}{\Delta_K}
+\left(1-\left(\frac{\mu_s}{R}\right)^s\right)^{d/s}
+\le
+|\mathcal O_K\cap B_{s,d}(R)|
+\le
+\frac{V_{s,d}R^d}{\Delta_K}
+\left(1+\left(\frac{\mu_s}{R}\right)^s\right)^{d/s}.
+\tag{6}
+\]</div>
+<h3>Proof</h3>
+<p>The Euclidean dual lattice of \(\Lambda_K\) is</p>
+<div class="math-block">\[
+\Lambda_K^*=\sigma(\mathfrak d_K^{-1}),
+\]</div>
+<p>where \(\mathfrak d_K^{-1}\) is the codifferent.</p>
+<p>If \(0\neq \beta\in\mathfrak d_K^{-1}\), then \(\beta\mathfrak d_K\subseteq \mathcal O_K\), so \((\beta)\mathfrak d_K\) is an integral ideal. Hence</p>
+<div class="math-block">\[
+|N_{K/\mathbb Q}(\beta)|\,|D_K|\ge1.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|N_{K/\mathbb Q}(\beta)|\ge |D_K|^{-1}.
+\]</div>
+<p>By AM–GM,</p>
+<div class="math-block">\[
+\|\sigma(\beta)\|_2^2
+=
+\sum_{j=1}^d |\sigma_j(\beta)|^2
+\ge
+d\left(\prod_{j=1}^d|\sigma_j(\beta)|^2\right)^{1/d}
+=
+d\,|N_{K/\mathbb Q}(\beta)|^{2/d}.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+\|\sigma(\beta)\|_2
+\ge
+\sqrt d\,|D_K|^{-1/d}
+\ge
+\frac{\sqrt d}{B}.
+\]</div>
+<p>So</p>
+<div class="math-block">\[
+\lambda_1(\Lambda_K^*)\ge \frac{\sqrt d}{B}.
+\]</div>
+<p>By the transference inequality,</p>
+<div class="math-block">\[
+\rho_2(\Lambda_K)\lambda_1(\Lambda_K^*)\le \frac d2,
+\]</div>
+<p>hence</p>
+<div class="math-block">\[
+\rho_2(\Lambda_K)\le \frac B2\sqrt d.
+\]</div>
+<p>For \(0&lt;s\le1\),</p>
+<div class="math-block">\[
+\|x\|_s
+\le
+d^{1/s-1/2}\|x\|_2.
+\]</div>
+<p>Therefore the \(s\)-quasi-norm covering radius is at most</p>
+<div class="math-block">\[
+\mu_s=\frac B2 d^{1/s}.
+\]</div>
+<p>Choose a measurable fundamental domain \(F\) for \(\Lambda_K\) contained in \(B_{s,d}(\mu_s)\).</p>
+<p>For the upper bound, if \(\lambda\in \Lambda_K\cap B_{s,d}(R)\) and \(f\in F\), then</p>
+<div class="math-block">\[
+\lambda+f\in B_{s,d}\bigl((R^s+\mu_s^s)^{1/s}\bigr).
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|\Lambda_K\cap B_{s,d}(R)|\Delta_K
+\le
+V_{s,d}R^d
+\left(1+\left(\frac{\mu_s}{R}\right)^s\right)^{d/s}.
+\]</div>
+<p>For the lower bound, let</p>
+<div class="math-block">\[
+R_-=(R^s-\mu_s^s)^{1/s}.
+\]</div>
+<p>Every point of \(B_{s,d}(R_-)\) lies in some translate \(\lambda+F\). If \(z=\lambda+f\) with \(z\in B_{s,d}(R_-)\) and \(f\in F\), then</p>
+<div class="math-block">\[
+\|\lambda\|_s^s
+=
+\|z-f\|_s^s
+\le
+\|z\|_s^s+\|f\|_s^s
+\le
+R_-^s+\mu_s^s
+=
+R^s.
+\]</div>
+<p>Hence \(\lambda\in\Lambda_K\cap B_{s,d}(R)\), so</p>
+<div class="math-block">\[
+V_{s,d}R_-^d
+\le
+|\Lambda_K\cap B_{s,d}(R)|\Delta_K.
+\]</div>
+<p>This is the lower bound in (6). \(\square\)</p>
+<hr>
+<h2>4. Choosing the number fields</h2>
+<p>By Martinet’s theorem, there exists an infinite sequence of totally real fields \(K_i\) with degrees</p>
+<div class="math-block">\[
+d_i=[K_i:\mathbb Q]\to\infty
+\]</div>
+<p>and uniformly bounded root discriminant</p>
+<div class="math-block">\[
+|D_{K_i}|^{1/d_i}\le B.
+\]</div>
+<p>Set</p>
+<div class="math-block">\[
+\Delta_i:=|D_{K_i}|^{1/2}.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+\Delta_i^{1/d_i}\le B^{1/2}.
+\tag{7}
+\]</div>
+<p>Choose \(0&lt;p\le1\) so small that</p>
+<div class="math-block">\[
+m_p&gt;B^{1/2}.
+\]</div>
+<p>Choose \(\theta&gt;0\) such that</p>
+<div class="math-block">\[
+e^\theta B^{1/2}&lt;m_p.
+\]</div>
+<p>Since \(M_{p,d}\to m_p\), after discarding finitely many \(i\), we have</p>
+<div class="math-block">\[
+\frac{M_{p,d_i}}{\Delta_i^{1/d_i}}\ge e^\theta.
+\tag{8}
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+q:=p/2,
+\qquad
+L:=\frac{\log 2}{p}.
+\]</div>
+<hr>
+<h2>5. Choosing the radii</h2>
+<p>For a large constant \(C&gt;L\), define \(R_i\) by</p>
+<div class="math-block">\[
+\frac{V_{p,d_i}R_i^{d_i}}{\Delta_i}
+=
+e^{Cd_i}.
+\tag{9}
+\]</div>
+<p>Equivalently,</p>
+<div class="math-block">\[
+R_i=e^C\Delta_i^{1/d_i}V_{p,d_i}^{-1/d_i}.
+\]</div>
+<p>For fixed \(p\), Stirling’s formula implies</p>
+<div class="math-block">\[
+\sup_d d^{1/p}V_{p,d}^{1/d}&lt;\infty.
+\]</div>
+<p>Therefore, for some constant \(H_p\),</p>
+<div class="math-block">\[
+d^{1/p}V_{p,d}^{1/d}\le H_p
+\qquad\text{for all }d.
+\tag{10}
+\]</div>
+<p>From (9) and \(\Delta_i^{1/d_i}\ge1\),</p>
+<div class="math-block">\[
+\left(\frac{\mu_p}{R_i}\right)^p
+\le
+\left(\frac B2 H_p e^{-C}\right)^p
+=:\alpha(C),
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\left(\frac{\mu_q}{R_i^2}\right)^q
+\le
+\left(\frac B2 H_p^2 e^{-2C}\right)^q
+=:\beta(C).
+\]</div>
+<p>Both \(\alpha(C)\) and \(\beta(C)\) tend to \(0\) as \(C\to\infty\). Choose \(C\) so large that \(\alpha(C),\beta(C)&lt;1/2\), and with</p>
+<div class="math-block">\[
+\eta(C):=\max\left(\frac{2\alpha(C)}p,\frac{\beta(C)}q\right),
+\]</div>
+<p>we have</p>
+<div class="math-block">\[
+\eta(C)&lt;\frac{C-L}{4}
+\qquad\text{and}\qquad
+\eta(C)&lt;\frac{\theta}{4}.
+\tag{11}
+\]</div>
+<p>For this fixed \(C\), the counting lemma gives</p>
+<div class="math-block">\[
+e^{(C-\eta)d_i}
+\le
+|\mathcal O_{K_i}\cap B_{p,d_i}(R_i)|
+\le
+e^{(C+\eta)d_i},
+\tag{12}
+\]</div>
+<p>where \(\eta=\eta(C)\).</p>
+<hr>
+<h2>6. Defining the sets \(A_i\)</h2>
+<p>Let</p>
+<div class="math-block">\[
+P_i:=\mathcal O_{K_i}\cap B_{p,d_i}(R_i).
+\]</div>
+<p>Choose one real embedding \(\sigma_{i,1}:K_i\hookrightarrow\mathbb R\), and define</p>
+<div class="math-block">\[
+A_i:=\sigma_{i,1}(P_i)\subset\mathbb R.
+\]</div>
+<p>Since \(\sigma_{i,1}\) is injective,</p>
+<div class="math-block">\[
+|A_i|=|P_i|.
+\]</div>
+<p>Write</p>
+<div class="math-block">\[
+n_i:=|A_i|.
+\]</div>
+<p>By (12),</p>
+<div class="math-block">\[
+n_i\ge e^{(C-\eta)d_i}.
+\tag{13}
+\]</div>
+<p>In particular \(n_i\to\infty\).</p>
+<hr>
+<h2>7. Sumset estimate</h2>
+<p>By (4),</p>
+<div class="math-block">\[
+P_i+P_i
+\subseteq
+\mathcal O_{K_i}\cap B_{p,d_i}(2^{1/p}R_i).
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+|A_i+A_i|
+=
+|P_i+P_i|
+\le
+|\mathcal O_{K_i}\cap B_{p,d_i}(2^{1/p}R_i)|.
+\]</div>
+<p>Using the upper bound from the counting lemma and (9),</p>
+<div class="math-block">\[
+|A_i+A_i|
+\le
+e^{\eta d_i}
+\frac{V_{p,d_i}(2^{1/p}R_i)^{d_i}}{\Delta_i}
+=
+e^{\eta d_i}2^{d_i/p}e^{Cd_i}.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|A_i+A_i|
+\le
+e^{(C+L+\eta)d_i}.
+\tag{14}
+\]</div>
+<p>Using (13),</p>
+<div class="math-block">\[
+d_i\le \frac{\log n_i}{C-\eta}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|A_i+A_i|
+\le
+n_i^{(C+L+\eta)/(C-\eta)}.
+\]</div>
+<p>Now</p>
+<div class="math-block">\[
+2-\frac{C+L+\eta}{C-\eta}
+=
+\frac{C-L-3\eta}{C-\eta}&gt;0
+\]</div>
+<p>by (11). Define</p>
+<div class="math-block">\[
+\delta_+
+:=
+\frac{C-L-3\eta}{C-\eta}.
+\tag{15}
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+|A_i+A_i|\le n_i^{2-\delta_+}.
+\tag{16}
+\]</div>
+<hr>
+<h2>8. Product-set estimate</h2>
+<p>By (5),</p>
+<div class="math-block">\[
+P_iP_i
+\subseteq
+\mathcal O_{K_i}\cap B_{q,d_i}(R_i^2),
+\qquad q=p/2.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|A_iA_i|
+=
+|P_iP_i|
+\le
+|\mathcal O_{K_i}\cap B_{q,d_i}(R_i^2)|.
+\]</div>
+<p>Using the counting lemma,</p>
+<div class="math-block">\[
+|A_iA_i|
+\le
+e^{\eta d_i}
+\frac{V_{q,d_i}R_i^{2d_i}}{\Delta_i}.
+\tag{17}
+\]</div>
+<p>From (9),</p>
+<div class="math-block">\[
+R_i^{d_i}
+=
+\frac{e^{Cd_i}\Delta_i}{V_{p,d_i}}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+\frac{V_{q,d_i}R_i^{2d_i}}{\Delta_i}
+=
+e^{2Cd_i}
+\Delta_i
+\frac{V_{q,d_i}}{V_{p,d_i}^2}.
+\]</div>
+<p>Since</p>
+<div class="math-block">\[
+M_{p,d_i}^{d_i}
+=
+\frac{V_{p,d_i}^2}{V_{q,d_i}},
+\]</div>
+<p>we get</p>
+<div class="math-block">\[
+\frac{V_{q,d_i}R_i^{2d_i}}{\Delta_i}
+=
+e^{2Cd_i}
+\left(\frac{\Delta_i^{1/d_i}}{M_{p,d_i}}\right)^{d_i}.
+\]</div>
+<p>By (8),</p>
+<div class="math-block">\[
+\left(\frac{\Delta_i^{1/d_i}}{M_{p,d_i}}\right)^{d_i}
+\le
+e^{-\theta d_i}.
+\]</div>
+<p>So (17) yields</p>
+<div class="math-block">\[
+|A_iA_i|
+\le
+e^{(2C-\theta+\eta)d_i}.
+\tag{18}
+\]</div>
+<p>Again using (13),</p>
+<div class="math-block">\[
+|A_iA_i|
+\le
+n_i^{(2C-\theta+\eta)/(C-\eta)}.
+\]</div>
+<p>Now</p>
+<div class="math-block">\[
+2-\frac{2C-\theta+\eta}{C-\eta}
+=
+\frac{\theta-3\eta}{C-\eta}&gt;0
+\]</div>
+<p>by (11). Define</p>
+<div class="math-block">\[
+\delta_\times
+:=
+\frac{\theta-3\eta}{C-\eta}.
+\tag{19}
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+|A_iA_i|
+\le
+n_i^{2-\delta_\times}.
+\tag{20}
+\]</div>
+<hr>
+<h2>9. Final choice of \(\delta\)</h2>
+<p>Set</p>
+<div class="math-block">\[
+\delta:=\frac12\min(\delta_+,\delta_\times)&gt;0.
+\]</div>
+<p>Then for all sufficiently large \(i\),</p>
+<div class="math-block">\[
+|A_i+A_i|\le |A_i|^{2-\delta}
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|A_iA_i|\le |A_i|^{2-\delta}.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+\max(|A_i+A_i|,|A_iA_i|)
+\le
+|A_i|^{2-\delta}.
+\]</div>
+<p>Since \(|A_i|\to\infty\), after discarding finitely many initial terms and relabeling, we obtain the required infinite sequence.</p>
+<p>\(\square\)</p>
+</main>
+</body>
+</html>

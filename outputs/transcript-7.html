@@ -1,0 +1,2420 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Transcript</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <style>
+    body {
+      margin: 0;
+      background: #f7f7f4;
+      color: #1f2328;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.62;
+    }
+    main {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 40px 28px 80px;
+      background: #fff;
+      min-height: 100vh;
+      box-shadow: 0 0 0 1px #e4e4df;
+    }
+    h1, h2, h3 { line-height: 1.25; margin-top: 1.7em; }
+    h1 { font-size: 30px; }
+    h2 { font-size: 24px; border-bottom: 1px solid #e5e5e0; padding-bottom: 4px; }
+    h3 { font-size: 19px; }
+    p { margin: 0 0 1em; }
+    blockquote {
+      border-left: 4px solid #b8c4d6;
+      margin: 1.2em 0;
+      padding: 0.2em 1em;
+      background: #f7f9fc;
+    }
+    pre {
+      overflow-x: auto;
+      background: #f2f2ee;
+      padding: 12px;
+      border-radius: 6px;
+    }
+    code {
+      background: #f2f2ee;
+      padding: 1px 4px;
+      border-radius: 4px;
+    }
+    pre code {
+      background: none;
+      padding: 0;
+    }
+    .math-block {
+      overflow-x: auto;
+      margin: 1.1em 0;
+      padding: 0.2em 0;
+    }
+    mjx-container {
+      overflow-x: auto;
+      overflow-y: hidden;
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Transcript</h1>
+<h2>System prompt</h2>
+<blockquote><p>The provided theorem was recently proved, and the result is now accepted by the mathematical community. Your task is to independently construct a proof.</p></blockquote>
+<hr>
+<h1>Round 1</h1>
+<h2>User</h2>
+<blockquote><p><strong>Theorem.</strong> There exist an absolute constant $\delta &gt; 0$ and an infinite sequence $\{A_i\}$ of finite subsets of $\mathbb{R}$ such that $|A_i| \to \infty$ and $\max(|A_i+A_i|, |A_iA_i|) \le |A_i|^{2-\delta}$ for all $i$, where $A_i+A_i = \{ a+b : a,b \in A_i \}$ and $A_iA_i = \{ ab : a,b \in A_i \}$ are the sumset and product set of $A_i$, respectively.</p>
+<p><strong>Remark.</strong> This result disproves the Erdős–Szemerédi Sum-Product Conjecture over $\mathbb{R}$.</p>
+<hr>
+<p>As a first step toward a complete proof, identify the most promising approach and develop it as far as possible. Present a step-by-step proof plan. Prove any intermediate claims you can. For each remaining gap, state it precisely and assess whether it can plausibly be closed within the approach or poses a serious obstruction. Include enough detail for the next round to continue from where you leave off.</p></blockquote>
+<h2>Assistant</h2>
+<p>Below is the approach I think is most promising.  It is not the “many units give high multiplicative energy” approach; that approach is tempting, but by itself it gives only lower bounds for product-set size via Cauchy–Schwarz unless one proves strong uniform orbit-size statements.  The approach below instead gives a genuine <strong>containment</strong> of both \(A+A\) and \(AA\) inside comparatively small regions of a high-dimensional lattice.  That is the right kind of statement for an upper-bound construction.</p>
+<p>I will develop the argument to a clean conditional theorem.  The remaining gap is then a precise geometry-of-numbers/Arakelov lattice-counting statement.  If that counting statement is supplied, the proof is essentially complete.</p>
+<hr>
+<h1>1. Main idea</h1>
+<p>Take a number field \(K\) of large degree \(d\), with at least one real embedding.  Embed \(K\) into its Minkowski space.  Choose a finite set \(A\) of algebraic numbers whose full vector of conjugates lies inside a high-dimensional quasi-ball</p>
+<div class="math-block">\[
+B_p(R)=\left\{x=(x_1,\dots,x_d)\in \mathbb R^d:\sum_{i=1}^d |x_i|^p\le R^p\right\},
+\]</div>
+<p>where \(0&lt;p\le 1\), and eventually \(p\) will be chosen very small.</p>
+<p>Two crucial facts hold.</p>
+<ol>
+<li><p><strong>Additive containment.</strong> Since \(0&lt;p\le 1\),</p>
+<div class="math-block">\[
+|u+v|^p\le |u|^p+|v|^p.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+B_p(R)+B_p(R)\subseteq B_p(2^{1/p}R).
+\]</div>
+<p>So the sumset lives in a dilate whose volume is larger by a factor \(2^{d/p}\).</p></li>
+<li><p><strong>Multiplicative containment.</strong> In the Minkowski embedding, multiplication of algebraic numbers becomes coordinatewise multiplication:</p>
+<div class="math-block">\[
+\sigma(ab)=(\sigma_1(a)\sigma_1(b),\dots,\sigma_d(a)\sigma_d(b)).
+\]</div>
+<p>If \(x,y\in B_p(R)\), then by Cauchy–Schwarz,</p>
+<div class="math-block">\[
+\sum_{i=1}^d |x_i y_i|^{p/2}
+\le
+\left(\sum_{i=1}^d |x_i|^p\right)^{1/2}
+\left(\sum_{i=1}^d |y_i|^p\right)^{1/2}
+\le R^p.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+B_p(R)\cdot B_p(R)\subseteq B_{p/2}(R^2),
+\]</div>
+<p>where the product is coordinatewise.</p></li>
+</ol>
+<p>The key point is that for small \(p\), the volume of \(B_{p/2}\) is dramatically smaller than the square of the volume of \(B_p\).  Quantitatively,</p>
+<div class="math-block">\[
+\left(\frac{\operatorname{vol}(B_p(1))^2}{\operatorname{vol}(B_{p/2}(1))}\right)^{1/d}
+\sim 2\sqrt{\frac{\pi}{p}}
+\qquad (p\to 0).
+\]</div>
+<p>Thus by choosing \(p\) small, the multiplicative container \(B_{p/2}(R^2)\) is smaller than the naive \(n^2\) scale by an exponential factor \(e^{\theta d}\).  If the original set has size \(n\approx e^{Cd}\), then this gives</p>
+<div class="math-block">\[
+|AA|\lesssim n^2 e^{-\theta d}
+=
+n^{2-\theta/C}.
+\]</div>
+<p>The additive enlargement \(2^{d/p}\) is also exponential in \(d\), but by choosing \(C&gt;\frac{\log 2}{p}\), we ensure</p>
+<div class="math-block">\[
+|A+A|\lesssim 2^{d/p} n
+\le n^{2-\delta}.
+\]</div>
+<p>So the construction reduces the theorem to finding large-degree number fields with bounded root discriminant and sufficiently regular lattice-point counting in those quasi-balls.</p>
+<hr>
+<h1>2. Number-field lattice setup</h1>
+<p>For clarity I first describe the totally real case.  This is already enough if one uses a totally real class-field tower.</p>
+<p>Let \(K/\mathbb Q\) be totally real of degree \(d\), with embeddings</p>
+<div class="math-block">\[
+\sigma_1,\dots,\sigma_d:K\hookrightarrow \mathbb R.
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+\sigma:K\hookrightarrow \mathbb R^d,\qquad
+\sigma(\alpha)=(\sigma_1(\alpha),\dots,\sigma_d(\alpha)).
+\]</div>
+<p>For a nonzero fractional ideal \(I\subset K\), the image</p>
+<div class="math-block">\[
+\Lambda_I:=\sigma(I)\subset \mathbb R^d
+\]</div>
+<p>is a full-rank lattice.  Its covolume is</p>
+<div class="math-block">\[
+\det(\Lambda_I)=N(I)\sqrt{|D_K|},
+\]</div>
+<p>where \(D_K\) is the discriminant of \(K\), and \(N(I)\) denotes the absolute norm of \(I\), extended multiplicatively to fractional ideals.</p>
+<p>Also,</p>
+<div class="math-block">\[
+\det(\Lambda_{I^2})
+=
+N(I)^2\sqrt{|D_K|}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+\frac{\det(\Lambda_I)^2}{\det(\Lambda_{I^2})}
+=
+\sqrt{|D_K|}.
+\tag{2.1}
+\]</div>
+<p>This identity is important: it means the volume comparison for products is controlled only by the discriminant of \(K\), not by the particular ideal \(I\).</p>
+<hr>
+<h1>3. The quasi-balls \(B_p\)</h1>
+<p>For \(0&lt;p\le 1\) and \(R&gt;0\), define</p>
+<div class="math-block">\[
+B_{p,d}(R)
+:=
+\left\{
+x\in\mathbb R^d:
+\sum_{i=1}^d |x_i|^p\le R^p
+\right\}.
+\]</div>
+<p>When the dimension is clear, I write \(B_p(R)\).</p>
+<p>These are not convex when \(p&lt;1\), but they are bounded star bodies, and the subadditivity inequality \( |u+v|^p\le |u|^p+|v|^p \) is exactly what we need.</p>
+<p>We will also need anisotropic versions.  For a vector of positive radii</p>
+<div class="math-block">\[
+\mathbf R=(R_1,\dots,R_d),
+\]</div>
+<p>define</p>
+<div class="math-block">\[
+B_p(\mathbf R)
+:=
+\left\{
+x\in\mathbb R^d:
+\sum_{i=1}^d \left|\frac{x_i}{R_i}\right|^p\le 1
+\right\}.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+\operatorname{vol}(B_p(\mathbf R))
+=
+V_{p,d}\prod_{i=1}^d R_i,
+\]</div>
+<p>where</p>
+<div class="math-block">\[
+V_{p,d}:=\operatorname{vol}(B_p(1)).
+\]</div>
+<p>The anisotropic version is useful because one can use the radii \(R_i\) to regularize the shape of the number-field lattice.</p>
+<hr>
+<h1>4. Volume of \(B_p(1)\)</h1>
+<p>We need the precise asymptotic of \(V_{p,d}\).</p>
+<h2>Lemma 4.1: Volume formula</h2>
+<p>For every \(p&gt;0\),</p>
+<div class="math-block">\[
+V_{p,d}
+=
+\frac{\bigl(2\Gamma(1+1/p)\bigr)^d}{\Gamma(1+d/p)}.
+\tag{4.1}
+\]</div>
+<h3>Proof</h3>
+<p>We compute the Gaussian-type integral</p>
+<div class="math-block">\[
+\int_{\mathbb R^d} e^{-\sum_{i=1}^d |x_i|^p}\,dx.
+\]</div>
+<p>On one hand, it factors:</p>
+<div class="math-block">\[
+\int_{\mathbb R^d} e^{-\sum |x_i|^p}\,dx
+=
+\left(\int_{\mathbb R} e^{-|t|^p}\,dt\right)^d.
+\]</div>
+<p>Now</p>
+<div class="math-block">\[
+\int_{\mathbb R} e^{-|t|^p}\,dt
+=
+2\int_0^\infty e^{-t^p}\,dt.
+\]</div>
+<p>With \(u=t^p\), so \(dt=\frac1p u^{1/p-1}\,du\), this becomes</p>
+<div class="math-block">\[
+2\cdot \frac1p \Gamma(1/p)
+=
+2\Gamma(1+1/p).
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+\int_{\mathbb R^d} e^{-\sum |x_i|^p}\,dx
+=
+\bigl(2\Gamma(1+1/p)\bigr)^d.
+\]</div>
+<p>On the other hand, by radial integration for the \(p\)-homogeneous gauge,</p>
+<div class="math-block">\[
+\int_{\mathbb R^d} e^{-\|x\|_p^p}\,dx
+=
+V_{p,d}\Gamma(1+d/p).
+\]</div>
+<p>Equating the two expressions gives (4.1). \(\square\)</p>
+<hr>
+<h1>5. Additive and multiplicative containments</h1>
+<h2>Lemma 5.1: Additive containment</h2>
+<p>For \(0&lt;p\le 1\),</p>
+<div class="math-block">\[
+B_p(\mathbf R)+B_p(\mathbf R)
+\subseteq
+B_p(2^{1/p}\mathbf R),
+\]</div>
+<p>where</p>
+<div class="math-block">\[
+2^{1/p}\mathbf R=(2^{1/p}R_1,\dots,2^{1/p}R_d).
+\]</div>
+<h3>Proof</h3>
+<p>If \(x,y\in B_p(\mathbf R)\), then</p>
+<div class="math-block">\[
+\sum_i \left|\frac{x_i+y_i}{R_i}\right|^p
+\le
+\sum_i
+\left(
+\left|\frac{x_i}{R_i}\right|^p
++
+\left|\frac{y_i}{R_i}\right|^p
+\right)
+\le 2.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+\sum_i \left|\frac{x_i+y_i}{2^{1/p}R_i}\right|^p
+\le 1.
+\]</div>
+<p>So \(x+y\in B_p(2^{1/p}\mathbf R)\). \(\square\)</p>
+<hr>
+<h2>Lemma 5.2: Multiplicative containment</h2>
+<p>Let coordinatewise multiplication be denoted by \(x\odot y\).  Then</p>
+<div class="math-block">\[
+B_p(\mathbf R)\odot B_p(\mathbf R)
+\subseteq
+B_{p/2}(\mathbf R^2),
+\]</div>
+<p>where</p>
+<div class="math-block">\[
+\mathbf R^2=(R_1^2,\dots,R_d^2).
+\]</div>
+<h3>Proof</h3>
+<p>If \(x,y\in B_p(\mathbf R)\), then</p>
+<div class="math-block">\[
+\sum_i \left|\frac{x_i y_i}{R_i^2}\right|^{p/2}
+=
+\sum_i
+\left|\frac{x_i}{R_i}\right|^{p/2}
+\left|\frac{y_i}{R_i}\right|^{p/2}.
+\]</div>
+<p>By Cauchy–Schwarz,</p>
+<div class="math-block">\[
+\sum_i
+\left|\frac{x_i}{R_i}\right|^{p/2}
+\left|\frac{y_i}{R_i}\right|^{p/2}
+\le
+\left(
+\sum_i \left|\frac{x_i}{R_i}\right|^p
+\right)^{1/2}
+\left(
+\sum_i \left|\frac{y_i}{R_i}\right|^p
+\right)^{1/2}
+\le 1.
+\]</div>
+<p>Therefore \(x\odot y\in B_{p/2}(\mathbf R^2)\). \(\square\)</p>
+<hr>
+<h1>6. The crucial volume ratio</h1>
+<p>Define</p>
+<div class="math-block">\[
+M_{p,d}
+:=
+\left(\frac{V_{p,d}^2}{V_{p/2,d}}\right)^{1/d}.
+\]</div>
+<p>This is the per-coordinate volume saving in the product container.</p>
+<h2>Lemma 6.1: Limit of \(M_{p,d}\)</h2>
+<p>For fixed \(p&gt;0\),</p>
+<div class="math-block">\[
+M_{p,d}
+\to
+m_p
+:=
+2^{1+2/p}
+\frac{\Gamma(1+1/p)^2}{\Gamma(1+2/p)}
+\qquad(d\to\infty).
+\tag{6.1}
+\]</div>
+<p>Moreover,</p>
+<div class="math-block">\[
+m_p\sim 2\sqrt{\frac{\pi}{p}}
+\qquad(p\to 0).
+\tag{6.2}
+\]</div>
+<p>In particular, \(m_p\to\infty\) as \(p\to 0\).</p>
+<h3>Proof</h3>
+<p>Using (4.1),</p>
+<div class="math-block">\[
+V_{p,d}
+=
+\frac{(2\Gamma(1+1/p))^d}{\Gamma(1+d/p)}
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+V_{p/2,d}
+=
+\frac{(2\Gamma(1+2/p))^d}{\Gamma(1+2d/p)}.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+\frac{V_{p,d}^2}{V_{p/2,d}}
+=
+\left(
+\frac{(2\Gamma(1+1/p))^2}{2\Gamma(1+2/p)}
+\right)^d
+\cdot
+\frac{\Gamma(1+2d/p)}{\Gamma(1+d/p)^2}.
+\]</div>
+<p>Taking \(d\)-th roots,</p>
+<div class="math-block">\[
+M_{p,d}
+=
+\frac{(2\Gamma(1+1/p))^2}{2\Gamma(1+2/p)}
+\left(
+\frac{\Gamma(1+2d/p)}{\Gamma(1+d/p)^2}
+\right)^{1/d}.
+\]</div>
+<p>By Stirling’s formula,</p>
+<div class="math-block">\[
+\left(
+\frac{\Gamma(1+2d/p)}{\Gamma(1+d/p)^2}
+\right)^{1/d}
+\to
+2^{2/p}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+M_{p,d}
+\to
+2^{2/p}
+\cdot
+\frac{(2\Gamma(1+1/p))^2}{2\Gamma(1+2/p)}
+=
+2^{1+2/p}
+\frac{\Gamma(1+1/p)^2}{\Gamma(1+2/p)}.
+\]</div>
+<p>This proves (6.1).</p>
+<p>For (6.2), put \(a=1/p\).  As \(a\to\infty\),</p>
+<div class="math-block">\[
+\frac{\Gamma(1+a)^2}{\Gamma(1+2a)}
+\sim
+\sqrt{\pi a}\,2^{-2a}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+m_p
+=
+2^{1+2a}
+\frac{\Gamma(1+a)^2}{\Gamma(1+2a)}
+\sim
+2^{1+2a}
+\cdot
+\sqrt{\pi a}\,2^{-2a}
+=
+2\sqrt{\pi a}
+=
+2\sqrt{\frac{\pi}{p}}.
+\]</div>
+<p>So \(m_p\to\infty\) as \(p\to 0\). \(\square\)</p>
+<hr>
+<h1>7. Conditional construction theorem</h1>
+<p>The following proposition is the core reduction.  It isolates exactly the number-field/lattice-counting input that remains.</p>
+<h2>Proposition 7.1: Conditional sum-product construction</h2>
+<p>Let \(K_j\) be a sequence of totally real number fields with degrees</p>
+<div class="math-block">\[
+d_j=[K_j:\mathbb Q]\to\infty.
+\]</div>
+<p>Write</p>
+<div class="math-block">\[
+\Delta_j:=\sqrt{|D_{K_j}|}.
+\]</div>
+<p>Assume that there is a constant \(M&lt;\infty\) such that</p>
+<div class="math-block">\[
+\Delta_j^{1/d_j}\le M
+\qquad\text{for all }j.
+\tag{7.1}
+\]</div>
+<p>Fix \(0&lt;p\le 1\), and suppose</p>
+<div class="math-block">\[
+m_p&gt;M,
+\tag{7.2}
+\]</div>
+<p>where \(m_p\) is the constant from Lemma 6.1.</p>
+<p>Assume also the following <strong>regular lattice-counting hypothesis</strong>.</p>
+<p>There exist fractional ideals \(I_j\subset K_j\), anisotropic radii</p>
+<div class="math-block">\[
+\mathbf R_j=(R_{j,1},\dots,R_{j,d_j}),
+\]</div>
+<p>and a constant \(C&gt;0\) such that</p>
+<div class="math-block">\[
+C&gt;\frac{\log 2}{p},
+\tag{7.3}
+\]</div>
+<p>and, writing</p>
+<div class="math-block">\[
+\Lambda_j=\sigma(I_j),
+\]</div>
+<div class="math-block">\[
+P_j:=I_j\cap B_p(\mathbf R_j),
+\]</div>
+<p>we have</p>
+<div class="math-block">\[
+|P_j|
+=
+e^{(C+o(1))d_j}.
+\tag{7.4}
+\]</div>
+<p>Moreover, the following volume-regular upper bounds hold:</p>
+<div class="math-block">\[
+|I_j\cap B_p(2^{1/p}\mathbf R_j)|
+\le
+e^{o(d_j)}
+\cdot
+2^{d_j/p}
+|P_j|,
+\tag{7.5}
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|I_j^2\cap B_{p/2}(\mathbf R_j^2)|
+\le
+e^{o(d_j)}
+\cdot
+|P_j|^2
+\left(\frac{\Delta_j^{1/d_j}}{M_{p,d_j}}\right)^{d_j}.
+\tag{7.6}
+\]</div>
+<p>Then there exists \(\delta&gt;0\) and an infinite sequence of finite sets \(A_j\subset\mathbb R\), \(|A_j|\to\infty\), such that</p>
+<div class="math-block">\[
+\max(|A_j+A_j|,|A_jA_j|)
+\le
+|A_j|^{2-\delta}
+\]</div>
+<p>for all sufficiently large \(j\).</p>
+<h3>Proof</h3>
+<p>Fix a real embedding \(\sigma_1:K_j\hookrightarrow\mathbb R\).  Define</p>
+<div class="math-block">\[
+A_j:=\sigma_1(P_j)\subset\mathbb R.
+\]</div>
+<p>Because \(\sigma_1\) is injective,</p>
+<div class="math-block">\[
+|A_j|=|P_j|.
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+n_j:=|A_j|=|P_j|.
+\]</div>
+<p>By (7.4),</p>
+<div class="math-block">\[
+n_j=e^{(C+o(1))d_j}.
+\tag{7.7}
+\]</div>
+<hr>
+<h3>Sumset bound</h3>
+<p>By Lemma 5.1,</p>
+<div class="math-block">\[
+P_j+P_j
+\subseteq
+I_j\cap B_p(2^{1/p}\mathbf R_j).
+\]</div>
+<p>Therefore, using (7.5),</p>
+<div class="math-block">\[
+|A_j+A_j|
+=
+|P_j+P_j|
+\le
+e^{o(d_j)}2^{d_j/p}n_j.
+\]</div>
+<p>Taking logs and using (7.7),</p>
+<div class="math-block">\[
+\log |A_j+A_j|
+\le
+\log n_j+\frac{\log 2}{p}d_j+o(d_j).
+\]</div>
+<p>Since \(\log n_j=(C+o(1))d_j\),</p>
+<div class="math-block">\[
+\frac{\log |A_j+A_j|}{\log n_j}
+\le
+1+\frac{\log 2}{pC}+o(1).
+\]</div>
+<p>Because \(C&gt;\frac{\log 2}{p}\), the number</p>
+<div class="math-block">\[
+\delta_+:=
+1-\frac{\log 2}{pC}
+\]</div>
+<p>is positive.  Hence for any</p>
+<div class="math-block">\[
+0&lt;\delta&lt;\delta_+,
+\]</div>
+<p>we have, for all sufficiently large \(j\),</p>
+<div class="math-block">\[
+|A_j+A_j|
+\le
+n_j^{2-\delta}.
+\tag{7.8}
+\]</div>
+<hr>
+<h3>Product-set bound</h3>
+<p>By Lemma 5.2,</p>
+<div class="math-block">\[
+P_jP_j
+\subseteq
+I_j^2\cap B_{p/2}(\mathbf R_j^2).
+\]</div>
+<p>Therefore, by (7.6),</p>
+<div class="math-block">\[
+|A_jA_j|
+=
+|P_jP_j|
+\le
+e^{o(d_j)}
+n_j^2
+\left(\frac{\Delta_j^{1/d_j}}{M_{p,d_j}}\right)^{d_j}.
+\]</div>
+<p>By (7.1),</p>
+<div class="math-block">\[
+\Delta_j^{1/d_j}\le M.
+\]</div>
+<p>By Lemma 6.1,</p>
+<div class="math-block">\[
+M_{p,d_j}\to m_p.
+\]</div>
+<p>Since \(m_p&gt;M\), choose</p>
+<div class="math-block">\[
+\theta:=\log\left(\frac{m_p}{M}\right)&gt;0.
+\]</div>
+<p>Then for all large \(j\),</p>
+<div class="math-block">\[
+\log\left(\frac{M_{p,d_j}}{\Delta_j^{1/d_j}}\right)
+\ge
+\frac{\theta}{2}.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+|A_jA_j|
+\le
+e^{o(d_j)}
+n_j^2 e^{-\theta d_j/2}.
+\]</div>
+<p>Using \(\log n_j=(C+o(1))d_j\), this implies</p>
+<div class="math-block">\[
+\frac{\log |A_jA_j|}{\log n_j}
+\le
+2-\frac{\theta}{2C}+o(1).
+\]</div>
+<p>Thus for any</p>
+<div class="math-block">\[
+0&lt;\delta&lt;\frac{\theta}{2C},
+\]</div>
+<p>we have, for all sufficiently large \(j\),</p>
+<div class="math-block">\[
+|A_jA_j|
+\le
+n_j^{2-\delta}.
+\tag{7.9}
+\]</div>
+<p>Combining (7.8) and (7.9), any</p>
+<div class="math-block">\[
+0&lt;\delta&lt;
+\min\left(
+1-\frac{\log 2}{pC},
+\frac{1}{2C}\log\frac{m_p}{M}
+\right)
+\tag{7.10}
+\]</div>
+<p>works for all sufficiently large \(j\).</p>
+<p>Since \(d_j\to\infty\), (7.7) gives \(n_j\to\infty\).  This proves the proposition. \(\square\)</p>
+<hr>
+<h1>8. Why the parameter choice is possible</h1>
+<p>The only inequalities we need are</p>
+<div class="math-block">\[
+m_p&gt;M
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+C&gt;\frac{\log 2}{p}.
+\]</div>
+<p>The first is possible because \(m_p\to\infty\) as \(p\to 0\).  Once \(p\) is chosen, choose any sufficiently large constant \(C\), for example</p>
+<div class="math-block">\[
+C=2\frac{\log 2}{p}.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+1-\frac{\log 2}{pC}
+=
+1-\frac12
+=
+\frac12,
+\]</div>
+<p>so the sumset side has a healthy margin.</p>
+<p>The product-side saving is</p>
+<div class="math-block">\[
+\frac{1}{2C}\log\frac{m_p}{M}.
+\]</div>
+<p>For very small \(p\), this may be tiny, but it is positive.  Therefore the resulting \(\delta\) may be extremely small, but it is an absolute positive constant once the tower and \(p,C\) are fixed.</p>
+<hr>
+<h1>9. Source of bounded root discriminant fields</h1>
+<p>The number-field input needed for (7.1) is standard.</p>
+<h2>Martinet-type class-field-tower input</h2>
+<p>There exists an infinite sequence of totally real number fields</p>
+<div class="math-block">\[
+K_1\subset K_2\subset K_3\subset\cdots
+\]</div>
+<p>with</p>
+<div class="math-block">\[
+[K_j:\mathbb Q]\to\infty
+\]</div>
+<p>and uniformly bounded root discriminant</p>
+<div class="math-block">\[
+\operatorname{rd}(K_j):=|D_{K_j}|^{1/[K_j:\mathbb Q]}
+\le B_0
+\]</div>
+<p>for some absolute constant \(B_0\).</p>
+<p>Equivalently,</p>
+<div class="math-block">\[
+\Delta_j^{1/d_j}
+=
+|D_{K_j}|^{1/(2d_j)}
+=
+\operatorname{rd}(K_j)^{1/2}
+\le
+B_0^{1/2}.
+\]</div>
+<p>Thus in Proposition 7.1 one may take</p>
+<div class="math-block">\[
+M=B_0^{1/2}.
+\]</div>
+<p>One standard source is a totally real field with an infinite narrow Hilbert class-field tower.  In an unramified tower, the root discriminant remains constant.</p>
+<p>So bounded root discriminant itself is not the main obstruction.</p>
+<hr>
+<h1>10. The main remaining gap</h1>
+<p>The real remaining gap is the regular lattice-counting hypothesis in Proposition 7.1.</p>
+<p>Let me state it cleanly.</p>
+<h2>Gap G: Regular adelic lattice-counting lemma</h2>
+<p>Let \(K_j\) be a totally real bounded-root-discriminant tower, \(d_j\to\infty\).  Fix \(0&lt;p\le 1\) and \(C&gt;\frac{\log 2}{p}\).</p>
+<p>One needs to prove that for each \(j\), there exist:</p>
+<ul>
+<li>a fractional ideal \(I_j\subset K_j\);</li>
+<li>positive radii \(\mathbf R_j=(R_{j,1},\dots,R_{j,d_j})\);</li>
+</ul>
+<p>such that, with</p>
+<div class="math-block">\[
+P_j=I_j\cap B_p(\mathbf R_j),
+\]</div>
+<p>the following hold:</p>
+<ol>
+<li><p><strong>Correct size:</strong></p>
+<div class="math-block">\[
+|P_j|=e^{(C+o(1))d_j}.
+\]</div></li>
+<li><p><strong>Additive upper regularity:</strong></p>
+<div class="math-block">\[
+|I_j\cap B_p(2^{1/p}\mathbf R_j)|
+\le
+e^{o(d_j)}2^{d_j/p}|P_j|.
+\]</div></li>
+<li><p><strong>Multiplicative upper regularity:</strong></p>
+<div class="math-block">\[
+|I_j^2\cap B_{p/2}(\mathbf R_j^2)|
+\le
+e^{o(d_j)}
+|P_j|^2
+\left(\frac{\Delta_j^{1/d_j}}{M_{p,d_j}}\right)^{d_j}.
+\]</div></li>
+</ol>
+<p>Equivalently, the lattice counts should be volume-regular at the relevant scales:</p>
+<div class="math-block">\[
+|I_j\cap B_p(\mathbf R_j)|
+\approx
+\frac{V_{p,d_j}\prod_i R_{j,i}}{\det(\sigma(I_j))}
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|I_j^2\cap B_{p/2}(\mathbf R_j^2)|
+\lesssim
+\frac{V_{p/2,d_j}\prod_i R_{j,i}^2}{\det(\sigma(I_j^2))}
+\]</div>
+<p>up to \(e^{o(d_j)}\) factors.</p>
+<hr>
+<h1>11. Why Gap G is plausible</h1>
+<p>There are several reasons this gap looks plausible rather than structurally impossible.</p>
+<h2>11.1. Fractional ideals give flexibility</h2>
+<p>If we used only \(I_j=\mathcal O_{K_j}\) and only isotropic radii \(R_1=\cdots=R_d\), the Minkowski lattice might be skew, and lattice-point counts in \(B_p\) might be irregular.</p>
+<p>Allowing fractional ideals and anisotropic radii is equivalent to allowing an Arakelov divisor.  This gives substantial freedom to regularize the lattice.</p>
+<p>The product comparison survives this freedom because</p>
+<div class="math-block">\[
+\frac{\det(\sigma(I_j))^2}{\det(\sigma(I_j^2))}
+=
+\sqrt{|D_{K_j}|}.
+\]</div>
+<p>So the main product-volume saving is unaffected by the ideal choice.</p>
+<h2>11.2. The required accuracy is only \(e^{o(d)}\)</h2>
+<p>We do not need sharp asymptotics with \(1+o(1)\) error.  We only need counts correct up to \(e^{o(d)}\) factors.</p>
+<p>That is much weaker than classical lattice-point asymptotics in high dimension.</p>
+<h2>11.3. Bounded root discriminant gives bounded covolume per dimension</h2>
+<p>The lattice covolume satisfies</p>
+<div class="math-block">\[
+\det(\sigma(I_j))^{1/d_j}
+=
+N(I_j)^{1/d_j}\Delta_j^{1/d_j}.
+\]</div>
+<p>The field contribution \(\Delta_j^{1/d_j}\) is bounded.  Thus after choosing \(I_j\) and \(\mathbf R_j\) appropriately, the natural volume scale is exponential \(e^{Cd_j}\), exactly the regime needed.</p>
+<h2>11.4. Possible methods to prove Gap G</h2>
+<p>There are several plausible routes.</p>
+<h3>Route A: Arakelov semistability</h3>
+<p>A choice of fractional ideal and archimedean radii is an Arakelov lattice.  One can try to choose the Arakelov divisor so that the associated lattice is semistable or well-rounded.  For semistable lattices, high-dimensional volume estimates often imply lattice-point upper bounds in star bodies up to subexponential factors.</p>
+<p>The simultaneous appearance of \(I_j\) and \(I_j^2\) means one needs semistability/control for both the lattice and its square.  That is nontrivial but still plausible.</p>
+<h3>Route B: Averaging over the Arakelov torus</h3>
+<p>The group of archimedean scalings modulo the unit lattice gives a compact Arakelov torus.  One may average the relevant counting functions over this torus.  If the mean count is controlled by the expected volume, then Markov’s inequality can produce a scaling for which the upper bounds hold simultaneously.</p>
+<p>One also needs a lower bound for the count in \(B_p(\mathbf R_j)\).  That might be obtained either by a second-moment argument or by selecting the scale slightly above the volume threshold.</p>
+<h3>Route C: Use a Galois tower with symmetric embeddings</h3>
+<p>If the bounded-root-discriminant tower can be chosen Galois over \(\mathbb Q\), then the Minkowski lattices have large symmetry groups permuting the embeddings.  This symmetry may force enough regularity for isotropic \(B_p(R)\) balls, avoiding the need for anisotropic radii.</p>
+<p>This is attractive but may depend on the specific tower.</p>
+<hr>
+<h1>12. Seriousness of the gap</h1>
+<p>Gap G is the serious remaining obstruction in this approach.</p>
+<p>It cannot be ignored, because arbitrary lattices of determinant \(e^{O(d)}\) can be extremely skew.  For a highly skew lattice, the number of lattice points in \(B_p(\mathbf R)\) or \(B_{p/2}(\mathbf R^2)\) can differ from volume predictions by exponential factors.</p>
+<p>The hope is that number-field ideal lattices in bounded-root-discriminant towers, after Arakelov regularization, are not arbitrary lattices and can be made sufficiently regular.</p>
+<p>So Gap G is plausibly closeable, but it is the part that needs real work.</p>
+<hr>
+<h1>13. Why I do not recommend the unit-energy approach as the main route</h1>
+<p>A natural idea is to use many units \(u\in\mathcal O_K^\times\) so that multiplication by \(u\) maps much of \(A\) back into \(A\).  Then for many pairs \((a,b)\),</p>
+<div class="math-block">\[
+ab=(ua)(u^{-1}b),
+\]</div>
+<p>giving many multiplicative collisions.</p>
+<p>This gives large multiplicative energy.  However, large energy alone does <strong>not</strong> upper-bound \(|AA|\).  Cauchy–Schwarz gives</p>
+<div class="math-block">\[
+E_\times(A)\ge \frac{|A|^4}{|AA|},
+\]</div>
+<p>or equivalently</p>
+<div class="math-block">\[
+|AA|\ge \frac{|A|^4}{E_\times(A)}.
+\]</div>
+<p>That is a lower bound for \(|AA|\), not an upper bound.  To turn unit symmetries into an upper bound, one would need to show that almost every product has many representations, i.e. that the unit action gives large orbits uniformly across most of \(A\times A\).  That is a much stronger and more delicate statement.</p>
+<p>The quasi-norm/volume-containment approach avoids this issue entirely because it gives a direct inclusion</p>
+<div class="math-block">\[
+AA\subseteq I^2\cap B_{p/2}(\mathbf R^2),
+\]</div>
+<p>and therefore a direct upper bound.</p>
+<hr>
+<h1>14. Summary of the proof plan</h1>
+<p>Here is the complete step-by-step plan.</p>
+<h2>Step 1: Choose a bounded-root-discriminant totally real tower</h2>
+<p>Use a Martinet-type infinite narrow class-field tower</p>
+<div class="math-block">\[
+K_1\subset K_2\subset\cdots
+\]</div>
+<p>with</p>
+<div class="math-block">\[
+d_j=[K_j:\mathbb Q]\to\infty
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\Delta_j^{1/d_j}\le M
+\]</div>
+<p>for some absolute \(M&lt;\infty\).</p>
+<h2>Step 2: Choose \(p\)</h2>
+<p>Since</p>
+<div class="math-block">\[
+m_p\sim 2\sqrt{\frac{\pi}{p}},
+\]</div>
+<p>choose \(p&gt;0\) sufficiently small that</p>
+<div class="math-block">\[
+m_p&gt;M.
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+\theta:=\log\frac{m_p}{M}&gt;0.
+\]</div>
+<h2>Step 3: Choose \(C\)</h2>
+<p>Choose</p>
+<div class="math-block">\[
+C&gt;\frac{\log 2}{p}.
+\]</div>
+<p>For example,</p>
+<div class="math-block">\[
+C=2\frac{\log 2}{p}.
+\]</div>
+<h2>Step 4: Prove the regular lattice-counting lemma</h2>
+<p>For each \(K_j\), find a fractional ideal \(I_j\) and radii \(\mathbf R_j\) such that</p>
+<div class="math-block">\[
+P_j:=I_j\cap B_p(\mathbf R_j)
+\]</div>
+<p>satisfies</p>
+<div class="math-block">\[
+|P_j|=e^{(C+o(1))d_j},
+\]</div>
+<p>and the additive/multiplicative container counts satisfy the regular estimates of Gap G.</p>
+<p>This is the main remaining technical step.</p>
+<h2>Step 5: Define the real set</h2>
+<p>Choose one real embedding \(\sigma_1:K_j\hookrightarrow\mathbb R\), and set</p>
+<div class="math-block">\[
+A_j:=\sigma_1(P_j)\subset\mathbb R.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+|A_j|=|P_j|=e^{(C+o(1))d_j}\to\infty.
+\]</div>
+<h2>Step 6: Bound the sumset</h2>
+<p>By subadditivity,</p>
+<div class="math-block">\[
+P_j+P_j\subseteq I_j\cap B_p(2^{1/p}\mathbf R_j).
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|A_j+A_j|
+\le
+e^{o(d_j)}
+2^{d_j/p}|A_j|.
+\]</div>
+<p>Since \(|A_j|=e^{(C+o(1))d_j}\),</p>
+<div class="math-block">\[
+|A_j+A_j|
+\le
+|A_j|^{1+\frac{\log 2}{pC}+o(1)}.
+\]</div>
+<p>Because \(C&gt;\frac{\log 2}{p}\), this is at most</p>
+<div class="math-block">\[
+|A_j|^{2-\delta}
+\]</div>
+<p>for some fixed \(\delta&gt;0\).</p>
+<h2>Step 7: Bound the product set</h2>
+<p>By Cauchy–Schwarz,</p>
+<div class="math-block">\[
+P_jP_j\subseteq I_j^2\cap B_{p/2}(\mathbf R_j^2).
+\]</div>
+<p>The regular counting estimate gives</p>
+<div class="math-block">\[
+|A_jA_j|
+\le
+e^{o(d_j)}
+|A_j|^2
+\left(\frac{\Delta_j^{1/d_j}}{M_{p,d_j}}\right)^{d_j}.
+\]</div>
+<p>Since</p>
+<div class="math-block">\[
+\Delta_j^{1/d_j}\le M&lt;m_p
+\]</div>
+<p>and \(M_{p,d_j}\to m_p\), we get</p>
+<div class="math-block">\[
+|A_jA_j|
+\le
+|A_j|^2 e^{-\theta d_j/2}
+\]</div>
+<p>for large \(j\).  Since \(|A_j|=e^{(C+o(1))d_j}\),</p>
+<div class="math-block">\[
+|A_jA_j|
+\le
+|A_j|^{2-\theta/(3C)}
+\]</div>
+<p>for large \(j\), after adjusting constants.</p>
+<h2>Step 8: Take \(\delta\)</h2>
+<p>One may take any</p>
+<div class="math-block">\[
+0&lt;\delta&lt;
+\min\left(
+1-\frac{\log 2}{pC},
+\frac{1}{2C}\log\frac{m_p}{M}
+\right),
+\]</div>
+<p>with small margins to absorb the \(o(1)\)-terms.</p>
+<p>Then</p>
+<div class="math-block">\[
+\max(|A_j+A_j|,|A_jA_j|)
+\le
+|A_j|^{2-\delta}
+\]</div>
+<p>for all sufficiently large \(j\).</p>
+<hr>
+<h1>15. What should be done next</h1>
+<p>The next round should focus on Gap G.  The most precise target is:</p>
+<blockquote><p><strong>Regular adelic counting lemma.</strong>   Let \(K_j\) be a totally real bounded-root-discriminant tower.  Fix \(0&lt;p\le1\) and \(C&gt;\frac{\log 2}{p}\).  Prove that there exist fractional ideals \(I_j\) and archimedean radii \(\mathbf R_j\) such that the three lattice counts</p>
+<div class="math-block">\[
+|I_j\cap B_p(\mathbf R_j)|,\qquad
+|I_j\cap B_p(2^{1/p}\mathbf R_j)|,\qquad
+|I_j^2\cap B_{p/2}(\mathbf R_j^2)|
+\]</div>
+<p>are controlled by their expected volumes up to \(e^{o(d_j)}\)-factors.</p></blockquote>
+<p>A promising way to attack that is through Arakelov geometry:</p>
+<ol>
+<li>Interpret \((I_j,\mathbf R_j)\) as an Arakelov divisor.</li>
+<li>Choose it so that the associated lattice is semistable or well-rounded.</li>
+<li>Prove high-dimensional lattice-counting bounds for \(B_p\) and \(B_{p/2}\) in semistable ideal lattices.</li>
+<li>Ensure the same control for the square ideal \(I_j^2\).</li>
+</ol>
+<p>If that lemma is proved, the construction above gives the theorem.</p>
+<hr>
+<h1>Round 2</h1>
+<h2>User</h2>
+<blockquote><p>Construct a complete and rigorous proof, adapting your approach as needed.</p></blockquote>
+<h2>Assistant</h2>
+<h1>Complete proof</h1>
+<p>We prove the theorem by constructing \(A\) from algebraic integers in number fields of large degree and bounded root discriminant.</p>
+<p>The key construction is:</p>
+<div class="math-block">\[
+A=\sigma_1\left(\mathcal O_K\cap B_{p,d}(R)\right)\subset \mathbb R,
+\]</div>
+<p>where</p>
+<ul>
+<li>\(K/\mathbb Q\) is a totally real number field of degree \(d\);</li>
+<li>\(\sigma_1,\dots,\sigma_d:K\hookrightarrow \mathbb R\) are its real embeddings;</li>
+<li>\(\sigma=(\sigma_1,\dots,\sigma_d)\) is the Minkowski embedding;</li>
+<li>\(B_{p,d}(R)\subset\mathbb R^d\) is the \(\ell^p\)-quasi-ball</li>
+</ul>
+<div class="math-block">  \[
+  B_{p,d}(R)=\left\{x=(x_1,\dots,x_d):\sum_{j=1}^d |x_j|^p\le R^p\right\};
+  \]</div>
+<ul>
+<li>\(0&lt;p\le 1\) is chosen small;</li>
+<li>\(R\) is chosen so that \(\mathcal O_K\cap B_{p,d}(R)\) has size about \(e^{Cd}\), with \(C\) a large fixed constant.</li>
+</ul>
+<p>The reason this works is:</p>
+<ol>
+<li>\(B_p(R)+B_p(R)\subseteq B_p(2^{1/p}R)\), so the sumset is controlled by a modest enlargement of the original body.</li>
+<li><p>Multiplication in the Minkowski embedding is coordinatewise:</p>
+<div class="math-block">\[
+\sigma(\alpha\beta)=\sigma(\alpha)\odot \sigma(\beta),
+\]</div>
+<p>and Cauchy–Schwarz gives</p>
+<div class="math-block">\[
+B_p(R)\odot B_p(R)\subseteq B_{p/2}(R^2).
+\]</div></li>
+<li>For small \(p\), the volume of \(B_{p/2,d}(R^2)\) is smaller than the square of the volume of \(B_{p,d}(R)\) by an exponential factor in \(d\).</li>
+<li>Bounded root discriminant lets us count algebraic integers in these bodies accurately enough.</li>
+</ol>
+<p>The counting point is the main ingredient.  In the previous plan this was left as a gap.  Here it is closed using a covering-radius estimate coming from the codifferent and a standard transference theorem.</p>
+<hr>
+<h2>1. Number-field input: bounded root discriminant towers</h2>
+<p>We use the following classical theorem of Martinet.</p>
+<h3>Theorem 1.1: Martinet tower</h3>
+<p>There exists an infinite sequence of totally real number fields</p>
+<div class="math-block">\[
+K_i/\mathbb Q
+\]</div>
+<p>with</p>
+<div class="math-block">\[
+d_i=[K_i:\mathbb Q]\to\infty
+\]</div>
+<p>and uniformly bounded root discriminant:</p>
+<div class="math-block">\[
+\operatorname{rd}(K_i):=|D_{K_i}|^{1/d_i}\le R_0
+\]</div>
+<p>for some absolute constant \(R_0&lt;\infty\).</p>
+<p>Equivalently, if</p>
+<div class="math-block">\[
+\Delta_i:=|D_{K_i}|^{1/2},
+\]</div>
+<p>then</p>
+<div class="math-block">\[
+\Delta_i^{1/d_i}\le M,
+\qquad
+M:=R_0^{1/2}.
+\tag{1.1}
+\]</div>
+<p>This follows from Martinet’s construction of an infinite totally real class-field tower.  In an unramified tower, the root discriminant remains constant.</p>
+<hr>
+<h2>2. Volumes of \(\ell^p\)-quasi-balls</h2>
+<p>For \(s&gt;0\), define</p>
+<div class="math-block">\[
+B_{s,d}(R)
+=
+\left\{
+x\in\mathbb R^d:
+\sum_{j=1}^d |x_j|^s\le R^s
+\right\}.
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+V_{s,d}:=\operatorname{vol}(B_{s,d}(1)).
+\]</div>
+<h3>Lemma 2.1: Volume formula</h3>
+<p>For every \(s&gt;0\),</p>
+<div class="math-block">\[
+V_{s,d}
+=
+\frac{\left(2\Gamma(1+1/s)\right)^d}{\Gamma(1+d/s)}.
+\tag{2.1}
+\]</div>
+<h3>Proof</h3>
+<p>Compute</p>
+<div class="math-block">\[
+I:=\int_{\mathbb R^d} e^{-\sum_{j=1}^d |x_j|^s}\,dx.
+\]</div>
+<p>On one hand, the integral factors:</p>
+<div class="math-block">\[
+I=
+\left(
+\int_{\mathbb R} e^{-|t|^s}\,dt
+\right)^d.
+\]</div>
+<p>Now</p>
+<div class="math-block">\[
+\int_{\mathbb R}e^{-|t|^s}\,dt
+=
+2\int_0^\infty e^{-t^s}\,dt.
+\]</div>
+<p>With \(u=t^s\), we get</p>
+<div class="math-block">\[
+2\int_0^\infty e^{-t^s}\,dt
+=
+2\cdot \frac1s \Gamma(1/s)
+=
+2\Gamma(1+1/s).
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+I=\left(2\Gamma(1+1/s)\right)^d.
+\]</div>
+<p>On the other hand, using radial integration for the \(s\)-homogeneous gauge,</p>
+<div class="math-block">\[
+I=V_{s,d}\Gamma(1+d/s).
+\]</div>
+<p>Equating the two expressions gives (2.1). \(\square\)</p>
+<hr>
+<h2>3. Additive and multiplicative containments</h2>
+<p>We use the following elementary inequalities.</p>
+<h3>Lemma 3.1: Additive containment</h3>
+<p>For \(0&lt;p\le1\),</p>
+<div class="math-block">\[
+B_{p,d}(R)+B_{p,d}(R)
+\subseteq
+B_{p,d}(2^{1/p}R).
+\tag{3.1}
+\]</div>
+<h3>Proof</h3>
+<p>For real numbers \(u,v\) and \(0&lt;p\le1\),</p>
+<div class="math-block">\[
+|u+v|^p\le |u|^p+|v|^p.
+\]</div>
+<p>Thus, if \(x,y\in B_{p,d}(R)\), then</p>
+<div class="math-block">\[
+\sum_{j=1}^d |x_j+y_j|^p
+\le
+\sum_{j=1}^d |x_j|^p+\sum_{j=1}^d |y_j|^p
+\le
+2R^p.
+\]</div>
+<p>Equivalently,</p>
+<div class="math-block">\[
+x+y\in B_{p,d}(2^{1/p}R).
+\]</div>
+<p>\(\square\)</p>
+<hr>
+<h3>Lemma 3.2: Multiplicative containment</h3>
+<p>Let \(\odot\) denote coordinatewise multiplication.  For \(0&lt;p\le1\),</p>
+<div class="math-block">\[
+B_{p,d}(R)\odot B_{p,d}(R)
+\subseteq
+B_{p/2,d}(R^2).
+\tag{3.2}
+\]</div>
+<h3>Proof</h3>
+<p>Let \(q=p/2\).  If \(x,y\in B_{p,d}(R)\), then</p>
+<div class="math-block">\[
+\sum_{j=1}^d |x_jy_j|^q
+=
+\sum_{j=1}^d |x_j|^{p/2}|y_j|^{p/2}.
+\]</div>
+<p>By Cauchy–Schwarz,</p>
+<div class="math-block">\[
+\sum_{j=1}^d |x_j|^{p/2}|y_j|^{p/2}
+\le
+\left(\sum_{j=1}^d |x_j|^p\right)^{1/2}
+\left(\sum_{j=1}^d |y_j|^p\right)^{1/2}
+\le
+R^p.
+\]</div>
+<p>Since \(q=p/2\), we have</p>
+<div class="math-block">\[
+(R^2)^q=R^p.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+x\odot y\in B_{q,d}(R^2)=B_{p/2,d}(R^2).
+\]</div>
+<p>\(\square\)</p>
+<hr>
+<h2>4. The product-volume saving</h2>
+<p>Define</p>
+<div class="math-block">\[
+M_{p,d}
+:=
+\left(\frac{V_{p,d}^2}{V_{p/2,d}}\right)^{1/d}.
+\]</div>
+<p>This is the per-dimension volume saving in passing from two \(p\)-balls to one \(p/2\)-ball.</p>
+<h3>Lemma 4.1</h3>
+<p>For fixed \(p&gt;0\),</p>
+<div class="math-block">\[
+M_{p,d}\to m_p
+\]</div>
+<p>as \(d\to\infty\), where</p>
+<div class="math-block">\[
+m_p
+=
+2^{1+2/p}
+\frac{\Gamma(1+1/p)^2}{\Gamma(1+2/p)}.
+\tag{4.1}
+\]</div>
+<p>Moreover,</p>
+<div class="math-block">\[
+m_p\sim 2\sqrt{\frac{\pi}{p}}
+\qquad(p\to0).
+\tag{4.2}
+\]</div>
+<p>In particular,</p>
+<div class="math-block">\[
+m_p\to\infty
+\qquad(p\to0).
+\]</div>
+<h3>Proof</h3>
+<p>By Lemma 2.1,</p>
+<div class="math-block">\[
+V_{p,d}
+=
+\frac{\left(2\Gamma(1+1/p)\right)^d}{\Gamma(1+d/p)}
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+V_{p/2,d}
+=
+\frac{\left(2\Gamma(1+2/p)\right)^d}{\Gamma(1+2d/p)}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+\frac{V_{p,d}^2}{V_{p/2,d}}
+=
+\left(
+\frac{\left(2\Gamma(1+1/p)\right)^2}{2\Gamma(1+2/p)}
+\right)^d
+\cdot
+\frac{\Gamma(1+2d/p)}{\Gamma(1+d/p)^2}.
+\]</div>
+<p>Taking \(d\)-th roots,</p>
+<div class="math-block">\[
+M_{p,d}
+=
+\frac{\left(2\Gamma(1+1/p)\right)^2}{2\Gamma(1+2/p)}
+\left(
+\frac{\Gamma(1+2d/p)}{\Gamma(1+d/p)^2}
+\right)^{1/d}.
+\]</div>
+<p>By Stirling’s formula,</p>
+<div class="math-block">\[
+\left(
+\frac{\Gamma(1+2d/p)}{\Gamma(1+d/p)^2}
+\right)^{1/d}
+\to
+2^{2/p}.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+M_{p,d}
+\to
+2^{2/p}
+\cdot
+\frac{\left(2\Gamma(1+1/p)\right)^2}{2\Gamma(1+2/p)}
+=
+2^{1+2/p}
+\frac{\Gamma(1+1/p)^2}{\Gamma(1+2/p)}.
+\]</div>
+<p>This proves (4.1).</p>
+<p>For (4.2), put \(a=1/p\).  Then as \(a\to\infty\),</p>
+<div class="math-block">\[
+\frac{\Gamma(1+a)^2}{\Gamma(1+2a)}
+\sim
+\sqrt{\pi a}\,2^{-2a}.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+m_p
+=
+2^{1+2a}
+\frac{\Gamma(1+a)^2}{\Gamma(1+2a)}
+\sim
+2^{1+2a}\sqrt{\pi a}\,2^{-2a}
+=
+2\sqrt{\pi a}
+=
+2\sqrt{\frac{\pi}{p}}.
+\]</div>
+<p>So \(m_p\to\infty\) as \(p\to0\). \(\square\)</p>
+<hr>
+<h2>5. Counting algebraic integers in \(B_{s,d}(R)\)</h2>
+<p>Let \(K/\mathbb Q\) be totally real of degree \(d\).  Let</p>
+<div class="math-block">\[
+\sigma:K\hookrightarrow \mathbb R^d
+\]</div>
+<p>be the Minkowski embedding</p>
+<div class="math-block">\[
+\sigma(\alpha)=(\sigma_1(\alpha),\dots,\sigma_d(\alpha)).
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+\Lambda_K:=\sigma(\mathcal O_K).
+\]</div>
+<p>Then \(\Lambda_K\) is a full-rank lattice in \(\mathbb R^d\) with covolume</p>
+<div class="math-block">\[
+\det(\Lambda_K)=\Delta_K:=|D_K|^{1/2}.
+\tag{5.1}
+\]</div>
+<p>We need a uniform counting estimate for</p>
+<div class="math-block">\[
+N_{K,s}(R)
+:=
+|\mathcal O_K\cap B_{s,d}(R)|
+=
+|\Lambda_K\cap B_{s,d}(R)|.
+\]</div>
+<p>The following lemma is the key point that closes the earlier gap.</p>
+<hr>
+<h3>Lemma 5.1: Covering-radius counting estimate</h3>
+<p>Let \(K/\mathbb Q\) be totally real of degree \(d\), and suppose</p>
+<div class="math-block">\[
+\operatorname{rd}(K)=|D_K|^{1/d}\le R_0.
+\]</div>
+<p>Fix \(0&lt;s\le1\).  Put</p>
+<div class="math-block">\[
+\mu_s:=\frac{R_0}{2}d^{1/s}.
+\]</div>
+<p>Then for every \(R&gt;\mu_s\),</p>
+<div class="math-block">\[
+\frac{V_{s,d}R^d}{\Delta_K}
+\left(1-\left(\frac{\mu_s}{R}\right)^s\right)^{d/s}
+\le
+N_{K,s}(R)
+\le
+\frac{V_{s,d}R^d}{\Delta_K}
+\left(1+\left(\frac{\mu_s}{R}\right)^s\right)^{d/s}.
+\tag{5.2}
+\]</div>
+<hr>
+<h3>Proof</h3>
+<p>We first bound the Euclidean covering radius of \(\Lambda_K\).</p>
+<p>Let \(\Lambda_K^*\) denote the Euclidean dual lattice.  For totally real \(K\),</p>
+<div class="math-block">\[
+\Lambda_K^*=\sigma(\mathfrak d_K^{-1}),
+\]</div>
+<p>where \(\mathfrak d_K^{-1}\) is the codifferent.</p>
+<p>Let \(\beta\in\mathfrak d_K^{-1}\), \(\beta\neq0\).  Then</p>
+<div class="math-block">\[
+\beta\mathfrak d_K\subseteq\mathcal O_K.
+\]</div>
+<p>Therefore the fractional ideal \((\beta)\mathfrak d_K\) is an integral ideal, so</p>
+<div class="math-block">\[
+N((\beta)\mathfrak d_K)
+=
+|N_{K/\mathbb Q}(\beta)|\,N(\mathfrak d_K)
+=
+|N_{K/\mathbb Q}(\beta)|\,|D_K|
+\ge 1.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|N_{K/\mathbb Q}(\beta)|
+\ge
+|D_K|^{-1}.
+\]</div>
+<p>By AM–GM,</p>
+<div class="math-block">\[
+\|\sigma(\beta)\|_2^2
+=
+\sum_{j=1}^d |\sigma_j(\beta)|^2
+\ge
+d
+\left(
+\prod_{j=1}^d |\sigma_j(\beta)|^2
+\right)^{1/d}
+=
+d\,|N_{K/\mathbb Q}(\beta)|^{2/d}.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+\|\sigma(\beta)\|_2
+\ge
+\sqrt d\,|D_K|^{-1/d}.
+\]</div>
+<p>Since \(\operatorname{rd}(K)=|D_K|^{1/d}\le R_0\), we get</p>
+<div class="math-block">\[
+\lambda_1(\Lambda_K^*)
+\ge
+\frac{\sqrt d}{R_0}.
+\tag{5.3}
+\]</div>
+<p>Now use the standard transference bound for the Euclidean covering radius \(\rho_2(\Lambda_K)\):</p>
+<div class="math-block">\[
+\rho_2(\Lambda_K)\lambda_1(\Lambda_K^*)\le \frac d2.
+\]</div>
+<p>Combining this with (5.3),</p>
+<div class="math-block">\[
+\rho_2(\Lambda_K)
+\le
+\frac{R_0}{2}\sqrt d.
+\tag{5.4}
+\]</div>
+<p>For \(0&lt;s\le1\), we have</p>
+<div class="math-block">\[
+\|x\|_s
+\le
+d^{1/s-1/2}\|x\|_2.
+\]</div>
+<p>Therefore the \(s\)-quasinorm covering radius satisfies</p>
+<div class="math-block">\[
+\rho_s(\Lambda_K)
+\le
+d^{1/s-1/2}\rho_2(\Lambda_K)
+\le
+\frac{R_0}{2}d^{1/s}
+=
+\mu_s.
+\tag{5.5}
+\]</div>
+<p>Let \(F\) be a measurable fundamental domain for \(\Lambda_K\) contained in \(B_{s,d}(\mu_s)\).  For example, one may take a Euclidean Voronoi cell and use (5.5).</p>
+<p>We now compare volumes.</p>
+<p>Because \(0&lt;s\le1\),</p>
+<div class="math-block">\[
+|u+v|^s\le |u|^s+|v|^s.
+\tag{5.6}
+\]</div>
+<p>Thus, if \(\lambda\in\Lambda_K\cap B_{s,d}(R)\) and \(f\in F\subseteq B_{s,d}(\mu_s)\), then</p>
+<div class="math-block">\[
+\lambda+f\in B_{s,d}\left((R^s+\mu_s^s)^{1/s}\right).
+\]</div>
+<p>The translates \(\lambda+F\) are disjoint up to boundaries, and each has volume \(\Delta_K\).  Therefore</p>
+<div class="math-block">\[
+N_{K,s}(R)\Delta_K
+\le
+\operatorname{vol}
+B_{s,d}\left((R^s+\mu_s^s)^{1/s}\right).
+\]</div>
+<p>Using homogeneity of volume,</p>
+<div class="math-block">\[
+\operatorname{vol}
+B_{s,d}\left((R^s+\mu_s^s)^{1/s}\right)
+=
+V_{s,d}R^d
+\left(1+\left(\frac{\mu_s}{R}\right)^s\right)^{d/s}.
+\]</div>
+<p>This gives the upper bound in (5.2).</p>
+<p>For the lower bound, let</p>
+<div class="math-block">\[
+R_-:=(R^s-\mu_s^s)^{1/s}.
+\]</div>
+<p>Every point \(z\in B_{s,d}(R_-)\) lies in some translate \(\lambda+F\).  Write \(z=\lambda+f\), with \(f\in F\).  Then</p>
+<div class="math-block">\[
+\lambda=z-f.
+\]</div>
+<p>By (5.6),</p>
+<div class="math-block">\[
+\|\lambda\|_s^s
+\le
+\|z\|_s^s+\|f\|_s^s
+\le
+(R^s-\mu_s^s)+\mu_s^s
+=
+R^s.
+\]</div>
+<p>So \(\lambda\in\Lambda_K\cap B_{s,d}(R)\).  Hence</p>
+<div class="math-block">\[
+B_{s,d}(R_-)
+\subseteq
+\bigcup_{\lambda\in\Lambda_K\cap B_{s,d}(R)}(\lambda+F).
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+\operatorname{vol} B_{s,d}(R_-)
+\le
+N_{K,s}(R)\Delta_K.
+\]</div>
+<p>Again by homogeneity,</p>
+<div class="math-block">\[
+\operatorname{vol} B_{s,d}(R_-)
+=
+V_{s,d}R^d
+\left(1-\left(\frac{\mu_s}{R}\right)^s\right)^{d/s}.
+\]</div>
+<p>This proves the lower bound in (5.2). \(\square\)</p>
+<hr>
+<h2>6. Parameter selection</h2>
+<p>Let \(K_i\) be the Martinet tower from Theorem 1.1.  Write</p>
+<div class="math-block">\[
+d_i=[K_i:\mathbb Q],
+\qquad
+\Delta_i=|D_{K_i}|^{1/2}.
+\]</div>
+<p>Recall that</p>
+<div class="math-block">\[
+\Delta_i^{1/d_i}\le M:=R_0^{1/2}.
+\tag{6.1}
+\]</div>
+<p>Since \(m_p\to\infty\) as \(p\to0\), choose \(0&lt;p\le1\) such that</p>
+<div class="math-block">\[
+m_p&gt;M.
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+\theta_0:=\log\frac{m_p}{M}&gt;0.
+\]</div>
+<p>By Lemma 4.1,</p>
+<div class="math-block">\[
+M_{p,d}\to m_p.
+\]</div>
+<p>Hence, after discarding finitely many \(i\), we may assume that</p>
+<div class="math-block">\[
+\frac{M_{p,d_i}}{\Delta_i^{1/d_i}}
+\ge
+e^\theta,
+\qquad
+\theta:=\frac{\theta_0}{2}&gt;0.
+\tag{6.2}
+\]</div>
+<p>Equivalently,</p>
+<div class="math-block">\[
+\left(\frac{\Delta_i^{1/d_i}}{M_{p,d_i}}\right)^{d_i}
+\le
+e^{-\theta d_i}.
+\tag{6.3}
+\]</div>
+<p>Now put</p>
+<div class="math-block">\[
+L:=\frac{\log 2}{p}.
+\]</div>
+<p>We will choose a large constant \(C&gt;L\).  The largeness of \(C\) is used only to make the lattice-counting errors negligible.</p>
+<hr>
+<h2>7. Choosing the radius \(R_i\)</h2>
+<p>For each \(i\), define \(R_i&gt;0\) by</p>
+<div class="math-block">\[
+\frac{V_{p,d_i}R_i^{d_i}}{\Delta_i}
+=
+e^{Cd_i}.
+\tag{7.1}
+\]</div>
+<p>Equivalently,</p>
+<div class="math-block">\[
+R_i
+=
+\left(\frac{e^{Cd_i}\Delta_i}{V_{p,d_i}}\right)^{1/d_i}.
+\]</div>
+<p>We will use Lemma 5.1 to estimate the number of algebraic integers in \(B_{p,d_i}(R_i)\), in \(B_{p,d_i}(2^{1/p}R_i)\), and in \(B_{p/2,d_i}(R_i^2)\).</p>
+<p>Let</p>
+<div class="math-block">\[
+q:=p/2.
+\]</div>
+<p>By Lemma 2.1 and Stirling’s formula,</p>
+<div class="math-block">\[
+d^{1/p}V_{p,d}^{1/d}
+\]</div>
+<p>stays bounded above and below by positive constants depending only on \(p\).  Thus, from (7.1),</p>
+<div class="math-block">\[
+R_i\asymp_{p,R_0} e^C d_i^{1/p}.
+\tag{7.2}
+\]</div>
+<p>Similarly,</p>
+<div class="math-block">\[
+R_i^2\asymp_{p,R_0} e^{2C}d_i^{2/p}
+=
+e^{2C}d_i^{1/q}.
+\tag{7.3}
+\]</div>
+<p>On the other hand, Lemma 5.1 gives covering radii</p>
+<div class="math-block">\[
+\mu_p\ll_{R_0} d_i^{1/p},
+\qquad
+\mu_q\ll_{R_0} d_i^{1/q}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+\frac{\mu_p}{R_i}
+\ll_{p,R_0} e^{-C},
+\tag{7.4}
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\frac{\mu_q}{R_i^2}
+\ll_{p,R_0} e^{-2C}.
+\tag{7.5}
+\]</div>
+<p>Consequently, by Lemma 5.1, there is a function</p>
+<div class="math-block">\[
+\varepsilon(C)=O_{p,R_0}(e^{-pC})
+\]</div>
+<p>with</p>
+<div class="math-block">\[
+\varepsilon(C)\to0
+\qquad(C\to\infty),
+\tag{7.6}
+\]</div>
+<p>such that for all sufficiently large \(i\),</p>
+<div class="math-block">\[
+e^{-\varepsilon(C)d_i}
+\frac{V_{p,d_i}R_i^{d_i}}{\Delta_i}
+\le
+N_{K_i,p}(R_i)
+\le
+e^{\varepsilon(C)d_i}
+\frac{V_{p,d_i}R_i^{d_i}}{\Delta_i},
+\tag{7.7}
+\]</div>
+<div class="math-block">\[
+N_{K_i,p}(2^{1/p}R_i)
+\le
+e^{\varepsilon(C)d_i}
+\frac{V_{p,d_i}(2^{1/p}R_i)^{d_i}}{\Delta_i},
+\tag{7.8}
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+N_{K_i,q}(R_i^2)
+\le
+e^{\varepsilon(C)d_i}
+\frac{V_{q,d_i}R_i^{2d_i}}{\Delta_i}.
+\tag{7.9}
+\]</div>
+<p>Choose \(C&gt;L\) so large that, writing</p>
+<div class="math-block">\[
+\varepsilon:=\varepsilon(C),
+\]</div>
+<p>we have</p>
+<div class="math-block">\[
+\varepsilon&lt;\frac{C-L}{4}
+\tag{7.10}
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\varepsilon&lt;\frac{\theta}{4}.
+\tag{7.11}
+\]</div>
+<p>This is possible by (7.6).</p>
+<hr>
+<h2>8. Constructing the sets</h2>
+<p>For each sufficiently large \(i\), define</p>
+<div class="math-block">\[
+P_i
+:=
+\left\{
+\alpha\in\mathcal O_{K_i}:
+\sigma(\alpha)\in B_{p,d_i}(R_i)
+\right\}.
+\]</div>
+<p>Choose one real embedding</p>
+<div class="math-block">\[
+\sigma_{i,1}:K_i\hookrightarrow\mathbb R.
+\]</div>
+<p>Set</p>
+<div class="math-block">\[
+A_i:=\sigma_{i,1}(P_i)\subset\mathbb R.
+\]</div>
+<p>Since \(\sigma_{i,1}\) is injective,</p>
+<div class="math-block">\[
+|A_i|=|P_i|.
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+n_i:=|A_i|.
+\]</div>
+<p>By (7.1) and (7.7),</p>
+<div class="math-block">\[
+e^{(C-\varepsilon)d_i}
+\le
+n_i
+\le
+e^{(C+\varepsilon)d_i}.
+\tag{8.1}
+\]</div>
+<p>In particular,</p>
+<div class="math-block">\[
+n_i\to\infty
+\]</div>
+<p>because \(d_i\to\infty\).</p>
+<hr>
+<h2>9. Sumset estimate</h2>
+<p>We have</p>
+<div class="math-block">\[
+A_i+A_i
+=
+\sigma_{i,1}(P_i+P_i).
+\]</div>
+<p>Because \(\sigma_{i,1}\) is injective,</p>
+<div class="math-block">\[
+|A_i+A_i|=|P_i+P_i|.
+\]</div>
+<p>By Lemma 3.1,</p>
+<div class="math-block">\[
+P_i+P_i
+\subseteq
+\mathcal O_{K_i}\cap B_{p,d_i}(2^{1/p}R_i).
+\]</div>
+<p>Therefore, by (7.8),</p>
+<div class="math-block">\[
+|A_i+A_i|
+\le
+N_{K_i,p}(2^{1/p}R_i)
+\le
+e^{\varepsilon d_i}
+\frac{V_{p,d_i}(2^{1/p}R_i)^{d_i}}{\Delta_i}.
+\]</div>
+<p>Using (7.1),</p>
+<div class="math-block">\[
+\frac{V_{p,d_i}R_i^{d_i}}{\Delta_i}
+=
+e^{Cd_i}.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+|A_i+A_i|
+\le
+e^{\varepsilon d_i}
+2^{d_i/p}
+e^{Cd_i}
+=
+e^{(C+L+\varepsilon)d_i},
+\tag{9.1}
+\]</div>
+<p>where \(L=\frac{\log2}{p}\).</p>
+<p>Using the lower bound in (8.1),</p>
+<div class="math-block">\[
+d_i\le \frac{\log n_i}{C-\varepsilon}.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+\log |A_i+A_i|
+\le
+\frac{C+L+\varepsilon}{C-\varepsilon}
+\log n_i.
+\]</div>
+<p>Now</p>
+<div class="math-block">\[
+2-\frac{C+L+\varepsilon}{C-\varepsilon}
+=
+\frac{C-L-3\varepsilon}{C-\varepsilon}.
+\]</div>
+<p>By (7.10), this is positive.  Define</p>
+<div class="math-block">\[
+\delta_+
+:=
+\frac{C-L-3\varepsilon}{C-\varepsilon}
+&gt;0.
+\tag{9.2}
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+|A_i+A_i|
+\le
+n_i^{2-\delta_+}.
+\tag{9.3}
+\]</div>
+<hr>
+<h2>10. Product-set estimate</h2>
+<p>Similarly,</p>
+<div class="math-block">\[
+A_iA_i
+=
+\sigma_{i,1}(P_iP_i),
+\]</div>
+<p>and therefore</p>
+<div class="math-block">\[
+|A_iA_i|=|P_iP_i|.
+\]</div>
+<p>By Lemma 3.2,</p>
+<div class="math-block">\[
+P_iP_i
+\subseteq
+\mathcal O_{K_i}\cap B_{q,d_i}(R_i^2),
+\qquad q=p/2.
+\]</div>
+<p>Thus, using (7.9),</p>
+<div class="math-block">\[
+|A_iA_i|
+\le
+N_{K_i,q}(R_i^2)
+\le
+e^{\varepsilon d_i}
+\frac{V_{q,d_i}R_i^{2d_i}}{\Delta_i}.
+\tag{10.1}
+\]</div>
+<p>We now rewrite the volume term in terms of \(n_i\).</p>
+<p>From (7.1),</p>
+<div class="math-block">\[
+R_i^{d_i}
+=
+\frac{e^{Cd_i}\Delta_i}{V_{p,d_i}}.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+R_i^{2d_i}
+=
+\frac{e^{2Cd_i}\Delta_i^2}{V_{p,d_i}^2}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+\frac{V_{q,d_i}R_i^{2d_i}}{\Delta_i}
+=
+e^{2Cd_i}
+\Delta_i
+\frac{V_{q,d_i}}{V_{p,d_i}^2}.
+\]</div>
+<p>Since</p>
+<div class="math-block">\[
+M_{p,d_i}^{d_i}
+=
+\frac{V_{p,d_i}^2}{V_{q,d_i}},
+\]</div>
+<p>we get</p>
+<div class="math-block">\[
+\frac{V_{q,d_i}R_i^{2d_i}}{\Delta_i}
+=
+e^{2Cd_i}
+\left(
+\frac{\Delta_i^{1/d_i}}{M_{p,d_i}}
+\right)^{d_i}.
+\]</div>
+<p>Using (6.3),</p>
+<div class="math-block">\[
+\left(
+\frac{\Delta_i^{1/d_i}}{M_{p,d_i}}
+\right)^{d_i}
+\le
+e^{-\theta d_i}.
+\]</div>
+<p>Therefore (10.1) gives</p>
+<div class="math-block">\[
+|A_iA_i|
+\le
+e^{(2C-\theta+\varepsilon)d_i}.
+\tag{10.2}
+\]</div>
+<p>Again using \(d_i\le \frac{\log n_i}{C-\varepsilon}\),</p>
+<div class="math-block">\[
+\log |A_iA_i|
+\le
+\frac{2C-\theta+\varepsilon}{C-\varepsilon}
+\log n_i.
+\]</div>
+<p>Now</p>
+<div class="math-block">\[
+2-\frac{2C-\theta+\varepsilon}{C-\varepsilon}
+=
+\frac{\theta-3\varepsilon}{C-\varepsilon}.
+\]</div>
+<p>By (7.11), this is positive.  Define</p>
+<div class="math-block">\[
+\delta_\times
+:=
+\frac{\theta-3\varepsilon}{C-\varepsilon}
+&gt;0.
+\tag{10.3}
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+|A_iA_i|
+\le
+n_i^{2-\delta_\times}.
+\tag{10.4}
+\]</div>
+<hr>
+<h2>11. Final choice of \(\delta\)</h2>
+<p>Set</p>
+<div class="math-block">\[
+\delta
+:=
+\frac12\min(\delta_+,\delta_\times)&gt;0.
+\tag{11.1}
+\]</div>
+<p>Then for all sufficiently large \(i\),</p>
+<div class="math-block">\[
+|A_i+A_i|\le |A_i|^{2-\delta}
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|A_iA_i|\le |A_i|^{2-\delta}.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+\max(|A_i+A_i|,|A_iA_i|)
+\le
+|A_i|^{2-\delta}.
+\]</div>
+<p>Since \(|A_i|\to\infty\), discarding finitely many initial terms and relabeling gives an infinite sequence of finite subsets of \(\mathbb R\) satisfying the theorem.</p>
+<p>\(\square\)</p>
+<hr>
+<h1>12. Summary of the construction</h1>
+<p>The sets are</p>
+<div class="math-block">\[
+A_i=\sigma_{i,1}\left(
+\mathcal O_{K_i}\cap B_{p,d_i}(R_i)
+\right),
+\]</div>
+<p>where:</p>
+<ul>
+<li>\(K_i\) is a totally real bounded-root-discriminant tower;</li>
+<li>\(p&gt;0\) is chosen so small that</li>
+</ul>
+<div class="math-block">  \[
+  m_p
+  =
+  2^{1+2/p}
+  \frac{\Gamma(1+1/p)^2}{\Gamma(1+2/p)}
+  &gt;
+  \sup_i \Delta_i^{1/d_i};
+  \]</div>
+<ul>
+<li>\(C&gt;\frac{\log2}{p}\) is chosen large;</li>
+<li>\(R_i\) is chosen by</li>
+</ul>
+<div class="math-block">  \[
+  \frac{V_{p,d_i}R_i^{d_i}}{\Delta_i}=e^{Cd_i}.
+  \]</div>
+<p>Then</p>
+<div class="math-block">\[
+|A_i|\asymp e^{Cd_i},
+\]</div>
+<p>the sumset satisfies</p>
+<div class="math-block">\[
+|A_i+A_i|
+\lesssim
+2^{d_i/p}|A_i|,
+\]</div>
+<p>and the product set satisfies</p>
+<div class="math-block">\[
+|A_iA_i|
+\lesssim
+|A_i|^2
+\left(
+\frac{\Delta_i^{1/d_i}}{M_{p,d_i}}
+\right)^{d_i}.
+\]</div>
+<p>The additive enlargement is harmless because \(C&gt;\frac{\log2}{p}\).  The product saving is exponential in \(d_i\) because \(M_{p,d_i}\to m_p&gt;\Delta_i^{1/d_i}\).  This gives a fixed power saving \(|A_i|^{-\delta}\) in both the sumset and product set.</p>
+<hr>
+<h1>Round 3</h1>
+<h2>User</h2>
+<blockquote><p>Critically examine the proof you constructed to identify and resolve any errors or logical gaps. Then, present a complete, rigorous, step-by-step proof. Clearly justify each step with sufficient detail so that an expert can verify your reasoning without needing to fill in any gaps.</p></blockquote>
+<h2>Assistant</h2>
+<p>Below I first point out the genuine gap in the previous proof and then give a complete proof with that gap filled.</p>
+<p>The earlier proof’s main unproved point was the lattice-counting assertion: one needs upper and lower estimates for lattice points of \(\sigma(\mathcal O_K)\) inside high-dimensional \(\ell^p\)-quasi-balls.  The fix is to use the codifferent lattice and a standard transference bound to control the covering radius of \(\sigma(\mathcal O_K)\).  This gives volume-counting estimates strong enough for the construction.</p>
+<p>We use two standard external inputs:</p>
+<ol>
+<li>Martinet’s theorem: there are totally real number fields of arbitrarily large degree and bounded root discriminant.</li>
+<li><p>The Euclidean transference bound</p>
+<div class="math-block">\[
+\rho_2(\Lambda)\lambda_1(\Lambda^*)\le \frac d2
+\]</div>
+<p>for a full-rank lattice \(\Lambda\subset \mathbb R^d\).</p></li>
+</ol>
+<p>Everything else is proved below.</p>
+<hr>
+<h1>Proof</h1>
+<p>Let \(K/\mathbb Q\) be totally real of degree \(d\), with embeddings</p>
+<div class="math-block">\[
+\sigma_1,\dots,\sigma_d:K\hookrightarrow \mathbb R.
+\]</div>
+<p>Write</p>
+<div class="math-block">\[
+\sigma(\alpha)=(\sigma_1(\alpha),\dots,\sigma_d(\alpha)).
+\]</div>
+<p>For \(s&gt;0\), define</p>
+<div class="math-block">\[
+B_{s,d}(R)
+=
+\left\{
+x\in\mathbb R^d:\sum_{j=1}^d |x_j|^s\le R^s
+\right\}.
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+V_{s,d}:=\operatorname{vol}(B_{s,d}(1)).
+\]</div>
+<p>We use the formula</p>
+<div class="math-block">\[
+V_{s,d}
+=
+\frac{\left(2\Gamma(1+1/s)\right)^d}{\Gamma(1+d/s)}.
+\tag{1}
+\]</div>
+<p>This follows by evaluating</p>
+<div class="math-block">\[
+\int_{\mathbb R^d} e^{-\sum |x_j|^s}\,dx
+\]</div>
+<p>both as a product of one-dimensional integrals and by radial integration.</p>
+<hr>
+<h2>1. Volume saving under multiplication</h2>
+<p>For \(0&lt;p\le 1\), define</p>
+<div class="math-block">\[
+M_{p,d}:=
+\left(\frac{V_{p,d}^2}{V_{p/2,d}}\right)^{1/d}.
+\]</div>
+<p>Using (1) and Stirling’s formula, for fixed \(p\),</p>
+<div class="math-block">\[
+M_{p,d}\to m_p
+\]</div>
+<p>as \(d\to\infty\), where</p>
+<div class="math-block">\[
+m_p
+=
+2^{1+2/p}
+\frac{\Gamma(1+1/p)^2}{\Gamma(1+2/p)}.
+\tag{2}
+\]</div>
+<p>Moreover,</p>
+<div class="math-block">\[
+m_p\sim 2\sqrt{\frac{\pi}{p}}
+\qquad(p\to0).
+\tag{3}
+\]</div>
+<p>Hence \(m_p\to\infty\) as \(p\to0\).</p>
+<hr>
+<h2>2. Additive and multiplicative containment</h2>
+<p>For \(0&lt;p\le1\),</p>
+<div class="math-block">\[
+|u+v|^p\le |u|^p+|v|^p.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+B_{p,d}(R)+B_{p,d}(R)
+\subseteq
+B_{p,d}(2^{1/p}R).
+\tag{4}
+\]</div>
+<p>Also, if \(x,y\in B_{p,d}(R)\), then by Cauchy–Schwarz,</p>
+<div class="math-block">\[
+\sum_{j=1}^d |x_jy_j|^{p/2}
+\le
+\left(\sum |x_j|^p\right)^{1/2}
+\left(\sum |y_j|^p\right)^{1/2}
+\le R^p.
+\]</div>
+<p>Since \((R^2)^{p/2}=R^p\), this gives</p>
+<div class="math-block">\[
+B_{p,d}(R)\odot B_{p,d}(R)
+\subseteq
+B_{p/2,d}(R^2),
+\tag{5}
+\]</div>
+<p>where \(\odot\) denotes coordinatewise multiplication.</p>
+<hr>
+<h2>3. Counting algebraic integers in \(B_{s,d}(R)\)</h2>
+<p>Let</p>
+<div class="math-block">\[
+\Lambda_K:=\sigma(\mathcal O_K)\subset\mathbb R^d.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+\det(\Lambda_K)=|D_K|^{1/2}=:\Delta_K.
+\]</div>
+<p>Assume \(K\) has root discriminant bounded by \(B\), i.e.</p>
+<div class="math-block">\[
+|D_K|^{1/d}\le B.
+\]</div>
+<p>We prove the following counting estimate.</p>
+<h3>Lemma</h3>
+<p>For \(0&lt;s\le1\), set</p>
+<div class="math-block">\[
+\mu_s:=\frac B2 d^{1/s}.
+\]</div>
+<p>Then for every \(R&gt;\mu_s\),</p>
+<div class="math-block">\[
+\frac{V_{s,d}R^d}{\Delta_K}
+\left(1-\left(\frac{\mu_s}{R}\right)^s\right)^{d/s}
+\le
+|\mathcal O_K\cap B_{s,d}(R)|
+\le
+\frac{V_{s,d}R^d}{\Delta_K}
+\left(1+\left(\frac{\mu_s}{R}\right)^s\right)^{d/s}.
+\tag{6}
+\]</div>
+<h3>Proof</h3>
+<p>The Euclidean dual lattice of \(\Lambda_K\) is</p>
+<div class="math-block">\[
+\Lambda_K^*=\sigma(\mathfrak d_K^{-1}),
+\]</div>
+<p>where \(\mathfrak d_K^{-1}\) is the codifferent.</p>
+<p>If \(0\neq \beta\in\mathfrak d_K^{-1}\), then \(\beta\mathfrak d_K\subseteq \mathcal O_K\), so \((\beta)\mathfrak d_K\) is an integral ideal. Hence</p>
+<div class="math-block">\[
+|N_{K/\mathbb Q}(\beta)|\,|D_K|\ge1.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|N_{K/\mathbb Q}(\beta)|\ge |D_K|^{-1}.
+\]</div>
+<p>By AM–GM,</p>
+<div class="math-block">\[
+\|\sigma(\beta)\|_2^2
+=
+\sum_{j=1}^d |\sigma_j(\beta)|^2
+\ge
+d\left(\prod_{j=1}^d|\sigma_j(\beta)|^2\right)^{1/d}
+=
+d\,|N_{K/\mathbb Q}(\beta)|^{2/d}.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+\|\sigma(\beta)\|_2
+\ge
+\sqrt d\,|D_K|^{-1/d}
+\ge
+\frac{\sqrt d}{B}.
+\]</div>
+<p>So</p>
+<div class="math-block">\[
+\lambda_1(\Lambda_K^*)\ge \frac{\sqrt d}{B}.
+\]</div>
+<p>By the transference inequality,</p>
+<div class="math-block">\[
+\rho_2(\Lambda_K)\lambda_1(\Lambda_K^*)\le \frac d2,
+\]</div>
+<p>hence</p>
+<div class="math-block">\[
+\rho_2(\Lambda_K)\le \frac B2\sqrt d.
+\]</div>
+<p>For \(0&lt;s\le1\),</p>
+<div class="math-block">\[
+\|x\|_s
+\le
+d^{1/s-1/2}\|x\|_2.
+\]</div>
+<p>Therefore the \(s\)-quasi-norm covering radius is at most</p>
+<div class="math-block">\[
+\mu_s=\frac B2 d^{1/s}.
+\]</div>
+<p>Choose a measurable fundamental domain \(F\) for \(\Lambda_K\) contained in \(B_{s,d}(\mu_s)\).</p>
+<p>For the upper bound, if \(\lambda\in \Lambda_K\cap B_{s,d}(R)\) and \(f\in F\), then</p>
+<div class="math-block">\[
+\lambda+f\in B_{s,d}\bigl((R^s+\mu_s^s)^{1/s}\bigr).
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|\Lambda_K\cap B_{s,d}(R)|\Delta_K
+\le
+V_{s,d}R^d
+\left(1+\left(\frac{\mu_s}{R}\right)^s\right)^{d/s}.
+\]</div>
+<p>For the lower bound, let</p>
+<div class="math-block">\[
+R_-=(R^s-\mu_s^s)^{1/s}.
+\]</div>
+<p>Every point of \(B_{s,d}(R_-)\) lies in some translate \(\lambda+F\). If \(z=\lambda+f\) with \(z\in B_{s,d}(R_-)\) and \(f\in F\), then</p>
+<div class="math-block">\[
+\|\lambda\|_s^s
+=
+\|z-f\|_s^s
+\le
+\|z\|_s^s+\|f\|_s^s
+\le
+R_-^s+\mu_s^s
+=
+R^s.
+\]</div>
+<p>Hence \(\lambda\in\Lambda_K\cap B_{s,d}(R)\), so</p>
+<div class="math-block">\[
+V_{s,d}R_-^d
+\le
+|\Lambda_K\cap B_{s,d}(R)|\Delta_K.
+\]</div>
+<p>This is the lower bound in (6). \(\square\)</p>
+<hr>
+<h2>4. Choosing the number fields</h2>
+<p>By Martinet’s theorem, there exists an infinite sequence of totally real fields \(K_i\) with degrees</p>
+<div class="math-block">\[
+d_i=[K_i:\mathbb Q]\to\infty
+\]</div>
+<p>and uniformly bounded root discriminant</p>
+<div class="math-block">\[
+|D_{K_i}|^{1/d_i}\le B.
+\]</div>
+<p>Set</p>
+<div class="math-block">\[
+\Delta_i:=|D_{K_i}|^{1/2}.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+\Delta_i^{1/d_i}\le B^{1/2}.
+\tag{7}
+\]</div>
+<p>Choose \(0&lt;p\le1\) so small that</p>
+<div class="math-block">\[
+m_p&gt;B^{1/2}.
+\]</div>
+<p>Choose \(\theta&gt;0\) such that</p>
+<div class="math-block">\[
+e^\theta B^{1/2}&lt;m_p.
+\]</div>
+<p>Since \(M_{p,d}\to m_p\), after discarding finitely many \(i\), we have</p>
+<div class="math-block">\[
+\frac{M_{p,d_i}}{\Delta_i^{1/d_i}}\ge e^\theta.
+\tag{8}
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+q:=p/2,
+\qquad
+L:=\frac{\log 2}{p}.
+\]</div>
+<hr>
+<h2>5. Choosing the radii</h2>
+<p>For a large constant \(C&gt;L\), define \(R_i\) by</p>
+<div class="math-block">\[
+\frac{V_{p,d_i}R_i^{d_i}}{\Delta_i}
+=
+e^{Cd_i}.
+\tag{9}
+\]</div>
+<p>Equivalently,</p>
+<div class="math-block">\[
+R_i=e^C\Delta_i^{1/d_i}V_{p,d_i}^{-1/d_i}.
+\]</div>
+<p>For fixed \(p\), Stirling’s formula implies</p>
+<div class="math-block">\[
+\sup_d d^{1/p}V_{p,d}^{1/d}&lt;\infty.
+\]</div>
+<p>Therefore, for some constant \(H_p\),</p>
+<div class="math-block">\[
+d^{1/p}V_{p,d}^{1/d}\le H_p
+\qquad\text{for all }d.
+\tag{10}
+\]</div>
+<p>From (9) and \(\Delta_i^{1/d_i}\ge1\),</p>
+<div class="math-block">\[
+\left(\frac{\mu_p}{R_i}\right)^p
+\le
+\left(\frac B2 H_p e^{-C}\right)^p
+=:\alpha(C),
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\left(\frac{\mu_q}{R_i^2}\right)^q
+\le
+\left(\frac B2 H_p^2 e^{-2C}\right)^q
+=:\beta(C).
+\]</div>
+<p>Both \(\alpha(C)\) and \(\beta(C)\) tend to \(0\) as \(C\to\infty\). Choose \(C\) so large that \(\alpha(C),\beta(C)&lt;1/2\), and with</p>
+<div class="math-block">\[
+\eta(C):=\max\left(\frac{2\alpha(C)}p,\frac{\beta(C)}q\right),
+\]</div>
+<p>we have</p>
+<div class="math-block">\[
+\eta(C)&lt;\frac{C-L}{4}
+\qquad\text{and}\qquad
+\eta(C)&lt;\frac{\theta}{4}.
+\tag{11}
+\]</div>
+<p>For this fixed \(C\), the counting lemma gives</p>
+<div class="math-block">\[
+e^{(C-\eta)d_i}
+\le
+|\mathcal O_{K_i}\cap B_{p,d_i}(R_i)|
+\le
+e^{(C+\eta)d_i},
+\tag{12}
+\]</div>
+<p>where \(\eta=\eta(C)\).</p>
+<hr>
+<h2>6. Defining the sets \(A_i\)</h2>
+<p>Let</p>
+<div class="math-block">\[
+P_i:=\mathcal O_{K_i}\cap B_{p,d_i}(R_i).
+\]</div>
+<p>Choose one real embedding \(\sigma_{i,1}:K_i\hookrightarrow\mathbb R\), and define</p>
+<div class="math-block">\[
+A_i:=\sigma_{i,1}(P_i)\subset\mathbb R.
+\]</div>
+<p>Since \(\sigma_{i,1}\) is injective,</p>
+<div class="math-block">\[
+|A_i|=|P_i|.
+\]</div>
+<p>Write</p>
+<div class="math-block">\[
+n_i:=|A_i|.
+\]</div>
+<p>By (12),</p>
+<div class="math-block">\[
+n_i\ge e^{(C-\eta)d_i}.
+\tag{13}
+\]</div>
+<p>In particular \(n_i\to\infty\).</p>
+<hr>
+<h2>7. Sumset estimate</h2>
+<p>By (4),</p>
+<div class="math-block">\[
+P_i+P_i
+\subseteq
+\mathcal O_{K_i}\cap B_{p,d_i}(2^{1/p}R_i).
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+|A_i+A_i|
+=
+|P_i+P_i|
+\le
+|\mathcal O_{K_i}\cap B_{p,d_i}(2^{1/p}R_i)|.
+\]</div>
+<p>Using the upper bound from the counting lemma and (9),</p>
+<div class="math-block">\[
+|A_i+A_i|
+\le
+e^{\eta d_i}
+\frac{V_{p,d_i}(2^{1/p}R_i)^{d_i}}{\Delta_i}
+=
+e^{\eta d_i}2^{d_i/p}e^{Cd_i}.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|A_i+A_i|
+\le
+e^{(C+L+\eta)d_i}.
+\tag{14}
+\]</div>
+<p>Using (13),</p>
+<div class="math-block">\[
+d_i\le \frac{\log n_i}{C-\eta}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|A_i+A_i|
+\le
+n_i^{(C+L+\eta)/(C-\eta)}.
+\]</div>
+<p>Now</p>
+<div class="math-block">\[
+2-\frac{C+L+\eta}{C-\eta}
+=
+\frac{C-L-3\eta}{C-\eta}&gt;0
+\]</div>
+<p>by (11). Define</p>
+<div class="math-block">\[
+\delta_+
+:=
+\frac{C-L-3\eta}{C-\eta}.
+\tag{15}
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+|A_i+A_i|\le n_i^{2-\delta_+}.
+\tag{16}
+\]</div>
+<hr>
+<h2>8. Product-set estimate</h2>
+<p>By (5),</p>
+<div class="math-block">\[
+P_iP_i
+\subseteq
+\mathcal O_{K_i}\cap B_{q,d_i}(R_i^2),
+\qquad q=p/2.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|A_iA_i|
+=
+|P_iP_i|
+\le
+|\mathcal O_{K_i}\cap B_{q,d_i}(R_i^2)|.
+\]</div>
+<p>Using the counting lemma,</p>
+<div class="math-block">\[
+|A_iA_i|
+\le
+e^{\eta d_i}
+\frac{V_{q,d_i}R_i^{2d_i}}{\Delta_i}.
+\tag{17}
+\]</div>
+<p>From (9),</p>
+<div class="math-block">\[
+R_i^{d_i}
+=
+\frac{e^{Cd_i}\Delta_i}{V_{p,d_i}}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+\frac{V_{q,d_i}R_i^{2d_i}}{\Delta_i}
+=
+e^{2Cd_i}
+\Delta_i
+\frac{V_{q,d_i}}{V_{p,d_i}^2}.
+\]</div>
+<p>Since</p>
+<div class="math-block">\[
+M_{p,d_i}^{d_i}
+=
+\frac{V_{p,d_i}^2}{V_{q,d_i}},
+\]</div>
+<p>we get</p>
+<div class="math-block">\[
+\frac{V_{q,d_i}R_i^{2d_i}}{\Delta_i}
+=
+e^{2Cd_i}
+\left(\frac{\Delta_i^{1/d_i}}{M_{p,d_i}}\right)^{d_i}.
+\]</div>
+<p>By (8),</p>
+<div class="math-block">\[
+\left(\frac{\Delta_i^{1/d_i}}{M_{p,d_i}}\right)^{d_i}
+\le
+e^{-\theta d_i}.
+\]</div>
+<p>So (17) yields</p>
+<div class="math-block">\[
+|A_iA_i|
+\le
+e^{(2C-\theta+\eta)d_i}.
+\tag{18}
+\]</div>
+<p>Again using (13),</p>
+<div class="math-block">\[
+|A_iA_i|
+\le
+n_i^{(2C-\theta+\eta)/(C-\eta)}.
+\]</div>
+<p>Now</p>
+<div class="math-block">\[
+2-\frac{2C-\theta+\eta}{C-\eta}
+=
+\frac{\theta-3\eta}{C-\eta}&gt;0
+\]</div>
+<p>by (11). Define</p>
+<div class="math-block">\[
+\delta_\times
+:=
+\frac{\theta-3\eta}{C-\eta}.
+\tag{19}
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+|A_iA_i|
+\le
+n_i^{2-\delta_\times}.
+\tag{20}
+\]</div>
+<hr>
+<h2>9. Final choice of \(\delta\)</h2>
+<p>Set</p>
+<div class="math-block">\[
+\delta:=\frac12\min(\delta_+,\delta_\times)&gt;0.
+\]</div>
+<p>Then for all sufficiently large \(i\),</p>
+<div class="math-block">\[
+|A_i+A_i|\le |A_i|^{2-\delta}
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|A_iA_i|\le |A_i|^{2-\delta}.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+\max(|A_i+A_i|,|A_iA_i|)
+\le
+|A_i|^{2-\delta}.
+\]</div>
+<p>Since \(|A_i|\to\infty\), after discarding finitely many initial terms and relabeling, we obtain the required infinite sequence.</p>
+<p>\(\square\)</p>
+<hr>
+</main>
+</body>
+</html>

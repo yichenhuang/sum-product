@@ -1,0 +1,899 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Proof</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <style>
+    body {
+      margin: 0;
+      background: #f7f7f4;
+      color: #1f2328;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.62;
+    }
+    main {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 40px 28px 80px;
+      background: #fff;
+      min-height: 100vh;
+      box-shadow: 0 0 0 1px #e4e4df;
+    }
+    h1, h2, h3 { line-height: 1.25; margin-top: 1.7em; }
+    h1 { font-size: 30px; }
+    h2 { font-size: 24px; border-bottom: 1px solid #e5e5e0; padding-bottom: 4px; }
+    h3 { font-size: 19px; }
+    p { margin: 0 0 1em; }
+    blockquote {
+      border-left: 4px solid #b8c4d6;
+      margin: 1.2em 0;
+      padding: 0.2em 1em;
+      background: #f7f9fc;
+    }
+    pre {
+      overflow-x: auto;
+      background: #f2f2ee;
+      padding: 12px;
+      border-radius: 6px;
+    }
+    code {
+      background: #f2f2ee;
+      padding: 1px 4px;
+      border-radius: 4px;
+    }
+    pre code {
+      background: none;
+      padding: 0;
+    }
+    .math-block {
+      overflow-x: auto;
+      margin: 1.1em 0;
+      padding: 0.2em 0;
+    }
+    mjx-container {
+      overflow-x: auto;
+      overflow-y: hidden;
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <p>Below is a corrected, fully rigorous version of the number-field proof.  </p>
+<p>The main gap in the earlier proof was the lattice-counting step.  The fix is to avoid weighted embeddings entirely and use a covering-radius estimate for the ordinary Minkowski lattice of \(\mathcal O_K\).  The key fact is that in a totally real bounded-root-discriminant tower, the Minkowski lattice has Euclidean covering radius \(O(\sqrt d)\), uniformly in the degree \(d\).  This gives sufficiently sharp lattice-point bounds in the non-convex \(L^p\)-balls.</p>
+<p>I use two standard external inputs:</p>
+<ol>
+<li>Martinet’s theorem: there are totally real number fields of arbitrarily large degree with bounded root discriminant.</li>
+<li><p>The classical transference inequality for lattices:</p>
+<div class="math-block">\[
+\rho_2(\Lambda)\lambda_1(\Lambda^\ast)\le \frac d2.
+\]</div></li>
+</ol>
+<p>Everything else is proved explicitly.</p>
+<hr>
+<h1>1. The \(L^q\)-bodies</h1>
+<p>For \(0&lt;q\le 1\), \(d\ge 1\), and \(L&gt;0\), define</p>
+<div class="math-block">\[
+B_{q,d}(L)
+=
+\left\{
+x=(x_1,\dots,x_d)\in\mathbb R^d:
+\sum_{j=1}^d |x_j|^q\le L^q d
+\right\}.
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+V_{q,d}(L)=\operatorname{vol} B_{q,d}(L).
+\]</div>
+<h2>Lemma 1.1: Volume formula</h2>
+<p>For every \(q&gt;0\),</p>
+<div class="math-block">\[
+V_{q,d}(L)
+=
+(Ld^{1/q})^d
+\frac{2^d\Gamma(1+1/q)^d}{\Gamma(1+d/q)}.
+\]</div>
+<p>Consequently, for fixed \(q,L\),</p>
+<div class="math-block">\[
+\log V_{q,d}(L)
+=
+d(\log L+u(q))+O_q(\log d),
+\]</div>
+<p>where</p>
+<div class="math-block">\[
+u(q)
+=
+\log\bigl(2\Gamma(1+1/q)\bigr)
++
+\frac{1+\log q}{q}.
+\]</div>
+<h3>Proof</h3>
+<p>On the positive orthant, put \(t_j=x_j^q\). Then</p>
+<div class="math-block">\[
+dx_j=\frac1q t_j^{1/q-1}\,dt_j.
+\]</div>
+<p>The region becomes</p>
+<div class="math-block">\[
+t_j\ge 0,
+\qquad
+t_1+\cdots+t_d\le L^q d.
+\]</div>
+<p>By the Dirichlet integral,</p>
+<div class="math-block">\[
+\int_{\sum t_j\le L^q d}\prod_{j=1}^d \frac1q t_j^{1/q-1}\,dt_j
+=
+(L^q d)^{d/q}\frac{\Gamma(1+1/q)^d}{\Gamma(1+d/q)}.
+\]</div>
+<p>Multiplying by \(2^d\) for the orthants gives the formula.</p>
+<p>The asymptotic follows from Stirling:</p>
+<div class="math-block">\[
+\log\Gamma(1+d/q)
+=
+\frac dq\log(d/q)-\frac dq+O_q(\log d).
+\]</div>
+<p>\(\square\)</p>
+<hr>
+<h2>Lemma 1.2: Additive and multiplicative closure</h2>
+<p>Let \(0&lt;p\le 1\). Then</p>
+<div class="math-block">\[
+B_{p,d}(T)+B_{p,d}(T)
+\subseteq
+B_{p,d}(2^{1/p}T),
+\]</div>
+<p>and, with coordinatewise multiplication,</p>
+<div class="math-block">\[
+B_{p,d}(T)\cdot B_{p,d}(T)
+\subseteq
+B_{p/2,d}(T^2).
+\]</div>
+<h3>Proof</h3>
+<p>For \(0&lt;p\le1\),</p>
+<div class="math-block">\[
+|a+b|^p\le |a|^p+|b|^p.
+\]</div>
+<p>Thus, if \(x,y\in B_{p,d}(T)\), then</p>
+<div class="math-block">\[
+\sum_j |x_j+y_j|^p
+\le
+\sum_j |x_j|^p+\sum_j |y_j|^p
+\le
+2T^p d,
+\]</div>
+<p>so \(x+y\in B_{p,d}(2^{1/p}T)\).</p>
+<p>For products, by Cauchy–Schwarz,</p>
+<div class="math-block">\[
+\sum_j |x_jy_j|^{p/2}
+=
+\sum_j |x_j|^{p/2}|y_j|^{p/2}
+\le
+\left(\sum_j |x_j|^p\right)^{1/2}
+\left(\sum_j |y_j|^p\right)^{1/2}
+\le
+T^p d.
+\]</div>
+<p>Since</p>
+<div class="math-block">\[
+(T^2)^{p/2}d=T^p d,
+\]</div>
+<p>we get \(x\cdot y\in B_{p/2,d}(T^2)\). \(\square\)</p>
+<hr>
+<h1>2. The entropy saving under multiplication</h1>
+<p>Define</p>
+<div class="math-block">\[
+S(p)=2u(p)-u(p/2).
+\]</div>
+<p>Using the expression for \(u(q)\),</p>
+<div class="math-block">\[
+S(p)
+=
+\log\left(
+2^{1+2/p}
+\frac{\Gamma(1+1/p)^2}{\Gamma(1+2/p)}
+\right).
+\]</div>
+<h2>Lemma 2.1</h2>
+<p>As \(p\to0^+\),</p>
+<div class="math-block">\[
+S(p)=\log 2+\frac12\log\frac{\pi}{p}+o(1).
+\]</div>
+<p>In particular,</p>
+<div class="math-block">\[
+S(p)\to+\infty.
+\]</div>
+<h3>Proof</h3>
+<p>Set \(z=1/p\). By Stirling,</p>
+<div class="math-block">\[
+\frac{\Gamma(1+2z)}{\Gamma(1+z)^2}
+\sim
+\frac{4^z}{\sqrt{\pi z}}.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+2^{1+2/p}
+\frac{\Gamma(1+1/p)^2}{\Gamma(1+2/p)}
+=
+2\cdot 4^z
+\frac{\Gamma(1+z)^2}{\Gamma(1+2z)}
+\sim
+2\sqrt{\pi z}
+=
+2\sqrt{\frac{\pi}{p}}.
+\]</div>
+<p>Taking logarithms proves the claim. \(\square\)</p>
+<hr>
+<h1>3. Number-field input</h1>
+<p>We use Martinet’s theorem.</p>
+<h2>Theorem 3.1: Totally real bounded-root-discriminant tower</h2>
+<p>There exists an absolute constant \(R_0&lt;\infty\) and an infinite sequence of totally real number fields \(K_i\) such that</p>
+<div class="math-block">\[
+d_i=[K_i:\mathbb Q]\to\infty
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+D_{K_i}^{1/d_i}\le R_0
+\]</div>
+<p>for every \(i\), where \(D_{K_i}\) is the absolute discriminant.</p>
+<p>Fix such a sequence.</p>
+<hr>
+<h1>4. Covering radius of the Minkowski lattice</h1>
+<p>Let \(K/\mathbb Q\) be totally real of degree \(d\). Let</p>
+<div class="math-block">\[
+\sigma:K\hookrightarrow\mathbb R^d,
+\qquad
+\alpha\mapsto (\sigma_1(\alpha),\dots,\sigma_d(\alpha))
+\]</div>
+<p>be the Minkowski embedding, and set</p>
+<div class="math-block">\[
+\Lambda_K=\sigma(\mathcal O_K).
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+\operatorname{covol}(\Lambda_K)=\sqrt{D_K}.
+\]</div>
+<h2>Lemma 4.1: Uniform covering radius</h2>
+<p>If \(D_K^{1/d}\le R_0\), then</p>
+<div class="math-block">\[
+\rho_2(\Lambda_K)\le C\sqrt d
+\]</div>
+<p>with</p>
+<div class="math-block">\[
+C=\frac{R_0}{2}.
+\]</div>
+<h3>Proof</h3>
+<p>The Euclidean dual lattice is</p>
+<div class="math-block">\[
+\Lambda_K^\ast=\sigma(\mathfrak D_K^{-1}),
+\]</div>
+<p>where \(\mathfrak D_K\) is the different of \(K\). Indeed,</p>
+<div class="math-block">\[
+\langle \sigma(\alpha),\sigma(\beta)\rangle
+=
+\operatorname{Tr}_{K/\mathbb Q}(\alpha\beta),
+\]</div>
+<p>so \(\sigma(\beta)\) pairs integrally with \(\sigma(\mathcal O_K)\) exactly when</p>
+<div class="math-block">\[
+\operatorname{Tr}_{K/\mathbb Q}(\beta\mathcal O_K)\subseteq \mathbb Z,
+\]</div>
+<p>i.e. \(\beta\in\mathfrak D_K^{-1}\).</p>
+<p>Now take \(0\ne\beta\in\mathfrak D_K^{-1}\). Since</p>
+<div class="math-block">\[
+(\beta)\subseteq \mathfrak D_K^{-1},
+\]</div>
+<p>ideal norms give</p>
+<div class="math-block">\[
+|N_{K/\mathbb Q}(\beta)|
+=
+N((\beta))
+\ge
+N(\mathfrak D_K^{-1})
+=
+D_K^{-1}.
+\]</div>
+<p>Therefore, by AM–GM,</p>
+<div class="math-block">\[
+\|\sigma(\beta)\|_2^2
+=
+\sum_{j=1}^d |\sigma_j(\beta)|^2
+\ge
+d\left(\prod_{j=1}^d |\sigma_j(\beta)|^2\right)^{1/d}
+=
+d|N_{K/\mathbb Q}(\beta)|^{2/d}
+\ge
+dD_K^{-2/d}.
+\]</div>
+<p>Since \(D_K^{1/d}\le R_0\),</p>
+<div class="math-block">\[
+\|\sigma(\beta)\|_2\ge \frac{\sqrt d}{R_0}.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+\lambda_1(\Lambda_K^\ast)\ge \frac{\sqrt d}{R_0}.
+\]</div>
+<p>The standard transference inequality gives</p>
+<div class="math-block">\[
+\rho_2(\Lambda_K)\lambda_1(\Lambda_K^\ast)\le \frac d2.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+\rho_2(\Lambda_K)
+\le
+\frac d{2(\sqrt d/R_0)}
+=
+\frac{R_0}{2}\sqrt d.
+\]</div>
+<p>\(\square\)</p>
+<hr>
+<h2>Lemma 4.2: Fundamental domain inside every \(B_{q,d}(C)\)</h2>
+<p>Let \(0&lt;q\le1\). If \(D_K^{1/d}\le R_0\), then \(\Lambda_K\) has a measurable fundamental domain \(F\) such that</p>
+<div class="math-block">\[
+F\subseteq B_{q,d}(C),
+\]</div>
+<p>where \(C=R_0/2\).</p>
+<h3>Proof</h3>
+<p>Take a measurable Voronoi fundamental domain \(F\) for \(\Lambda_K\). By Lemma 4.1,</p>
+<div class="math-block">\[
+F\subseteq \{x\in\mathbb R^d:\|x\|_2\le C\sqrt d\}.
+\]</div>
+<p>For \(0&lt;q\le2\),</p>
+<div class="math-block">\[
+\sum_{j=1}^d |x_j|^q
+\le
+d^{1-q/2}\|x\|_2^q.
+\]</div>
+<p>Thus, if \(\|x\|_2\le C\sqrt d\), then</p>
+<div class="math-block">\[
+\sum_j |x_j|^q
+\le
+d^{1-q/2}(C\sqrt d)^q
+=
+C^q d.
+\]</div>
+<p>So \(x\in B_{q,d}(C)\). \(\square\)</p>
+<hr>
+<h1>5. Lattice-point counting in \(B_{q,d}(L)\)</h1>
+<p>For \(K\) totally real of degree \(d\), define</p>
+<div class="math-block">\[
+N_{K,q}(L)
+=
+|\Lambda_K\cap B_{q,d}(L)|
+=
+\left|
+\left\{
+\alpha\in\mathcal O_K:
+\sigma(\alpha)\in B_{q,d}(L)
+\right\}
+\right|.
+\]</div>
+<h2>Lemma 5.1: Counting by fixed dilation</h2>
+<p>Assume \(D_K^{1/d}\le R_0\), and let \(C=R_0/2\). Then for every \(0&lt;q\le1\) and every \(L&gt;0\),</p>
+<div class="math-block">\[
+N_{K,q}(L)
+\le
+\frac{V_{q,d}\bigl((L^q+C^q)^{1/q}\bigr)}{\sqrt{D_K}}.
+\]</div>
+<p>If \(L&gt;C\), then</p>
+<div class="math-block">\[
+N_{K,q}(L)
+\ge
+\frac{V_{q,d}\bigl((L^q-C^q)^{1/q}\bigr)}{\sqrt{D_K}}.
+\]</div>
+<h3>Proof</h3>
+<p>Let \(F\) be a measurable fundamental domain for \(\Lambda_K\) satisfying</p>
+<div class="math-block">\[
+F\subseteq B_{q,d}(C).
+\]</div>
+<p>For the upper bound, the translates \(\lambda+F\), \(\lambda\in\Lambda_K\cap B_{q,d}(L)\), are disjoint up to measure zero. If \(\lambda\in B_{q,d}(L)\) and \(f\in F\subseteq B_{q,d}(C)\), then</p>
+<div class="math-block">\[
+\sum_j |\lambda_j+f_j|^q
+\le
+\sum_j |\lambda_j|^q+\sum_j |f_j|^q
+\le
+(L^q+C^q)d.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+\lambda+F\subseteq B_{q,d}\bigl((L^q+C^q)^{1/q}\bigr).
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+N_{K,q}(L)\sqrt{D_K}
+\le
+V_{q,d}\bigl((L^q+C^q)^{1/q}\bigr).
+\]</div>
+<p>For the lower bound, set</p>
+<div class="math-block">\[
+L_-=(L^q-C^q)^{1/q}.
+\]</div>
+<p>Take \(x\in B_{q,d}(L_-)\). Since the translates \(\lambda+F\) partition \(\mathbb R^d\), write</p>
+<div class="math-block">\[
+x=\lambda+f
+\]</div>
+<p>with \(\lambda\in\Lambda_K\), \(f\in F\). Then</p>
+<div class="math-block">\[
+\lambda=x-f.
+\]</div>
+<p>By \(q\)-subadditivity,</p>
+<div class="math-block">\[
+\sum_j |\lambda_j|^q
+\le
+\sum_j |x_j|^q+\sum_j |f_j|^q
+\le
+L_-^q d+C^q d
+=
+L^q d.
+\]</div>
+<p>Thus \(\lambda\in B_{q,d}(L)\). Hence</p>
+<div class="math-block">\[
+B_{q,d}(L_-)
+\subseteq
+\bigcup_{\lambda\in\Lambda_K\cap B_{q,d}(L)}(\lambda+F).
+\]</div>
+<p>Taking volumes gives</p>
+<div class="math-block">\[
+V_{q,d}(L_-)
+\le
+N_{K,q}(L)\sqrt{D_K}.
+\]</div>
+<p>\(\square\)</p>
+<hr>
+<h1>6. Choosing parameters</h1>
+<p>Choose \(p\in(0,1]\) so small that</p>
+<div class="math-block">\[
+S(p)&gt;\frac12\log R_0.
+\]</div>
+<p>This is possible by Lemma 2.1.</p>
+<p>Fix</p>
+<div class="math-block">\[
+C=\frac{R_0}{2}.
+\]</div>
+<p>Now choose \(T&gt;C\) sufficiently large. Define</p>
+<div class="math-block">\[
+T_-=(T^p-C^p)^{1/p},
+\]</div>
+<div class="math-block">\[
+T_+=(T^p+C^p)^{1/p},
+\]</div>
+<div class="math-block">\[
+T_\Sigma=(2T^p+C^p)^{1/p},
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+T_\Pi=(T^p+C^{p/2})^{2/p}.
+\]</div>
+<p>Set</p>
+<div class="math-block">\[
+a=
+\log T_-+u(p)-\frac12\log R_0,
+\]</div>
+<div class="math-block">\[
+b=
+\log\frac{T_\Sigma}{T_-},
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+s=
+S(p)+2\log T_- -\log T_\Pi-\frac12\log R_0.
+\]</div>
+<p>As \(T\to\infty\),</p>
+<div class="math-block">\[
+T_-\sim T,
+\qquad
+T_\Sigma\sim 2^{1/p}T,
+\qquad
+T_\Pi\sim T^2.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+a\to+\infty,
+\]</div>
+<div class="math-block">\[
+b\to \frac{\log2}{p},
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+s\to S(p)-\frac12\log R_0&gt;0.
+\]</div>
+<p>So we may choose \(T\) so large that</p>
+<div class="math-block">\[
+a&gt;b
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+s&gt;0.
+\]</div>
+<p>Fix such \(p,T\).</p>
+<p>Choose</p>
+<div class="math-block">\[
+0&lt;\eta&lt;\min(a-b,s).
+\]</div>
+<p>Finally set</p>
+<div class="math-block">\[
+M=\max\{1,\log T_+ +u(p)+1\}.
+\]</div>
+<p>All of these constants are now absolute.</p>
+<hr>
+<h1>7. Constructing the sets</h1>
+<p>Let \(K_i\) be the totally real fields from Martinet’s theorem, with</p>
+<div class="math-block">\[
+d_i=[K_i:\mathbb Q]\to\infty
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+D_{K_i}^{1/d_i}\le R_0.
+\]</div>
+<p>For each \(i\), define</p>
+<div class="math-block">\[
+\mathcal A_i
+=
+\left\{
+\alpha\in\mathcal O_{K_i}:
+\sigma(\alpha)\in B_{p,d_i}(T)
+\right\}.
+\]</div>
+<p>Equivalently,</p>
+<div class="math-block">\[
+\mathcal A_i
+=
+\left\{
+\alpha\in\mathcal O_{K_i}:
+\sum_{j=1}^{d_i}|\sigma_j(\alpha)|^p\le T^p d_i
+\right\}.
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+n_i=|\mathcal A_i|.
+\]</div>
+<p>We first estimate \(n_i\).</p>
+<p>By Lemma 5.1,</p>
+<div class="math-block">\[
+n_i
+=
+N_{K_i,p}(T)
+\ge
+\frac{V_{p,d_i}(T_-)}{\sqrt{D_{K_i}}}.
+\]</div>
+<p>Using Lemma 1.1,</p>
+<div class="math-block">\[
+\log V_{p,d_i}(T_-)
+=
+d_i(\log T_-+u(p))+O_p(\log d_i).
+\]</div>
+<p>Since \(D_{K_i}^{1/d_i}\le R_0\),</p>
+<div class="math-block">\[
+\log n_i
+\ge
+d_i\left(\log T_-+u(p)-\frac12\log R_0\right)
++
+O_p(\log d_i)
+=
+a d_i+O_p(\log d_i).
+\]</div>
+<p>Thus, for all sufficiently large \(i\),</p>
+<div class="math-block">\[
+\log n_i\ge (a-\eta)d_i.
+\]</div>
+<p>In particular, since \(a-\eta&gt;b&gt;0\),</p>
+<div class="math-block">\[
+n_i\to\infty.
+\]</div>
+<p>Similarly, Lemma 5.1 gives</p>
+<div class="math-block">\[
+n_i
+\le
+\frac{V_{p,d_i}(T_+)}{\sqrt{D_{K_i}}}
+\le
+V_{p,d_i}(T_+).
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+\log n_i
+\le
+d_i(\log T_+ + u(p))+O_p(\log d_i).
+\]</div>
+<p>By the definition of \(M\), for all sufficiently large \(i\),</p>
+<div class="math-block">\[
+\log n_i\le M d_i.
+\]</div>
+<p>Discard finitely many \(i\), so the two inequalities</p>
+<div class="math-block">\[
+\log n_i\ge (a-\eta)d_i
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\log n_i\le M d_i
+\]</div>
+<p>hold for every remaining \(i\).</p>
+<hr>
+<h1>8. Sumset estimate</h1>
+<p>By Lemma 1.2,</p>
+<div class="math-block">\[
+\mathcal A_i+\mathcal A_i
+\subseteq
+\left\{
+\gamma\in\mathcal O_{K_i}:
+\sigma(\gamma)\in B_{p,d_i}(2^{1/p}T)
+\right\}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|\mathcal A_i+\mathcal A_i|
+\le
+N_{K_i,p}(2^{1/p}T).
+\]</div>
+<p>By Lemma 5.1,</p>
+<div class="math-block">\[
+N_{K_i,p}(2^{1/p}T)
+\le
+\frac{V_{p,d_i}(T_\Sigma)}{\sqrt{D_{K_i}}},
+\]</div>
+<p>because</p>
+<div class="math-block">\[
+\bigl((2^{1/p}T)^p+C^p\bigr)^{1/p}
+=
+(2T^p+C^p)^{1/p}
+=
+T_\Sigma.
+\]</div>
+<p>Also,</p>
+<div class="math-block">\[
+n_i\ge
+\frac{V_{p,d_i}(T_-)}{\sqrt{D_{K_i}}}.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|\mathcal A_i+\mathcal A_i|
+\le
+n_i
+\frac{V_{p,d_i}(T_\Sigma)}{V_{p,d_i}(T_-)}.
+\]</div>
+<p>Since the volume scales exactly as \(L^d\),</p>
+<div class="math-block">\[
+\frac{V_{p,d_i}(T_\Sigma)}{V_{p,d_i}(T_-)}
+=
+\left(\frac{T_\Sigma}{T_-}\right)^{d_i}
+=
+e^{b d_i}.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+|\mathcal A_i+\mathcal A_i|
+\le
+n_i e^{b d_i}.
+\]</div>
+<p>Using</p>
+<div class="math-block">\[
+\log n_i\ge (a-\eta)d_i,
+\]</div>
+<p>we have</p>
+<div class="math-block">\[
+d_i\le \frac{\log n_i}{a-\eta}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|\mathcal A_i+\mathcal A_i|
+\le
+n_i^{1+b/(a-\eta)}.
+\]</div>
+<p>Since \(\eta&lt;a-b\),</p>
+<div class="math-block">\[
+b&lt;a-\eta,
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+\delta_+
+=
+1-\frac{b}{a-\eta}
+&gt;
+0.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|\mathcal A_i+\mathcal A_i|
+\le
+n_i^{2-\delta_+}.
+\]</div>
+<hr>
+<h1>9. Product-set estimate</h1>
+<p>Set</p>
+<div class="math-block">\[
+q=\frac p2.
+\]</div>
+<p>By Lemma 1.2,</p>
+<div class="math-block">\[
+\mathcal A_i\mathcal A_i
+\subseteq
+\left\{
+\gamma\in\mathcal O_{K_i}:
+\sigma(\gamma)\in B_{q,d_i}(T^2)
+\right\}.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|\mathcal A_i\mathcal A_i|
+\le
+N_{K_i,q}(T^2).
+\]</div>
+<p>By Lemma 5.1,</p>
+<div class="math-block">\[
+N_{K_i,q}(T^2)
+\le
+\frac{V_{q,d_i}(T_\Pi)}{\sqrt{D_{K_i}}},
+\]</div>
+<p>because</p>
+<div class="math-block">\[
+\bigl((T^2)^q+C^q\bigr)^{1/q}
+=
+(T^p+C^{p/2})^{2/p}
+=
+T_\Pi.
+\]</div>
+<p>Meanwhile,</p>
+<div class="math-block">\[
+n_i
+\ge
+\frac{V_{p,d_i}(T_-)}{\sqrt{D_{K_i}}}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|\mathcal A_i\mathcal A_i|
+\le
+n_i^2
+\sqrt{D_{K_i}}
+\frac{V_{q,d_i}(T_\Pi)}{V_{p,d_i}(T_-)^2}.
+\]</div>
+<p>Taking logarithms and using Lemma 1.1,</p>
+<div class="math-block">\[
+\log V_{q,d_i}(T_\Pi)
+=
+d_i(\log T_\Pi+u(q))+O_p(\log d_i),
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\log V_{p,d_i}(T_-)
+=
+d_i(\log T_-+u(p))+O_p(\log d_i).
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+\begin{aligned}
+\log\left(
+\sqrt{D_{K_i}}
+\frac{V_{q,d_i}(T_\Pi)}{V_{p,d_i}(T_-)^2}
+\right)
+&amp;\le
+\frac12 d_i\log R_0\\
+&amp;\quad+
+d_i(\log T_\Pi+u(q))\\
+&amp;\quad-
+2d_i(\log T_-+u(p))
++
+O_p(\log d_i).
+\end{aligned}
+\]</div>
+<p>Since \(q=p/2\) and</p>
+<div class="math-block">\[
+S(p)=2u(p)-u(p/2)=2u(p)-u(q),
+\]</div>
+<p>the main term equals</p>
+<div class="math-block">\[
+-d_i\left(
+S(p)+2\log T_- -\log T_\Pi-\frac12\log R_0
+\right)
++
+O_p(\log d_i).
+\]</div>
+<p>By definition, the expression in parentheses is \(s&gt;0\). Therefore, for all sufficiently large \(i\),</p>
+<div class="math-block">\[
+\sqrt{D_{K_i}}
+\frac{V_{q,d_i}(T_\Pi)}{V_{p,d_i}(T_-)^2}
+\le
+e^{-(s-\eta)d_i}.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+|\mathcal A_i\mathcal A_i|
+\le
+n_i^2 e^{-(s-\eta)d_i}.
+\]</div>
+<p>Using</p>
+<div class="math-block">\[
+\log n_i\le M d_i,
+\]</div>
+<p>we get</p>
+<div class="math-block">\[
+d_i\ge \frac{\log n_i}{M}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|\mathcal A_i\mathcal A_i|
+\le
+n_i^2
+\exp\left(-\frac{s-\eta}{M}\log n_i\right)
+=
+n_i^{2-(s-\eta)/M}.
+\]</div>
+<p>Set</p>
+<div class="math-block">\[
+\delta_\times
+=
+\min\left(1,\frac{s-\eta}{M}\right)&gt;0.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+|\mathcal A_i\mathcal A_i|
+\le
+n_i^{2-\delta_\times}.
+\]</div>
+<hr>
+<h1>10. Embedding into \(\mathbb R\)</h1>
+<p>For each \(i\), choose one real embedding</p>
+<div class="math-block">\[
+\iota_i:K_i\hookrightarrow\mathbb R.
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+A_i=\iota_i(\mathcal A_i)\subset\mathbb R.
+\]</div>
+<p>Because \(\iota_i\) is injective,</p>
+<div class="math-block">\[
+|A_i|=|\mathcal A_i|=n_i.
+\]</div>
+<p>Also,</p>
+<div class="math-block">\[
+A_i+A_i=\iota_i(\mathcal A_i+\mathcal A_i),
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+A_iA_i=\iota_i(\mathcal A_i\mathcal A_i).
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|A_i+A_i|
+=
+|\mathcal A_i+\mathcal A_i|,
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|A_iA_i|
+=
+|\mathcal A_i\mathcal A_i|.
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+\delta=\min(\delta_+,\delta_\times)&gt;0.
+\]</div>
+<p>Then for every sufficiently large \(i\),</p>
+<div class="math-block">\[
+|A_i+A_i|\le |A_i|^{2-\delta},
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|A_iA_i|\le |A_i|^{2-\delta}.
+\]</div>
+<p>Since \(|A_i|=n_i\to\infty\), after discarding finitely many initial terms and reindexing, we obtain an infinite sequence of finite sets \(A_i\subset\mathbb R\) such that</p>
+<div class="math-block">\[
+|A_i|\to\infty
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\max(|A_i+A_i|,|A_iA_i|)
+\le
+|A_i|^{2-\delta}
+\]</div>
+<p>for every \(i\).</p>
+<p>This proves the theorem. \(\square\)</p>
+</main>
+</body>
+</html>

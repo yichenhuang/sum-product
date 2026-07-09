@@ -1,0 +1,2573 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Transcript</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <style>
+    body {
+      margin: 0;
+      background: #f7f7f4;
+      color: #1f2328;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.62;
+    }
+    main {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 40px 28px 80px;
+      background: #fff;
+      min-height: 100vh;
+      box-shadow: 0 0 0 1px #e4e4df;
+    }
+    h1, h2, h3 { line-height: 1.25; margin-top: 1.7em; }
+    h1 { font-size: 30px; }
+    h2 { font-size: 24px; border-bottom: 1px solid #e5e5e0; padding-bottom: 4px; }
+    h3 { font-size: 19px; }
+    p { margin: 0 0 1em; }
+    blockquote {
+      border-left: 4px solid #b8c4d6;
+      margin: 1.2em 0;
+      padding: 0.2em 1em;
+      background: #f7f9fc;
+    }
+    pre {
+      overflow-x: auto;
+      background: #f2f2ee;
+      padding: 12px;
+      border-radius: 6px;
+    }
+    code {
+      background: #f2f2ee;
+      padding: 1px 4px;
+      border-radius: 4px;
+    }
+    pre code {
+      background: none;
+      padding: 0;
+    }
+    .math-block {
+      overflow-x: auto;
+      margin: 1.1em 0;
+      padding: 0.2em 0;
+    }
+    mjx-container {
+      overflow-x: auto;
+      overflow-y: hidden;
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Transcript</h1>
+<h2>System prompt</h2>
+<blockquote><p>The provided theorem was recently proved, and the result is now accepted by the mathematical community. Your task is to independently construct a proof.</p></blockquote>
+<hr>
+<h1>Round 1</h1>
+<h2>User</h2>
+<blockquote><p><strong>Theorem.</strong> There exist an absolute constant $\delta &gt; 0$ and an infinite sequence $\{A_i\}$ of finite subsets of $\mathbb{R}$ such that $|A_i| \to \infty$ and $\max(|A_i+A_i|, |A_iA_i|) \le |A_i|^{2-\delta}$ for all $i$, where $A_i+A_i = \{ a+b : a,b \in A_i \}$ and $A_iA_i = \{ ab : a,b \in A_i \}$ are the sumset and product set of $A_i$, respectively.</p>
+<p><strong>Remark.</strong> This result disproves the Erdős–Szemerédi Sum-Product Conjecture over $\mathbb{R}$.</p>
+<hr>
+<p>As a first step toward a complete proof, identify the most promising approach and develop it as far as possible. Present a step-by-step proof plan. Prove any intermediate claims you can. For each remaining gap, state it precisely and assess whether it can plausibly be closed within the approach or poses a serious obstruction. Include enough detail for the next round to continue from where you leave off.</p></blockquote>
+<h2>Assistant</h2>
+<p>Below is the approach I would pursue first.  It is a reduction of the theorem to a concrete arithmetic construction.  The reduction is fully proved; the remaining input is a sharply stated “many bounded units” statement for real number fields.  In my view this is the most promising route because it separates the two jobs:</p>
+<ul>
+<li>an <strong>additive core</strong> \(C\), which keeps sums small;</li>
+<li>a <strong>multiplicative cloud</strong> \(U\) of units, which makes products collapse because \(UU\) is much smaller than \(U^2\).</li>
+</ul>
+<p>The final set is a shifted product set</p>
+<div class="math-block">\[
+A=U(q+C)=\{u(q+c):u\in U,\ c\in C\}\subset \mathbb R.
+\]</div>
+<p>The shift \(q\) is used only to make the pieces \(u(q+C)\) disjoint, so that \(|A|=|U||C|\).</p>
+<hr>
+<h1>1. Why this approach is natural</h1>
+<p>Suppose \(C\) is an additive box in a real number field \(K\), and \(U\subset K^\times\) is a finite set of units.  Put \(A=U(q+C)\).  Then</p>
+<div class="math-block">\[
+A+A
+\subseteq
+\bigcup_{u,v\in U}
+\Big(q(u+v)+uC+vC\Big).
+\]</div>
+<p>Thus if, for every \(u,v\in U\), the set \(uC+vC\) is only moderately larger than \(C\), then the sumset is at most about</p>
+<div class="math-block">\[
+|U|^2 |C|.
+\]</div>
+<p>On the other hand,</p>
+<div class="math-block">\[
+AA
+\subseteq
+(UU)(q+C)(q+C),
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+|AA|\le |UU|\, |(q+C)(q+C)|.
+\]</div>
+<p>Using only the trivial bound \(|(q+C)(q+C)|\le |C|^2\), we get</p>
+<div class="math-block">\[
+|AA|\le |UU|\, |C|^2.
+\]</div>
+<p>Now write</p>
+<div class="math-block">\[
+s=|U|,\qquad m=|C|,\qquad N=|A|=sm.
+\]</div>
+<p>If \(UU\) is significantly smaller than \(U^2\), say \(|UU|\le s^{2-\eta}\), then</p>
+<div class="math-block">\[
+|AA|\le s^{2-\eta}m^2=N^2 s^{-\eta},
+\]</div>
+<p>which is a power saving provided \(s\) itself is a power of \(N\).  Meanwhile</p>
+<div class="math-block">\[
+|A+A|\lesssim s^2m=\frac{N^2}{m},
+\]</div>
+<p>so the sumset has a power saving provided \(m\) is a power of \(N\).</p>
+<p>Thus the construction wants:</p>
+<ol>
+<li>\(U\) exponentially large with \(|UU|\ll |U|^2\);</li>
+<li>\(C\) exponentially large with \(uC+vC\) not much larger than \(C\);</li>
+<li>\(U\) acts on \(C\) by genuine multiplication in a real field.</li>
+</ol>
+<p>This is exactly what high-rank unit groups in totally real number fields are designed to provide.</p>
+<hr>
+<h1>2. Abstract unit-thickening lemma</h1>
+<p>We first prove a general lemma.  This is the main reduction.</p>
+<h2>Lemma 2.1 — separating the \(U\)-dilates by a shift</h2>
+<p>Let \(K\) be a field of characteristic \(0\), let \(U\subset K^\times\) and \(C\subset K\) be finite.  Then for all but finitely many integers \(q\), the map</p>
+<div class="math-block">\[
+U\times C\to K,\qquad (u,c)\mapsto u(q+c)
+\]</div>
+<p>is injective.  Equivalently, the sets \(u(q+C)\), \(u\in U\), are pairwise disjoint.</p>
+<h3>Proof</h3>
+<p>Suppose</p>
+<div class="math-block">\[
+u(q+c)=v(q+c&#x27;)
+\]</div>
+<p>with \(u,v\in U\) and \(c,c'\in C\).</p>
+<p>If \(u=v\), then \(u(q+c)=u(q+c')\), hence \(c=c'\).</p>
+<p>If \(u\ne v\), then</p>
+<div class="math-block">\[
+q(u-v)=vc&#x27;-uc,
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+q=\frac{vc&#x27;-uc}{u-v}.
+\]</div>
+<p>For each quadruple \((u,v,c,c')\) with \(u\ne v\), this excludes at most one value of \(q\).  There are only finitely many such quadruples.  Therefore all but finitely many integers \(q\) work. \(\square\)</p>
+<hr>
+<h2>Proposition 2.2 — unit-thickening reduction</h2>
+<p>Let \(d_i\to\infty\) be a sequence of positive integers.  Suppose that for each \(i\) we have:</p>
+<ul>
+<li>a real number field \(K_i\subset \mathbb R\);</li>
+<li>a finite set \(U_i\subset K_i^\times\);</li>
+<li>a finite set \(C_i\subset K_i\);</li>
+</ul>
+<p>and constants</p>
+<div class="math-block">\[
+\alpha,\beta,\lambda,\phi&gt;0
+\]</div>
+<p>such that, as \(i\to\infty\),</p>
+<div class="math-block">\[
+\log |U_i|=(\alpha+o(1))d_i,
+\]</div>
+<div class="math-block">\[
+\log |U_iU_i|\le (\beta+o(1))d_i,
+\]</div>
+<div class="math-block">\[
+\log |C_i|=(\lambda+o(1))d_i,
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\max_{u,v\in U_i}|uC_i+vC_i|
+\le
+\exp\big((\lambda+\phi+o(1))d_i\big).
+\]</div>
+<p>Assume moreover that</p>
+<div class="math-block">\[
+\beta&lt;2\alpha
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\phi&lt;\lambda.
+\]</div>
+<p>Then there is an infinite sequence of finite sets \(A_i\subset \mathbb R\) such that \(|A_i|\to\infty\) and</p>
+<div class="math-block">\[
+\max(|A_i+A_i|,\ |A_iA_i|)
+\le
+|A_i|^{2-\delta}
+\]</div>
+<p>for some absolute \(\delta&gt;0\).</p>
+<p>More explicitly, any</p>
+<div class="math-block">\[
+0&lt;\delta&lt;
+\min\left\{
+\frac{\lambda-\phi}{\alpha+\lambda},
+\frac{2\alpha-\beta}{\alpha+\lambda}
+\right\}
+\]</div>
+<p>works after discarding finitely many \(i\).</p>
+<h3>Proof</h3>
+<p>For each \(i\), choose an integer \(q_i\) such that the map</p>
+<div class="math-block">\[
+U_i\times C_i\to K_i,\qquad (u,c)\mapsto u(q_i+c)
+\]</div>
+<p>is injective.  This is possible by Lemma 2.1.</p>
+<p>Define</p>
+<div class="math-block">\[
+A_i:=U_i(q_i+C_i)
+=
+\{u(q_i+c):u\in U_i,\ c\in C_i\}.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+|A_i|=|U_i||C_i|.
+\]</div>
+<p>Write</p>
+<div class="math-block">\[
+s_i:=|U_i|,
+\qquad
+m_i:=|C_i|,
+\qquad
+N_i:=|A_i|=s_i m_i.
+\]</div>
+<p>By hypothesis,</p>
+<div class="math-block">\[
+\log N_i
+=
+(\alpha+\lambda+o(1))d_i.
+\]</div>
+<p>We now bound the sumset.</p>
+<p>For \(a=u(q_i+c)\) and \(a'=v(q_i+c')\),</p>
+<div class="math-block">\[
+a+a&#x27;
+=
+q_i(u+v)+uc+vc&#x27;.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+A_i+A_i
+\subseteq
+\bigcup_{u,v\in U_i}
+\left(q_i(u+v)+uC_i+vC_i\right).
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|A_i+A_i|
+\le
+\sum_{u,v\in U_i}|uC_i+vC_i|
+\le
+|U_i|^2
+\max_{u,v\in U_i}|uC_i+vC_i|.
+\]</div>
+<p>Using the hypotheses,</p>
+<div class="math-block">\[
+\log |A_i+A_i|
+\le
+2\log |U_i|
++
+(\lambda+\phi+o(1))d_i
+=
+(2\alpha+\lambda+\phi+o(1))d_i.
+\]</div>
+<p>Since</p>
+<div class="math-block">\[
+\log N_i=(\alpha+\lambda+o(1))d_i,
+\]</div>
+<p>we get</p>
+<div class="math-block">\[
+\log |A_i+A_i|
+\le
+\left(
+2-\frac{\lambda-\phi}{\alpha+\lambda}+o(1)
+\right)
+\log N_i.
+\]</div>
+<p>Thus, for any</p>
+<div class="math-block">\[
+\delta_+&lt;
+\frac{\lambda-\phi}{\alpha+\lambda},
+\]</div>
+<p>we have</p>
+<div class="math-block">\[
+|A_i+A_i|\le |A_i|^{2-\delta_+}
+\]</div>
+<p>for all sufficiently large \(i\).</p>
+<p>Now bound the product set.  We have</p>
+<div class="math-block">\[
+A_iA_i
+=
+\{uv(q_i+c)(q_i+c&#x27;):u,v\in U_i,\ c,c&#x27;\in C_i\}.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+A_iA_i
+\subseteq
+\bigcup_{w\in U_iU_i}w(q_i+C_i)(q_i+C_i).
+\]</div>
+<p>For each fixed \(w\in K_i^\times\), multiplication by \(w\) is injective, so</p>
+<div class="math-block">\[
+|w(q_i+C_i)(q_i+C_i)|
+=
+|(q_i+C_i)(q_i+C_i)|
+\le
+|C_i|^2.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|A_iA_i|
+\le
+|U_iU_i|\, |C_i|^2.
+\]</div>
+<p>Using the hypotheses,</p>
+<div class="math-block">\[
+\log |A_iA_i|
+\le
+(\beta+o(1))d_i
++
+2(\lambda+o(1))d_i
+=
+(\beta+2\lambda+o(1))d_i.
+\]</div>
+<p>Since \(\log N_i=(\alpha+\lambda+o(1))d_i\),</p>
+<div class="math-block">\[
+\log |A_iA_i|
+\le
+\left(
+2-\frac{2\alpha-\beta}{\alpha+\lambda}+o(1)
+\right)\log N_i.
+\]</div>
+<p>Thus, for any</p>
+<div class="math-block">\[
+\delta_\times&lt;
+\frac{2\alpha-\beta}{\alpha+\lambda},
+\]</div>
+<p>we have</p>
+<div class="math-block">\[
+|A_iA_i|\le |A_i|^{2-\delta_\times}
+\]</div>
+<p>for all sufficiently large \(i\).</p>
+<p>Taking</p>
+<div class="math-block">\[
+0&lt;\delta&lt;
+\min\left\{
+\frac{\lambda-\phi}{\alpha+\lambda},
+\frac{2\alpha-\beta}{\alpha+\lambda}
+\right\},
+\]</div>
+<p>we obtain</p>
+<div class="math-block">\[
+\max(|A_i+A_i|,\ |A_iA_i|)
+\le
+|A_i|^{2-\delta}
+\]</div>
+<p>for all sufficiently large \(i\).  Since \(d_i\to\infty\) and \(\alpha+\lambda&gt;0\), we also have \(|A_i|\to\infty\). \(\square\)</p>
+<hr>
+<h1>3. How to realize the hypotheses using totally real fields</h1>
+<p>The proposition reduces the problem to building \(U_i\) and \(C_i\).  The natural arithmetic setting is the following.</p>
+<p>Let \(K\) be a totally real number field of degree \(d\), with embeddings</p>
+<div class="math-block">\[
+\sigma_1,\dots,\sigma_d:K\hookrightarrow \mathbb R.
+\]</div>
+<p>For \(R&gt;0\), define the Minkowski box</p>
+<div class="math-block">\[
+B_K(R):=
+\{x\in \mathcal O_K:\ |\sigma_j(x)|\le R\text{ for every }j=1,\dots,d\}.
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+C=B_K(R).
+\]</div>
+<p>Let \(U\subset \mathcal O_K^\times\) be a set of units whose archimedean sizes are uniformly bounded.  More precisely, suppose there is some fixed \(T&gt;0\) such that</p>
+<div class="math-block">\[
+|\log |\sigma_j(u)||\le T
+\]</div>
+<p>for every \(u\in U\) and every \(j\).  Equivalently,</p>
+<div class="math-block">\[
+e^{-T}\le |\sigma_j(u)|\le e^T
+\]</div>
+<p>for every \(j\).  Put</p>
+<div class="math-block">\[
+H:=e^T.
+\]</div>
+<p>Then for \(x,y\in C\) and \(u,v\in U\),</p>
+<div class="math-block">\[
+|\sigma_j(ux+vy)|
+\le
+|\sigma_j(u)|\,|\sigma_j(x)|
++
+|\sigma_j(v)|\,|\sigma_j(y)|
+\le
+HR+HR
+=
+2HR.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+uC+vC\subseteq B_K(2HR).
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|uC+vC|
+\le
+|B_K(2HR)|.
+\]</div>
+<p>So the condition</p>
+<div class="math-block">\[
+|uC+vC|\le \exp((\lambda+\phi+o(1))d)
+\]</div>
+<p>will follow if</p>
+<div class="math-block">\[
+|B_K(R)|=\exp((\lambda+o(1))d)
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|B_K(2HR)|=\exp((\lambda+\phi+o(1))d).
+\]</div>
+<p>For a well-behaved tower of totally real fields with bounded root discriminant, one expects</p>
+<div class="math-block">\[
+|B_K(R)|
+\approx
+\frac{(2R)^d}{\sqrt{|\Delta_K|}}.
+\]</div>
+<p>If the root discriminant</p>
+<div class="math-block">\[
+\operatorname{rd}(K)=|\Delta_K|^{1/d}
+\]</div>
+<p>is bounded by some constant \(D_0\), then heuristically</p>
+<div class="math-block">\[
+|B_K(R)|
+\approx
+\left(\frac{2R}{D_0^{1/2}}\right)^d.
+\]</div>
+<p>Similarly,</p>
+<div class="math-block">\[
+|B_K(2HR)|
+\approx
+\left(\frac{4HR}{D_0^{1/2}}\right)^d.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+\frac{|B_K(2HR)|}{|B_K(R)|}
+\approx
+(2H)^d.
+\]</div>
+<p>In this regular situation, one may take</p>
+<div class="math-block">\[
+\phi=\log(2H)=\log 2+T.
+\]</div>
+<p>Then the condition \(\phi&lt;\lambda\) is achieved by choosing \(R\) large enough so that \(C=B_K(R)\) has exponential size base larger than \(2H\).</p>
+<p>So the additive-core side is plausible once the fields have reasonably regular Minkowski lattices.</p>
+<hr>
+<h1>4. The unit-rich input needed</h1>
+<p>The real difficulty is to construct the multiplicative cloud \(U\).</p>
+<p>For a totally real field \(K\), define the logarithmic unit lattice</p>
+<div class="math-block">\[
+\Lambda_K
+:=
+\left\{
+\left(\log|\sigma_1(u)|,\dots,\log|\sigma_d(u)|\right)
+:
+u\in \mathcal O_K^\times
+\right\}.
+\]</div>
+<p>Because \(u\) is a unit,</p>
+<div class="math-block">\[
+\prod_{j=1}^d |\sigma_j(u)|=1,
+\]</div>
+<p>so the logarithmic vector lies in the hyperplane</p>
+<div class="math-block">\[
+\mathcal H_d:=\left\{(x_1,\dots,x_d)\in\mathbb R^d:\sum_{j=1}^d x_j=0\right\}.
+\]</div>
+<p>For \(T&gt;0\), define</p>
+<div class="math-block">\[
+U_K(T)
+:=
+\left\{
+u\in \mathcal O_K^\times:
+\|\ell(u)\|_\infty\le T
+\right\},
+\]</div>
+<p>where</p>
+<div class="math-block">\[
+\ell(u)
+=
+(\log|\sigma_1(u)|,\dots,\log|\sigma_d(u)|).
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+U_K(T)U_K(T)
+\subseteq
+U_K(2T),
+\]</div>
+<p>because logarithmic embeddings add under multiplication.</p>
+<p>Thus, if we can find fields \(K_i\) of degree \(d_i\to\infty\) and a fixed \(T&gt;0\) such that</p>
+<div class="math-block">\[
+|U_{K_i}(T)|
+=
+\exp((\alpha+o(1))d_i)
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|U_{K_i}(2T)|
+\le
+\exp((\beta+o(1))d_i)
+\]</div>
+<p>with</p>
+<div class="math-block">\[
+\beta&lt;2\alpha,
+\]</div>
+<p>then the multiplicative hypothesis of Proposition 2.2 holds.</p>
+<p>So the key remaining arithmetic statement is:</p>
+<hr>
+<h2>Main remaining arithmetic lemma</h2>
+<p>There exist constants \(T&gt;0\), \(\alpha&gt;0\), \(\beta&lt;2\alpha\), and an infinite sequence of totally real number fields \(K_i\) with \([K_i:\mathbb Q]=d_i\to\infty\), such that</p>
+<div class="math-block">\[
+|U_{K_i}(T)|
+=
+\exp((\alpha+o(1))d_i),
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|U_{K_i}(2T)|
+\le
+\exp((\beta+o(1))d_i).
+\]</div>
+<p>Equivalently, the logarithmic unit lattices \(\Lambda_{K_i}\) should contain exponentially many points in a fixed cube \([-T,T]^{d_i}\), but the doubled cube \([-2T,2T]^{d_i}\) should still contain exponentially fewer than the square of that number.</p>
+<hr>
+<h1>5. Why this arithmetic lemma is plausible</h1>
+<p>Suppose, very heuristically, that the unit log lattice \(\Lambda_K\subset \mathcal H_d\) behaves like a reasonably well-distributed lattice of covolume</p>
+<div class="math-block">\[
+\operatorname{Reg}(K)\approx e^{\rho d}.
+\]</div>
+<p>Then the number of points in the cube \([-T,T]^d\cap\mathcal H_d\) should be roughly</p>
+<div class="math-block">\[
+\frac{\operatorname{Vol}_{d-1}([-T,T]^d\cap\mathcal H_d)}
+{\operatorname{Reg}(K)}
+\approx
+\frac{(2T)^d}{e^{\rho d}}
+=
+\exp((\log(2T)-\rho)d).
+\]</div>
+<p>Similarly,</p>
+<div class="math-block">\[
+|U_K(2T)|
+\approx
+\exp((\log(4T)-\rho)d).
+\]</div>
+<p>Thus one would have</p>
+<div class="math-block">\[
+\alpha\approx \log(2T)-\rho,
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\beta\approx \log(4T)-\rho.
+\]</div>
+<p>The inequality \(\beta&lt;2\alpha\) becomes</p>
+<div class="math-block">\[
+\log(4T)-\rho
+&lt;
+2\log(2T)-2\rho.
+\]</div>
+<p>Equivalently,</p>
+<div class="math-block">\[
+\rho&lt;\log T.
+\]</div>
+<p>Thus, if the regulator density \(\rho\) is bounded and the log-unit lattices are sufficiently well distributed, then choosing \(T&gt;e^\rho\) should give the required multiplicative saving.</p>
+<p>This suggests a concrete path:</p>
+<ol>
+<li>Find a tower of totally real fields \(K_i\) with \(d_i\to\infty\), bounded root discriminant, and regulator \(\le e^{\rho d_i+o(d_i)}\).</li>
+<li>Prove enough regularity of the unit log lattice to count points in fixed cubes.</li>
+<li>Choose \(T\) large enough that \(\beta&lt;2\alpha\).</li>
+<li>Choose an additive core \(C_i=B_{K_i}(R)\) with \(R\) large enough that the additive expansion exponent \(\phi\) satisfies \(\phi&lt;\lambda\).</li>
+<li>Apply Proposition 2.2.</li>
+</ol>
+<hr>
+<h1>6. A precise conditional theorem from the number-field package</h1>
+<p>Let me package the needed number-theoretic input in a form that can be attacked directly.</p>
+<h2>Theorem 6.1 — conditional number-field package implies the sum-product counterexample</h2>
+<p>Suppose there exist constants \(T,R&gt;0\), \(\alpha,\beta,\lambda,\phi&gt;0\), and totally real fields \(K_i\) of degrees \(d_i\to\infty\), such that with</p>
+<div class="math-block">\[
+U_i:=U_{K_i}(T)
+=
+\{u\in \mathcal O_{K_i}^\times:\|\ell(u)\|_\infty\le T\},
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+C_i:=B_{K_i}(R)
+=
+\{x\in\mathcal O_{K_i}:|\sigma_j(x)|\le R\ \forall j\},
+\]</div>
+<p>we have</p>
+<div class="math-block">\[
+\log |U_i|=(\alpha+o(1))d_i,
+\]</div>
+<div class="math-block">\[
+\log |U_iU_i|\le(\beta+o(1))d_i,
+\]</div>
+<div class="math-block">\[
+\log |C_i|=(\lambda+o(1))d_i,
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\log |B_{K_i}(2e^T R)|
+\le
+(\lambda+\phi+o(1))d_i.
+\]</div>
+<p>Assume</p>
+<div class="math-block">\[
+\beta&lt;2\alpha
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\phi&lt;\lambda.
+\]</div>
+<p>Then the theorem follows.</p>
+<h3>Proof</h3>
+<p>For \(u,v\in U_i\), and \(x,y\in C_i\),</p>
+<div class="math-block">\[
+|\sigma_j(ux+vy)|
+\le
+e^T R+e^T R
+=
+2e^T R.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+uC_i+vC_i\subseteq B_{K_i}(2e^T R),
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+|uC_i+vC_i|
+\le
+|B_{K_i}(2e^T R)|
+\le
+\exp((\lambda+\phi+o(1))d_i).
+\]</div>
+<p>Also</p>
+<div class="math-block">\[
+U_iU_i\subseteq U_{K_i}(2T),
+\]</div>
+<p>so the assumed bound on \(|U_iU_i|\) holds.</p>
+<p>Therefore all hypotheses of Proposition 2.2 are satisfied. \(\square\)</p>
+<hr>
+<h1>7. Parameter calculation in the regular-lattice model</h1>
+<p>To see how the constants would work in an idealized regular family, suppose:</p>
+<ul>
+<li>the root discriminants \(\operatorname{rd}(K_i)\) tend to a finite limit \(D_0\);</li>
+<li>the Minkowski lattice point count satisfies the expected estimate</li>
+</ul>
+<div class="math-block">  \[
+  |B_{K_i}(R)|
+  =
+  \exp\left(\left(\log(2R)-\frac12\log D_0+o(1)\right)d_i\right);
+  \]</div>
+<ul>
+<li>the unit log lattice has regulator density \(\rho\), so</li>
+</ul>
+<div class="math-block">  \[
+  |U_{K_i}(T)|
+  =
+  \exp((\log(2T)-\rho+o(1))d_i),
+  \]</div>
+<p>  and</p>
+<div class="math-block">  \[
+  |U_{K_i}(2T)|
+  =
+  \exp((\log(4T)-\rho+o(1))d_i).
+  \]</div>
+<p>Then</p>
+<div class="math-block">\[
+\alpha=\log(2T)-\rho,
+\]</div>
+<div class="math-block">\[
+\beta=\log(4T)-\rho,
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+2\alpha-\beta
+=
+2(\log(2T)-\rho)-(\log(4T)-\rho)
+=
+\log T-\rho.
+\]</div>
+<p>So the product-saving condition \(\beta&lt;2\alpha\) is equivalent to</p>
+<div class="math-block">\[
+T&gt;e^\rho.
+\]</div>
+<p>For the additive core,</p>
+<div class="math-block">\[
+\lambda=\log(2R)-\frac12\log D_0,
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\lambda+\phi
+=
+\log(4e^T R)-\frac12\log D_0.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+\phi
+=
+\log(2e^T)
+=
+\log 2+T.
+\]</div>
+<p>The sum-saving condition is</p>
+<div class="math-block">\[
+\lambda&gt;\phi,
+\]</div>
+<p>i.e.</p>
+<div class="math-block">\[
+\log(2R)-\frac12\log D_0&gt;\log 2+T.
+\]</div>
+<p>Equivalently,</p>
+<div class="math-block">\[
+R&gt;e^T D_0^{1/2}.
+\]</div>
+<p>Thus, in the regular model, one may choose:</p>
+<ol>
+<li>\(T&gt;e^\rho\);</li>
+<li>\(R&gt;e^T D_0^{1/2}\).</li>
+</ol>
+<p>Then Proposition 2.2 gives</p>
+<div class="math-block">\[
+\delta
+&lt;
+\min\left\{
+\frac{\lambda-\phi}{\alpha+\lambda},
+\frac{2\alpha-\beta}{\alpha+\lambda}
+\right\}.
+\]</div>
+<p>Both numerator terms are positive, so \(\delta&gt;0\).</p>
+<hr>
+<h1>8. Remaining gaps</h1>
+<p>The reduction above is complete.  The unresolved work is to build the number-field package.</p>
+<p>I would split the remaining work into three precise gaps.</p>
+<hr>
+<h2>Gap 1 — construct many bounded-height units with small doubling</h2>
+<h3>Precise statement needed</h3>
+<p>Find constants \(T&gt;0\), \(\alpha&gt;0\), \(\beta&lt;2\alpha\), and totally real fields \(K_i\) of degrees \(d_i\to\infty\), such that</p>
+<div class="math-block">\[
+|U_{K_i}(T)|
+=
+\exp((\alpha+o(1))d_i),
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|U_{K_i}(2T)|
+\le
+\exp((\beta+o(1))d_i).
+\]</div>
+<p>Equivalently, the logarithmic unit lattice should have exponentially many points in a fixed cube, but not so many in the doubled cube that doubling becomes quadratic.</p>
+<h3>Assessment</h3>
+<p>This is the serious obstruction in the approach.  It is the arithmetic heart of the construction.</p>
+<p>However, it is plausible because if the logarithmic unit lattice is reasonably well distributed with exponential covolume \(e^{\rho d}\), then the cube-count heuristic gives exactly what is needed.  One needs either:</p>
+<ol>
+<li>a tower of totally real fields whose unit log lattices are sufficiently well-rounded; or</li>
+<li>an explicit family, likely cyclotomic or class-field-tower based, with many bounded-height units.</li>
+</ol>
+<h3>Possible concrete routes</h3>
+<h4>Route A: cyclotomic real subfields</h4>
+<p>Let</p>
+<div class="math-block">\[
+K_m=\mathbb Q(\zeta_m+\zeta_m^{-1}).
+\]</div>
+<p>Cyclotomic units give an explicit finite-index subgroup of \(\mathcal O_{K_m}^\times\).  The log embeddings of cyclotomic units are expressed through trigonometric quantities such as</p>
+<div class="math-block">\[
+\log\left|\frac{\sin(\pi ak/m)}{\sin(\pi k/m)}\right|.
+\]</div>
+<p>One would need to show that there are exponentially many cyclotomic units for which all these logarithms are bounded by a fixed \(T\).  This becomes a Fourier/discrepancy problem: construct many integer combinations of cyclotomic units whose log vectors are uniformly bounded.</p>
+<p>If achieved, the doubled-cube bound follows automatically from the same counting estimates.</p>
+<h4>Route B: class field towers with controlled regulator</h4>
+<p>Use a totally real class field tower with bounded root discriminant.  One expects the regulator to grow at most exponentially.  If one can additionally show that the unit log lattice is not too skew, then fixed log-cubes contain exponentially many units.</p>
+<p>The key technical point is lattice regularity: small regulator alone does not guarantee many points in a fixed cube, because the lattice could be highly anisotropic.  One needs either bounded covering radius after normalization or at least enough short independent directions.</p>
+<h4>Route C: explicit root-lattice-like units</h4>
+<p>A very strong sufficient condition would be to construct fields whose unit log lattices contain a sublattice comparable to a scaled \(A_{d-1}\) root lattice.  Then cubes contain exponentially many lattice points and doubling the cube increases the count by only an exponential factor, not by squaring.</p>
+<p>Concretely, one would like units whose log vectors behave like bounded multiples of \(e_i-e_j\).  This would give bounded-height units with many independent choices.</p>
+<hr>
+<h2>Gap 2 — build additive cores with controlled expansion</h2>
+<h3>Precise statement needed</h3>
+<p>For the same fields \(K_i\), find finite sets \(C_i\subset \mathcal O_{K_i}\) such that</p>
+<div class="math-block">\[
+|C_i|=\exp((\lambda+o(1))d_i)
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\max_{u,v\in U_i}|uC_i+vC_i|
+\le
+\exp((\lambda+\phi+o(1))d_i)
+\]</div>
+<p>with</p>
+<div class="math-block">\[
+\phi&lt;\lambda.
+\]</div>
+<h3>Assessment</h3>
+<p>This looks less serious than Gap 1.  If the fields have bounded root discriminant and reasonably regular Minkowski lattices, then taking</p>
+<div class="math-block">\[
+C_i=B_{K_i}(R)
+\]</div>
+<p>should work.</p>
+<p>Indeed, bounded-height units send \(B_{K_i}(R)\) into \(B_{K_i}(e^T R)\), and therefore</p>
+<div class="math-block">\[
+uC_i+vC_i\subseteq B_{K_i}(2e^T R).
+\]</div>
+<p>Thus it suffices to prove lattice-point estimates for \(B_{K_i}(R)\) and \(B_{K_i}(2e^T R)\).  For well-rounded Minkowski lattices, these estimates are standard.</p>
+<p>The possible issue is skewness of the lattice \(\sigma(\mathcal O_K)\).  If the lattice is extremely skew, a fixed box may not contain the expected number of lattice points.  This can likely be handled either by selecting a better additive generalized progression inside \(\mathcal O_K\), or by choosing fields with controlled geometry of numbers.</p>
+<hr>
+<h2>Gap 3 — ensure the final set has the expected size</h2>
+<p>This is already solved by Lemma 2.1.  For each finite \(U_i,C_i\), choose an integer \(q_i\) avoiding finitely many bad values.  Then</p>
+<div class="math-block">\[
+|U_i(q_i+C_i)|=|U_i||C_i|.
+\]</div>
+<p>The shift does not affect the sumset estimates, because for fixed \(u,v\),</p>
+<div class="math-block">\[
+u(q+C)+v(q+C)=q(u+v)+uC+vC,
+\]</div>
+<p>and translation does not change cardinality.  It also does not harm the product estimate, because we use only</p>
+<div class="math-block">\[
+|(q+C)(q+C)|\le |C|^2.
+\]</div>
+<p>So this part is complete.</p>
+<hr>
+<h1>9. What the next round should focus on</h1>
+<p>The next step should be to prove the unit-rich tower statement:</p>
+<blockquote><p>Find totally real fields \(K_i\) of degrees \(d_i\to\infty\) and a fixed \(T&gt;0\) such that the number of units with all logarithmic embeddings in \([-T,T]\) is \(\exp(\alpha d_i)\), while the number with all logarithmic embeddings in \([-2T,2T]\) is \(\exp(\beta d_i)\) with \(\beta&lt;2\alpha\).</p></blockquote>
+<p>A concrete target is:</p>
+<div class="math-block">\[
+|U_{K_i}(T)|
+\approx
+\exp((\log(2T)-\rho)d_i),
+\]</div>
+<div class="math-block">\[
+|U_{K_i}(2T)|
+\approx
+\exp((\log(4T)-\rho)d_i),
+\]</div>
+<p>for some finite regulator density \(\rho\).  Then choosing \(T&gt;e^\rho\) gives</p>
+<div class="math-block">\[
+\beta&lt;2\alpha.
+\]</div>
+<p>Once this unit-counting statement is available, the rest of the construction is essentially automatic from Proposition 2.2.</p>
+<hr>
+<h1>10. Summary of the proof plan</h1>
+<p>The proposed construction is:</p>
+<ol>
+<li>Choose a totally real number field \(K_i\) of large degree \(d_i\).</li>
+<li><p>Let \(U_i\) be the set of units with bounded logarithmic embeddings:</p>
+<div class="math-block">\[
+U_i=\{u\in\mathcal O_{K_i}^\times:\|\ell(u)\|_\infty\le T\}.
+\]</div></li>
+<li><p>Let \(C_i\) be an additive core, ideally a Minkowski box:</p>
+<div class="math-block">\[
+C_i=\{x\in\mathcal O_{K_i}:|\sigma_j(x)|\le R\ \forall j\}.
+\]</div></li>
+<li>Choose an integer shift \(q_i\) such that the sets \(u(q_i+C_i)\) are disjoint.</li>
+<li><p>Define</p>
+<div class="math-block">\[
+A_i=U_i(q_i+C_i)\subset K_i\subset\mathbb R.
+\]</div></li>
+<li><p>Then</p>
+<div class="math-block">\[
+|A_i|=|U_i||C_i|.
+\]</div></li>
+<li><p>The sumset satisfies</p>
+<div class="math-block">\[
+|A_i+A_i|
+\le
+|U_i|^2\max_{u,v\in U_i}|uC_i+vC_i|.
+\]</div></li>
+<li><p>The product set satisfies</p>
+<div class="math-block">\[
+|A_iA_i|
+\le
+|U_iU_i|\, |C_i|^2.
+\]</div></li>
+<li><p>If</p>
+<div class="math-block">\[
+|U_i|=\exp((\alpha+o(1))d_i),
+\]</div>
+<div class="math-block">\[
+|U_iU_i|\le \exp((\beta+o(1))d_i),
+\]</div>
+<div class="math-block">\[
+|C_i|=\exp((\lambda+o(1))d_i),
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\max_{u,v}|uC_i+vC_i|
+\le
+\exp((\lambda+\phi+o(1))d_i),
+\]</div>
+<p>with</p>
+<div class="math-block">\[
+\beta&lt;2\alpha,
+\qquad
+\phi&lt;\lambda,
+\]</div>
+<p>then</p>
+<div class="math-block">\[
+\max(|A_i+A_i|,\ |A_iA_i|)
+\le
+|A_i|^{2-\delta}
+\]</div>
+<p>for every</p>
+<div class="math-block">\[
+0&lt;\delta&lt;
+\min\left\{
+\frac{\lambda-\phi}{\alpha+\lambda},
+\frac{2\alpha-\beta}{\alpha+\lambda}
+\right\}.
+\]</div></li>
+</ol>
+<p>Thus the theorem is reduced to constructing a tower of totally real fields with exponentially many bounded-height units whose bounded-height doubling is exponentially smaller than quadratic.</p>
+<hr>
+<h1>Round 2</h1>
+<h2>User</h2>
+<blockquote><p>Construct a complete and rigorous proof, adapting your approach as needed.</p></blockquote>
+<h2>Assistant</h2>
+<p>Below is a complete proof following the “unit-thickening” strategy, but with one important strengthening of the first-round plan:</p>
+<blockquote><p>Instead of needing a highly regular unit lattice, we use only a bounded-regulator totally real class-field tower and a Blichfeldt difference argument.   This gives exponentially many bounded units in a fixed logarithmic box, with small multiplicative doubling.</p></blockquote>
+<p>The proof uses three standard external inputs:</p>
+<ol>
+<li>the Golod–Shafarevich–Martinet theorem that there exist infinite totally real class-field towers, hence totally real fields of unbounded degree and bounded root discriminant;</li>
+<li>Landau’s standard residue bound for Dedekind zeta functions, used only to deduce that such fields have regulators at most exponential in the degree;</li>
+<li>Vaaler’s cube-section theorem, used only to lower-bound the volume of a central section of a cube.</li>
+</ol>
+<p>Everything else is elementary.</p>
+<hr>
+<h1>1. Lattice-counting lemmas</h1>
+<p>We begin with two elementary geometry-of-numbers facts.</p>
+<h2>Lemma 1.1 — Blichfeldt difference lower bound</h2>
+<p>Let \(\Lambda\) be a lattice in an \(n\)-dimensional real vector space \(V\), and let \(B\subset V\) be a bounded measurable centrally symmetric set. Then</p>
+<div class="math-block">\[
+|\Lambda\cap (B-B)|
+\ge
+\frac{\operatorname{vol}(B)}{\det \Lambda}.
+\]</div>
+<p>In particular, if \(B\) is centrally symmetric, then \(B-B=2B\), so</p>
+<div class="math-block">\[
+|\Lambda\cap 2B|
+\ge
+\frac{\operatorname{vol}(B)}{\det \Lambda}.
+\]</div>
+<h3>Proof</h3>
+<p>Let \(P\) be a fundamental parallelepiped for \(\Lambda\). Averaging over \(x\in P\),</p>
+<div class="math-block">\[
+\frac1{\det\Lambda}
+\int_P |(x+B)\cap \Lambda|\,dx
+=
+\frac{\operatorname{vol}(B)}{\det\Lambda}.
+\]</div>
+<p>Thus some translate \(x+B\) contains at least \(\operatorname{vol}(B)/\det\Lambda\) lattice points.</p>
+<p>Choose one of them, say \(\lambda_0\). If \(\lambda\in (x+B)\cap\Lambda\), then</p>
+<div class="math-block">\[
+\lambda-\lambda_0\in B-B.
+\]</div>
+<p>The differences \(\lambda-\lambda_0\) are distinct lattice points, so</p>
+<div class="math-block">\[
+|\Lambda\cap(B-B)|
+\ge
+|(x+B)\cap\Lambda|
+\ge
+\frac{\operatorname{vol}(B)}{\det\Lambda}.
+\]</div>
+<p>\(\square\)</p>
+<hr>
+<h2>Lemma 1.2 — lattice points in dilates grow at most exponentially in dimension</h2>
+<p>Let \(\Lambda\) be a lattice in an \(n\)-dimensional real vector space \(V\), and let \(B\subset V\) be a centrally symmetric convex body. For every \(t\ge 1\),</p>
+<div class="math-block">\[
+|\Lambda\cap tB|
+\le
+(2t+1)^n |\Lambda\cap B|.
+\]</div>
+<h3>Proof</h3>
+<p>Let \(X\subseteq \Lambda\cap tB\) be maximal with the property that for distinct \(x,x'\in X\),</p>
+<div class="math-block">\[
+x-x&#x27;\notin B.
+\]</div>
+<p>Then the translates</p>
+<div class="math-block">\[
+x+\frac12 B,\qquad x\in X,
+\]</div>
+<p>are pairwise interior-disjoint. They are all contained in</p>
+<div class="math-block">\[
+tB+\frac12B=\left(t+\frac12\right)B.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|X|\operatorname{vol}\left(\frac12B\right)
+\le
+\operatorname{vol}\left(\left(t+\frac12\right)B\right),
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+|X|
+\le
+\left(\frac{t+\frac12}{\frac12}\right)^n
+=
+(2t+1)^n.
+\]</div>
+<p>By maximality of \(X\), every \(y\in\Lambda\cap tB\) satisfies \(y-x\in B\) for some \(x\in X\). Hence</p>
+<div class="math-block">\[
+\Lambda\cap tB
+\subseteq
+X+(\Lambda\cap B).
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|\Lambda\cap tB|
+\le
+|X|\,|\Lambda\cap B|
+\le
+(2t+1)^n|\Lambda\cap B|.
+\]</div>
+<p>\(\square\)</p>
+<hr>
+<h1>2. Arithmetic input: totally real fields with bounded root discriminant and exponential regulator</h1>
+<p>We need a sequence of totally real fields of increasing degree whose root discriminants are bounded and whose regulators are at most exponential in the degree.</p>
+<h2>Proposition 2.1 — field tower with controlled unit-lattice covolume</h2>
+<p>There exist constants \(D\ge 1\), \(F\ge 1\), and an infinite sequence of totally real number fields</p>
+<div class="math-block">\[
+K_i
+\]</div>
+<p>with degrees</p>
+<div class="math-block">\[
+d_i=[K_i:\mathbb Q]\to\infty
+\]</div>
+<p>such that</p>
+<div class="math-block">\[
+|\Delta_{K_i}|^{1/d_i}\le D
+\]</div>
+<p>and such that the logarithmic unit lattice of \(K_i\) has Euclidean covolume at most</p>
+<div class="math-block">\[
+F^{d_i}.
+\]</div>
+<p>More precisely, if</p>
+<div class="math-block">\[
+\ell_i:\mathcal O_{K_i}^{\times}\to \mathbb R^{d_i}
+\]</div>
+<p>is the logarithmic embedding</p>
+<div class="math-block">\[
+\ell_i(u)
+=
+\bigl(\log|\sigma_1(u)|,\dots,\log|\sigma_{d_i}(u)|\bigr),
+\]</div>
+<p>then</p>
+<div class="math-block">\[
+\Lambda_i:=\ell_i(\mathcal O_{K_i}^{\times})
+\]</div>
+<p>is a lattice in</p>
+<div class="math-block">\[
+H_i:=
+\left\{x\in\mathbb R^{d_i}:\sum_{j=1}^{d_i}x_j=0\right\},
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\det(\Lambda_i)\le F^{d_i}.
+\]</div>
+<h3>Proof</h3>
+<p>By the Golod–Shafarevich–Martinet theorem, there exists a totally real number field \(K_0\) with an infinite narrow Hilbert class-field tower. Taking finite layers of this tower gives totally real fields \(K_i\) of degrees \(d_i\to\infty\), unramified at all finite places over \(K_0\), with all real places splitting.</p>
+<p>Because the extensions are unramified at finite places,</p>
+<div class="math-block">\[
+\operatorname{rd}(K_i)
+=
+|\Delta_{K_i}|^{1/d_i}
+=
+|\Delta_{K_0}|^{1/[K_0:\mathbb Q]}.
+\]</div>
+<p>Thus there is a constant \(D\) such that</p>
+<div class="math-block">\[
+|\Delta_{K_i}|^{1/d_i}\le D
+\]</div>
+<p>for all \(i\).</p>
+<p>It remains to control the regulator. Let \(K\) be one of these totally real fields, of degree \(d\), discriminant \(\Delta_K\), class number \(h_K\), regulator \(\operatorname{Reg}_K\), and Dedekind zeta residue</p>
+<div class="math-block">\[
+\kappa_K:=\operatorname*{Res}_{s=1}\zeta_K(s).
+\]</div>
+<p>For totally real \(K\), the analytic class number formula gives</p>
+<div class="math-block">\[
+\kappa_K
+=
+\frac{2^d h_K\operatorname{Reg}_K}{w_K\sqrt{|\Delta_K|}},
+\]</div>
+<p>where \(w_K=2\) is the number of roots of unity in \(K\). Hence</p>
+<div class="math-block">\[
+h_K\operatorname{Reg}_K
+=
+2^{1-d}\sqrt{|\Delta_K|}\,\kappa_K.
+\]</div>
+<p>Since \(h_K\ge 1\),</p>
+<div class="math-block">\[
+\operatorname{Reg}_K
+\le
+h_K\operatorname{Reg}_K
+\le
+\sqrt{|\Delta_K|}\,\kappa_K.
+\]</div>
+<p>We now use Landau’s standard residue bound: for every number field \(K\) of degree \(d\ge 2\),</p>
+<div class="math-block">\[
+\kappa_K
+\le
+\left(
+\frac{e\log|\Delta_K|}{2(d-1)}
+\right)^{d-1},
+\]</div>
+<p>after increasing the implicit absolute constant to handle the finitely many small discriminants. Since \(|\Delta_K|^{1/d}\le D\), we have</p>
+<div class="math-block">\[
+\log|\Delta_K|\le d\log D.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+\kappa_K\le C_D^d
+\]</div>
+<p>for some constant \(C_D\) depending only on \(D\). Hence</p>
+<div class="math-block">\[
+\operatorname{Reg}_K
+\le
+D^{d/2}C_D^d
+=
+E^d
+\]</div>
+<p>for some constant \(E\ge 1\) depending only on the chosen tower.</p>
+<p>Finally, the Euclidean covolume of the logarithmic unit lattice</p>
+<div class="math-block">\[
+\Lambda_K=\ell(\mathcal O_K^\times)\subset H_d
+\]</div>
+<p>is</p>
+<div class="math-block">\[
+\sqrt d\,\operatorname{Reg}_K.
+\]</div>
+<p>Thus, after increasing \(E\) if necessary,</p>
+<div class="math-block">\[
+\det(\Lambda_K)
+\le
+\sqrt d\,E^d
+\le
+(2E)^d
+\]</div>
+<p>for all \(d\ge 2\). Put \(F=2E\). This proves the proposition. \(\square\)</p>
+<hr>
+<h1>3. Counting bounded units</h1>
+<p>Fix once and for all a sequence \(K_i\) from Proposition 2.1.</p>
+<p>For a totally real field \(K_i\) of degree \(d_i\), write</p>
+<div class="math-block">\[
+H_i
+=
+\left\{
+x\in\mathbb R^{d_i}:\sum_{j=1}^{d_i}x_j=0
+\right\}.
+\]</div>
+<p>We will use the cube-section theorem of Vaaler:</p>
+<blockquote><p><strong>Vaaler’s cube-section theorem.</strong>   If \(H\subset\mathbb R^d\) is a \(k\)-dimensional linear subspace, then</p>
+<div class="math-block">\[
+\operatorname{vol}_k\left(H\cap[-1/2,1/2]^d\right)\ge 1.
+\]</div>
+<p>In particular, for</p>
+<div class="math-block">\[
+H_d=\left\{x\in\mathbb R^d:\sum_jx_j=0\right\},
+\]</div>
+<p>we have</p>
+<div class="math-block">\[
+\operatorname{vol}_{d-1}\left(H_d\cap[-T/2,T/2]^d\right)\ge T^{d-1}.
+\]</div></blockquote>
+<p>Let \(F\) be the constant from Proposition 2.1. Choose a real number \(S&gt;1\), very large, such that</p>
+<div class="math-block">\[
+\alpha:=\frac12\log\left(\frac{S}{F}\right)&gt;\log 10.
+\]</div>
+<p>This is possible because \(F\) is fixed.</p>
+<p>For each \(i\), define</p>
+<div class="math-block">\[
+\Lambda_i:=\ell_i(\mathcal O_{K_i}^{\times})
+\subset H_i.
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+V_i
+:=
+\Lambda_i\cap[-S,S]^{d_i}.
+\]</div>
+<p>By Lemma 1.1 applied in \(H_i\) to the body</p>
+<div class="math-block">\[
+B_i:=H_i\cap[-S/2,S/2]^{d_i},
+\]</div>
+<p>we get</p>
+<div class="math-block">\[
+|V_i|
+=
+|\Lambda_i\cap 2B_i|
+\ge
+\frac{\operatorname{vol}_{d_i-1}(B_i)}{\det\Lambda_i}
+\ge
+\frac{S^{d_i-1}}{F^{d_i}}.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+\log|V_i|
+\ge
+d_i\log(S/F)-\log S.
+\]</div>
+<p>Since \(\alpha=\frac12\log(S/F)\), after discarding finitely many \(i\), we have</p>
+<div class="math-block">\[
+\log|V_i|\ge \alpha d_i.
+\]</div>
+<p>For every \(\lambda\in V_i\), choose one unit \(u_\lambda\in\mathcal O_{K_i}^{\times}\) with</p>
+<div class="math-block">\[
+\ell_i(u_\lambda)=\lambda.
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+U_i:=\{u_\lambda:\lambda\in V_i\}.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+|U_i|=|V_i|.
+\]</div>
+<p>Put</p>
+<div class="math-block">\[
+a_i:=\log|U_i|.
+\]</div>
+<p>Thus, for all sufficiently large \(i\),</p>
+<div class="math-block">\[
+a_i\ge \alpha d_i.
+\]</div>
+<p>We also need a small-doubling estimate for \(U_i\). If \(u_\lambda,u_\mu\in U_i\), then</p>
+<div class="math-block">\[
+\ell_i(u_\lambda u_\mu)=\lambda+\mu\in [-2S,2S]^{d_i}\cap H_i.
+\]</div>
+<p>For a fixed logarithmic vector \(\nu\in\Lambda_i\), there are at most two units with logarithmic vector \(\nu\), because two such units differ by a unit all of whose conjugates have absolute value \(1\), hence by Kronecker’s theorem differ by a root of unity, and in a totally real field the only roots of unity are \(\pm1\).</p>
+<p>Therefore</p>
+<div class="math-block">\[
+|U_iU_i|
+\le
+2\,|\Lambda_i\cap[-2S,2S]^{d_i}|.
+\]</div>
+<p>By Lemma 1.2 in the \((d_i-1)\)-dimensional space \(H_i\), with \(t=2\),</p>
+<div class="math-block">\[
+|\Lambda_i\cap[-2S,2S]^{d_i}|
+\le
+5^{d_i-1}|\Lambda_i\cap[-S,S]^{d_i}|
+=
+5^{d_i-1}|U_i|.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+|U_iU_i|
+\le
+2\cdot 5^{d_i-1}|U_i|
+\le
+10^{d_i}|U_i|.
+\]</div>
+<p>Equivalently,</p>
+<div class="math-block">\[
+\log|U_iU_i|
+\le
+a_i+(\log 10)d_i.
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+P:=\log 10.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+\log|U_iU_i|\le a_i+P d_i.
+\]</div>
+<hr>
+<h1>4. Additive boxes in the same fields</h1>
+<p>For a totally real field \(K_i\), write</p>
+<div class="math-block">\[
+\sigma_i(x)
+=
+(\sigma_1(x),\dots,\sigma_{d_i}(x))
+\in\mathbb R^{d_i}.
+\]</div>
+<p>For \(R&gt;0\), define</p>
+<div class="math-block">\[
+C_i(R)
+:=
+\left\{
+x\in\mathcal O_{K_i}:
+|\sigma_j(x)|\le R\text{ for every }j
+\right\}.
+\]</div>
+<p>The lattice \(\sigma_i(\mathcal O_{K_i})\subset\mathbb R^{d_i}\) has covolume</p>
+<div class="math-block">\[
+\sqrt{|\Delta_{K_i}|}.
+\]</div>
+<p>Since</p>
+<div class="math-block">\[
+|\Delta_{K_i}|^{1/d_i}\le D,
+\]</div>
+<p>we have</p>
+<div class="math-block">\[
+\sqrt{|\Delta_{K_i}|}\le D^{d_i/2}.
+\]</div>
+<p>We need two basic estimates for \(C_i(R)\).</p>
+<hr>
+<h2>Lemma 4.1 — lower and upper bounds for \(C_i(R)\)</h2>
+<p>For every \(R\ge 1\),</p>
+<div class="math-block">\[
+|C_i(R)|
+\ge
+\frac{R^{d_i}}{\sqrt{|\Delta_{K_i}|}}
+\ge
+R^{d_i}D^{-d_i/2},
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|C_i(R)|\le (5R)^{d_i}.
+\]</div>
+<h3>Proof</h3>
+<p>For the lower bound, apply Lemma 1.1 to the lattice</p>
+<div class="math-block">\[
+\sigma_i(\mathcal O_{K_i})\subset\mathbb R^{d_i}
+\]</div>
+<p>and the cube</p>
+<div class="math-block">\[
+[-R/2,R/2]^{d_i}.
+\]</div>
+<p>Its difference body is \([-R,R]^{d_i}\). Hence</p>
+<div class="math-block">\[
+|C_i(R)|
+=
+|\sigma_i(\mathcal O_{K_i})\cap[-R,R]^{d_i}|
+\ge
+\frac{R^{d_i}}{\sqrt{|\Delta_{K_i}|}}.
+\]</div>
+<p>For the upper bound, partition \([-R,R]^{d_i}\) into half-open cubes of side length \(1/2\). Since \(R\ge1\), this requires at most \((5R)^{d_i}\) small cubes.</p>
+<p>We claim each such small cube contains at most one point of \(\sigma_i(\mathcal O_{K_i})\). Indeed, if \(x\ne y\in\mathcal O_{K_i}\) lie in the same small cube, then for \(z=x-y\ne0\),</p>
+<div class="math-block">\[
+|\sigma_j(z)|&lt;\frac12
+\]</div>
+<p>for all \(j\). Therefore</p>
+<div class="math-block">\[
+|N_{K_i/\mathbb Q}(z)|
+=
+\prod_{j=1}^{d_i}|\sigma_j(z)|
+&lt;
+2^{-d_i}&lt;1.
+\]</div>
+<p>But \(z\in\mathcal O_{K_i}\setminus\{0\}\), so \(N_{K_i/\mathbb Q}(z)\) is a nonzero integer, contradiction. Thus each small cube contains at most one lattice point, giving</p>
+<div class="math-block">\[
+|C_i(R)|\le(5R)^{d_i}.
+\]</div>
+<p>\(\square\)</p>
+<hr>
+<p>We will also need a dilation estimate.</p>
+<h2>Lemma 4.2 — additive boxes have controlled dilation</h2>
+<p>For every \(L\ge1\) and \(R\ge1\),</p>
+<div class="math-block">\[
+|C_i(LR)|
+\le
+(2L+1)^{d_i}|C_i(R)|.
+\]</div>
+<h3>Proof</h3>
+<p>Apply Lemma 1.2 to the lattice \(\sigma_i(\mathcal O_{K_i})\subset\mathbb R^{d_i}\) and the cube \([-R,R]^{d_i}\). Since</p>
+<div class="math-block">\[
+[-LR,LR]^{d_i}
+=
+L[-R,R]^{d_i},
+\]</div>
+<p>we get</p>
+<div class="math-block">\[
+|C_i(LR)|
+\le
+(2L+1)^{d_i}|C_i(R)|.
+\]</div>
+<p>\(\square\)</p>
+<hr>
+<h1>5. Choice of the additive core</h1>
+<p>Recall that \(S\) has been fixed, and every \(u\in U_i\) satisfies</p>
+<div class="math-block">\[
+|\sigma_j(u)|\le e^S
+\]</div>
+<p>for every embedding \(\sigma_j\).</p>
+<p>Define</p>
+<div class="math-block">\[
+\Theta:=\log(4e^S+1).
+\]</div>
+<p>We will choose \(C_i\) so that its size is comparable to \(|U_i|\) but larger by a factor that compensates for the additive expansion by \(e^S\).</p>
+<p>Set</p>
+<div class="math-block">\[
+M:=\Theta+\frac12\log D+1.
+\]</div>
+<p>For each sufficiently large \(i\), define</p>
+<div class="math-block">\[
+R_i:=\exp\left(\frac{a_i}{d_i}+M\right),
+\]</div>
+<p>and put</p>
+<div class="math-block">\[
+C_i:=C_i(R_i).
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+c_i:=\log|C_i|.
+\]</div>
+<p>By Lemma 4.1,</p>
+<div class="math-block">\[
+|C_i|
+\ge
+R_i^{d_i}D^{-d_i/2}
+=
+\exp\left(a_i+Md_i-\frac12(\log D)d_i\right).
+\]</div>
+<p>Since</p>
+<div class="math-block">\[
+M-\frac12\log D
+=
+\Theta+1,
+\]</div>
+<p>we get</p>
+<div class="math-block">\[
+c_i
+\ge
+a_i+(\Theta+1)d_i.
+\]</div>
+<p>Also by Lemma 4.1,</p>
+<div class="math-block">\[
+|C_i|
+\le
+(5R_i)^{d_i}
+=
+\exp\left(a_i+(M+\log5)d_i\right).
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+B:=M+\log5.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+c_i\le a_i+B d_i.
+\]</div>
+<p>Thus we have, for every sufficiently large \(i\),</p>
+<div class="math-block">\[
+a_i\ge \alpha d_i,
+\]</div>
+<div class="math-block">\[
+a_i+(\Theta+1)d_i
+\le
+c_i
+\le
+a_i+B d_i.
+\]</div>
+<hr>
+<h1>6. The final set and the separating shift</h1>
+<p>We need a harmless shift to ensure that</p>
+<div class="math-block">\[
+|U_i(q_i+C_i)|=|U_i||C_i|.
+\]</div>
+<p>We use the following elementary lemma.</p>
+<h2>Lemma 6.1 — finite shift separation</h2>
+<p>Let \(K\) be a field of characteristic \(0\), let \(U\subset K^\times\) and \(C\subset K\) be finite. Then all but finitely many integers \(q\) have the property that the map</p>
+<div class="math-block">\[
+U\times C\to K,
+\qquad
+(u,c)\mapsto u(q+c),
+\]</div>
+<p>is injective.</p>
+<h3>Proof</h3>
+<p>Suppose</p>
+<div class="math-block">\[
+u(q+c)=v(q+c&#x27;)
+\]</div>
+<p>with \(u,v\in U\) and \(c,c'\in C\).</p>
+<p>If \(u=v\), then \(c=c'\).</p>
+<p>If \(u\ne v\), then</p>
+<div class="math-block">\[
+q(u-v)=vc&#x27;-uc,
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+q=\frac{vc&#x27;-uc}{u-v}.
+\]</div>
+<p>For each quadruple \((u,v,c,c')\) with \(u\ne v\), this excludes at most one value of \(q\). There are only finitely many such quadruples. Therefore all but finitely many integers \(q\) work. \(\square\)</p>
+<hr>
+<p>For each large \(i\), choose an integer \(q_i\) satisfying Lemma 6.1 for \(U_i,C_i\).</p>
+<p>Define</p>
+<div class="math-block">\[
+E_i:=U_i(q_i+C_i)\subset K_i.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+|E_i|=|U_i||C_i|.
+\]</div>
+<p>Finally, choose one real embedding \(\sigma_1:K_i\hookrightarrow\mathbb R\), and define</p>
+<div class="math-block">\[
+A_i:=\sigma_1(E_i)\subset\mathbb R.
+\]</div>
+<p>Since \(\sigma_1\) is injective, cardinalities of sumsets and product sets are preserved under \(\sigma_1\). Thus it suffices to prove the desired bounds for \(E_i\subset K_i\).</p>
+<p>Let</p>
+<div class="math-block">\[
+N_i:=|E_i|.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+\log N_i=a_i+c_i.
+\]</div>
+<p>For readability, in the rest of the proof fix \(i\) and write</p>
+<div class="math-block">\[
+d=d_i,\qquad a=a_i,\qquad c=c_i,\qquad N=N_i.
+\]</div>
+<p>So</p>
+<div class="math-block">\[
+\log N=a+c.
+\]</div>
+<hr>
+<h1>7. Sumset estimate</h1>
+<p>Take two elements of \(E_i\):</p>
+<div class="math-block">\[
+u(q_i+x),\qquad v(q_i+y),
+\]</div>
+<p>with \(u,v\in U_i\) and \(x,y\in C_i\). Their sum is</p>
+<div class="math-block">\[
+u(q_i+x)+v(q_i+y)
+=
+q_i(u+v)+ux+vy.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+E_i+E_i
+\subseteq
+\bigcup_{u,v\in U_i}
+\left(
+q_i(u+v)+uC_i+vC_i
+\right).
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|E_i+E_i|
+\le
+|U_i|^2
+\max_{u,v\in U_i}|uC_i+vC_i|.
+\]</div>
+<p>Now fix \(u,v\in U_i\). Since \(\ell_i(u),\ell_i(v)\in[-S,S]^d\),</p>
+<div class="math-block">\[
+|\sigma_j(u)|\le e^S,\qquad |\sigma_j(v)|\le e^S
+\]</div>
+<p>for every \(j\). If \(x,y\in C_i=C_i(R_i)\), then</p>
+<div class="math-block">\[
+|\sigma_j(ux+vy)|
+\le
+|\sigma_j(u)|\,|\sigma_j(x)|
++
+|\sigma_j(v)|\,|\sigma_j(y)|
+\le
+2e^S R_i.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+uC_i+vC_i
+\subseteq
+C_i(2e^S R_i).
+\]</div>
+<p>By Lemma 4.2 with</p>
+<div class="math-block">\[
+L=2e^S,
+\]</div>
+<p>we get</p>
+<div class="math-block">\[
+|C_i(2e^S R_i)|
+\le
+(4e^S+1)^d |C_i|
+=
+e^{\Theta d}|C_i|.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|E_i+E_i|
+\le
+|U_i|^2 e^{\Theta d}|C_i|.
+\]</div>
+<p>Taking logs,</p>
+<div class="math-block">\[
+\log|E_i+E_i|
+\le
+2a+c+\Theta d.
+\]</div>
+<p>Since</p>
+<div class="math-block">\[
+\log N=a+c,
+\]</div>
+<p>we can rewrite this as</p>
+<div class="math-block">\[
+\log|E_i+E_i|
+\le
+2\log N-(c-\Theta d).
+\]</div>
+<p>But from the construction of \(C_i\),</p>
+<div class="math-block">\[
+c\ge a+(\Theta+1)d.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+c-\Theta d\ge a+d.
+\]</div>
+<p>Also</p>
+<div class="math-block">\[
+c\le a+Bd,
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+\log N=a+c\le 2a+Bd.
+\]</div>
+<p>Since \(a\ge \alpha d\), write \(x=a/d\ge\alpha\). Then</p>
+<div class="math-block">\[
+\frac{a+d}{2a+Bd}
+=
+\frac{x+1}{2x+B}.
+\]</div>
+<p>Because \(B&gt;2\), the function</p>
+<div class="math-block">\[
+x\mapsto \frac{x+1}{2x+B}
+\]</div>
+<p>is increasing for \(x\ge0\). Hence</p>
+<div class="math-block">\[
+\frac{a+d}{2a+Bd}
+\ge
+\frac{\alpha+1}{2\alpha+B}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+c-\Theta d
+\ge
+\frac{\alpha+1}{2\alpha+B}\log N.
+\]</div>
+<p>So</p>
+<div class="math-block">\[
+\log|E_i+E_i|
+\le
+\left(
+2-\frac{\alpha+1}{2\alpha+B}
+\right)\log N.
+\]</div>
+<hr>
+<h1>8. Product set estimate</h1>
+<p>We have</p>
+<div class="math-block">\[
+E_iE_i
+\subseteq
+(U_iU_i)(q_i+C_i)(q_i+C_i).
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|E_iE_i|
+\le
+|U_iU_i|\, |(q_i+C_i)(q_i+C_i)|.
+\]</div>
+<p>The trivial bound gives</p>
+<div class="math-block">\[
+|(q_i+C_i)(q_i+C_i)|\le |C_i|^2.
+\]</div>
+<p>Also we proved</p>
+<div class="math-block">\[
+|U_iU_i|\le 10^d|U_i|.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|E_iE_i|
+\le
+10^d|U_i||C_i|^2.
+\]</div>
+<p>Taking logarithms,</p>
+<div class="math-block">\[
+\log|E_iE_i|
+\le
+Pd+a+2c,
+\]</div>
+<p>where \(P=\log10\). Since</p>
+<div class="math-block">\[
+\log N=a+c,
+\]</div>
+<p>this becomes</p>
+<div class="math-block">\[
+\log|E_iE_i|
+\le
+2\log N-(a-Pd).
+\]</div>
+<p>Because</p>
+<div class="math-block">\[
+a\ge \alpha d
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\alpha&gt;P,
+\]</div>
+<p>we have \(a-Pd&gt;0\). Again using</p>
+<div class="math-block">\[
+\log N=a+c\le 2a+Bd,
+\]</div>
+<p>we get</p>
+<div class="math-block">\[
+\frac{a-Pd}{\log N}
+\ge
+\frac{a-Pd}{2a+Bd}.
+\]</div>
+<p>Writing \(x=a/d\ge\alpha\),</p>
+<div class="math-block">\[
+\frac{a-Pd}{2a+Bd}
+=
+\frac{x-P}{2x+B}.
+\]</div>
+<p>The function</p>
+<div class="math-block">\[
+x\mapsto \frac{x-P}{2x+B}
+\]</div>
+<p>is increasing for \(x\ge P\), because its derivative is</p>
+<div class="math-block">\[
+\frac{B+2P}{(2x+B)^2}&gt;0.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+\frac{a-Pd}{2a+Bd}
+\ge
+\frac{\alpha-P}{2\alpha+B}.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+a-Pd
+\ge
+\frac{\alpha-P}{2\alpha+B}\log N.
+\]</div>
+<p>So</p>
+<div class="math-block">\[
+\log|E_iE_i|
+\le
+\left(
+2-\frac{\alpha-P}{2\alpha+B}
+\right)\log N.
+\]</div>
+<hr>
+<h1>9. Choosing a fixed \(\delta&gt;0\)</h1>
+<p>Recall</p>
+<div class="math-block">\[
+P=\log10,
+\]</div>
+<p>and we chose \(S\) so that</p>
+<div class="math-block">\[
+\alpha=\frac12\log(S/F)&gt;P.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+\frac{\alpha-P}{2\alpha+B}&gt;0.
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+\delta
+:=
+\frac12
+\min\left\{
+\frac{\alpha+1}{2\alpha+B},
+\frac{\alpha-P}{2\alpha+B}
+\right\}.
+\]</div>
+<p>This is a positive absolute constant. It depends only on the fixed tower and on the fixed choice of \(S\), not on \(i\).</p>
+<p>The estimates from Sections 7 and 8 imply that, for all sufficiently large \(i\),</p>
+<div class="math-block">\[
+|E_i+E_i|
+\le
+|E_i|^{2-\delta}
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|E_iE_i|
+\le
+|E_i|^{2-\delta}.
+\]</div>
+<p>Since \(\sigma_1:K_i\hookrightarrow\mathbb R\) is injective,</p>
+<div class="math-block">\[
+|A_i+A_i|
+=
+|E_i+E_i|,
+\qquad
+|A_iA_i|
+=
+|E_iE_i|,
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|A_i|=|E_i|.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+\max(|A_i+A_i|,\ |A_iA_i|)
+\le
+|A_i|^{2-\delta}.
+\]</div>
+<p>Finally,</p>
+<div class="math-block">\[
+\log|A_i|
+=
+a_i+c_i
+\ge
+2a_i+(\Theta+1)d_i
+\ge
+(2\alpha+\Theta+1)d_i,
+\]</div>
+<p>and \(d_i\to\infty\). Hence</p>
+<div class="math-block">\[
+|A_i|\to\infty.
+\]</div>
+<p>After discarding finitely many initial terms and reindexing, we obtain an infinite sequence \(\{A_i\}\) of finite subsets of \(\mathbb R\) with \(|A_i|\to\infty\) and</p>
+<div class="math-block">\[
+\max(|A_i+A_i|,\ |A_iA_i|)
+\le
+|A_i|^{2-\delta}
+\]</div>
+<p>for all \(i\).</p>
+<p>This proves the theorem. \(\square\)</p>
+<hr>
+<h1>10. Summary of the construction</h1>
+<p>The final sets have the form</p>
+<div class="math-block">\[
+A_i=\sigma_1\bigl(U_i(q_i+C_i)\bigr)\subset\mathbb R,
+\]</div>
+<p>where:</p>
+<ul>
+<li>\(K_i\) is a totally real field from a bounded-root-discriminant class-field tower;</li>
+<li>\(U_i\) is a large finite set of units whose logarithmic embeddings lie in a fixed cube \([-S,S]^{d_i}\);</li>
+<li>\(C_i\) is an additive box of algebraic integers with embeddings bounded by \(R_i\);</li>
+<li>the shift \(q_i\in\mathbb Z\) ensures \(|U_i(q_i+C_i)|=|U_i||C_i|\).</li>
+</ul>
+<p>The core estimates are:</p>
+<div class="math-block">\[
+|U_iU_i|\le 10^{d_i}|U_i|,
+\]</div>
+<div class="math-block">\[
+|uC_i+vC_i|\le e^{\Theta d_i}|C_i|
+\qquad(u,v\in U_i),
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|C_i|\asymp_{\exp(O(d_i))} |U_i|e^{\Theta d_i}.
+\]</div>
+<p>Thus both sumset and product set lose essentially one factor of \(|U_i|\) compared with the trivial quadratic bound. Since \(|U_i|\) is exponentially large in \(d_i\), this produces a fixed power saving.</p>
+<hr>
+<h1>Round 3</h1>
+<h2>User</h2>
+<blockquote><p>Critically examine the proof you constructed to identify and resolve any errors or logical gaps. Then, present a complete, rigorous, step-by-step proof. Clearly justify each step with sufficient detail so that an expert can verify your reasoning without needing to fill in any gaps.</p></blockquote>
+<h2>Assistant</h2>
+<h2>Critical audit of the previous proof</h2>
+<p>The general strategy was sound, but several points needed to be made precise.</p>
+<ol>
+<li><p><strong>Totally real bounded-root-discriminant fields.</strong> One must explicitly use a theorem of Martinet/Golod–Shafarevich giving infinitely many totally real fields of unbounded degree and bounded root discriminant. Ordinary Hilbert class-field towers are not automatically totally real unless infinite places are controlled.</p></li>
+<li><p><strong>Regulator bound.</strong> Bounded root discriminant does not by itself visibly imply a bounded-covolume unit lattice. We need to use the analytic class number formula plus Landau’s residue bound for Dedekind zeta functions to prove that the logarithmic unit lattice has covolume at most \(F^d\).</p></li>
+<li><p><strong>No regularity assumption on lattices.</strong> The first plan invoked a “regular lattice” heuristic. The repaired proof avoids this: Blichfeldt’s theorem gives many lattice points in a fixed log cube from covolume alone, and a packing lemma gives the small-doubling estimate.</p></li>
+<li><p><strong>Kernel of the log map.</strong> The logarithmic embedding identifies \(u\) and \(-u\). This introduces at most a factor \(2\), which must be included in the bound for \(|UU|\).</p></li>
+<li><p><strong>Parameter bookkeeping.</strong> Instead of relying on asymptotic constants for \(|U_i|\) and \(|C_i|\), we choose the additive box size depending on the actual value of \(|U_i|\). This removes possible hidden assumptions.</p></li>
+</ol>
+<p>With these repairs, the proof is rigorous.</p>
+<hr>
+<h1>Proof</h1>
+<p>All logarithms are natural.</p>
+<p>We use the following three standard theorems.</p>
+<h3>Classical input 1: Martinet–Golod–Shafarevich</h3>
+<p>There exists an infinite sequence of totally real number fields \(K_i\) with degrees</p>
+<div class="math-block">\[
+d_i=[K_i:\mathbb Q]\to\infty
+\]</div>
+<p>and uniformly bounded root discriminant:</p>
+<div class="math-block">\[
+|\Delta_{K_i}|^{1/d_i}\le D
+\]</div>
+<p>for some absolute constant \(D\).</p>
+<h3>Classical input 2: Landau residue bound</h3>
+<p>There is an absolute constant \(C_L\) such that for every number field \(K\) of degree \(d\ge 2\),</p>
+<div class="math-block">\[
+\operatorname*{Res}_{s=1}\zeta_K(s)
+\le
+\left(C_L\max\left\{1,\frac{\log|\Delta_K|}{d}\right\}\right)^d .
+\]</div>
+<h3>Classical input 3: Vaaler’s cube-section theorem</h3>
+<p>If \(H\subset\mathbb R^d\) is a \(k\)-dimensional linear subspace, then</p>
+<div class="math-block">\[
+\operatorname{vol}_k\bigl(H\cap[-1/2,1/2]^d\bigr)\ge 1.
+\]</div>
+<p>In particular, for</p>
+<div class="math-block">\[
+H_d=\left\{x\in\mathbb R^d:\sum_{j=1}^d x_j=0\right\},
+\]</div>
+<p>we have</p>
+<div class="math-block">\[
+\operatorname{vol}_{d-1}\bigl(H_d\cap[-S/2,S/2]^d\bigr)\ge S^{d-1}.
+\]</div>
+<hr>
+<h2>1. Logarithmic unit lattices have exponentially bounded covolume</h2>
+<p>Fix the fields \(K_i\) from Martinet’s theorem. For each \(K_i\), let</p>
+<div class="math-block">\[
+\sigma_{i,1},\dots,\sigma_{i,d_i}:K_i\hookrightarrow\mathbb R
+\]</div>
+<p>be its real embeddings, and define the logarithmic embedding</p>
+<div class="math-block">\[
+\ell_i:\mathcal O_{K_i}^{\times}\to\mathbb R^{d_i}
+\]</div>
+<p>by</p>
+<div class="math-block">\[
+\ell_i(u)
+=
+\bigl(\log|\sigma_{i,1}(u)|,\dots,\log|\sigma_{i,d_i}(u)|\bigr).
+\]</div>
+<p>Since \(u\) is a unit,</p>
+<div class="math-block">\[
+\sum_{j=1}^{d_i}\log|\sigma_{i,j}(u)|
+=
+\log|N_{K_i/\mathbb Q}(u)|
+=
+0.
+\]</div>
+<p>Thus \(\ell_i(\mathcal O_{K_i}^{\times})\) lies in</p>
+<div class="math-block">\[
+H_i=
+\left\{x\in\mathbb R^{d_i}:\sum_{j=1}^{d_i}x_j=0\right\}.
+\]</div>
+<p>By Dirichlet’s unit theorem,</p>
+<div class="math-block">\[
+\Lambda_i:=\ell_i(\mathcal O_{K_i}^{\times})
+\]</div>
+<p>is a lattice in \(H_i\) of rank \(d_i-1\).</p>
+<p>We claim that there is a constant \(F\ge 1\) such that</p>
+<div class="math-block">\[
+\det(\Lambda_i)\le F^{d_i}
+\]</div>
+<p>for all \(i\).</p>
+<p>Indeed, let \(\operatorname{Reg}_{K_i}\) be the usual regulator. The Euclidean covolume of the full logarithmic unit lattice in \(H_i\) is</p>
+<div class="math-block">\[
+\det(\Lambda_i)=\sqrt{d_i}\operatorname{Reg}_{K_i}.
+\]</div>
+<p>The analytic class number formula for totally real fields gives</p>
+<div class="math-block">\[
+\operatorname*{Res}_{s=1}\zeta_{K_i}(s)
+=
+\frac{2^{d_i}h_{K_i}\operatorname{Reg}_{K_i}}{2\sqrt{|\Delta_{K_i}|}}
+=
+\frac{2^{d_i-1}h_{K_i}\operatorname{Reg}_{K_i}}{\sqrt{|\Delta_{K_i}|}}.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+\operatorname{Reg}_{K_i}
+\le
+h_{K_i}\operatorname{Reg}_{K_i}
+=
+2^{1-d_i}\sqrt{|\Delta_{K_i}|}\operatorname*{Res}_{s=1}\zeta_{K_i}(s)
+\le
+\sqrt{|\Delta_{K_i}|}\operatorname*{Res}_{s=1}\zeta_{K_i}(s).
+\]</div>
+<p>Since \(|\Delta_{K_i}|^{1/d_i}\le D\), Landau’s bound implies</p>
+<div class="math-block">\[
+\operatorname*{Res}_{s=1}\zeta_{K_i}(s)\le L^ {d_i}
+\]</div>
+<p>for some constant \(L\) depending only on \(D\). Therefore</p>
+<div class="math-block">\[
+\operatorname{Reg}_{K_i}\le D^{d_i/2}L^{d_i}.
+\]</div>
+<p>Since \(\sqrt{d_i}\le 2^{d_i}\), after increasing the constant if necessary we get</p>
+<div class="math-block">\[
+\det(\Lambda_i)
+=
+\sqrt{d_i}\operatorname{Reg}_{K_i}
+\le
+F^{d_i}.
+\]</div>
+<hr>
+<h2>2. Two elementary lattice lemmas</h2>
+<p>We will use the following standard consequences of Blichfeldt’s principle.</p>
+<h3>Lemma 2.1: difference-body lower bound</h3>
+<p>Let \(\Lambda\) be a lattice in an \(n\)-dimensional Euclidean space \(V\), and let \(B\subset V\) be bounded, measurable, and centrally symmetric. Then</p>
+<div class="math-block">\[
+|\Lambda\cap 2B|
+\ge
+\frac{\operatorname{vol}(B)}{\det\Lambda}.
+\]</div>
+<h4>Proof</h4>
+<p>Let \(P\) be a fundamental parallelepiped for \(\Lambda\). Averaging over \(x\in P\),</p>
+<div class="math-block">\[
+\frac{1}{\det\Lambda}\int_P |(x+B)\cap\Lambda|\,dx
+=
+\frac{\operatorname{vol}(B)}{\det\Lambda}.
+\]</div>
+<p>So some translate \(x+B\) contains at least \(\operatorname{vol}(B)/\det\Lambda\) lattice points. Subtract one of them from all the others. The resulting differences are distinct lattice points lying in \(B-B=2B\). Thus</p>
+<div class="math-block">\[
+|\Lambda\cap 2B|
+\ge
+\frac{\operatorname{vol}(B)}{\det\Lambda}.
+\]</div>
+<p>\(\square\)</p>
+<h3>Lemma 2.2: dilation upper bound</h3>
+<p>Let \(\Lambda\) be a lattice in an \(n\)-dimensional Euclidean space \(V\), and let \(B\subset V\) be a centrally symmetric convex body. For every \(t\ge 1\),</p>
+<div class="math-block">\[
+|\Lambda\cap tB|
+\le
+(2t+1)^n|\Lambda\cap B|.
+\]</div>
+<h4>Proof</h4>
+<p>Choose \(X\subseteq\Lambda\cap tB\) maximal such that for distinct \(x,x'\in X\),</p>
+<div class="math-block">\[
+x-x&#x27;\notin B.
+\]</div>
+<p>Then the translates \(x+\frac12B\), \(x\in X\), are pairwise disjoint and all lie inside \((t+\frac12)B\). Therefore</p>
+<div class="math-block">\[
+|X|\operatorname{vol}\left(\frac12B\right)
+\le
+\operatorname{vol}\left(\left(t+\frac12\right)B\right),
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+|X|\le (2t+1)^n.
+\]</div>
+<p>By maximality, every element of \(\Lambda\cap tB\) differs by an element of \(\Lambda\cap B\) from some element of \(X\). Hence</p>
+<div class="math-block">\[
+|\Lambda\cap tB|
+\le
+|X|\,|\Lambda\cap B|
+\le
+(2t+1)^n|\Lambda\cap B|.
+\]</div>
+<p>\(\square\)</p>
+<hr>
+<h2>3. Construction of many bounded units with small doubling</h2>
+<p>Choose a real number \(S&gt;0\) so large that</p>
+<div class="math-block">\[
+\alpha:=\frac12\log(S/F)&gt;\log 10.
+\]</div>
+<p>For each \(i\), define</p>
+<div class="math-block">\[
+Q_i(S):=H_i\cap[-S,S]^{d_i},
+\]</div>
+<p>and put</p>
+<div class="math-block">\[
+V_i:=\Lambda_i\cap Q_i(S).
+\]</div>
+<p>By Vaaler’s theorem,</p>
+<div class="math-block">\[
+\operatorname{vol}_{d_i-1}\left(H_i\cap[-S/2,S/2]^{d_i}\right)
+\ge
+S^{d_i-1}.
+\]</div>
+<p>Applying Lemma 2.1 to</p>
+<div class="math-block">\[
+B_i:=H_i\cap[-S/2,S/2]^{d_i},
+\]</div>
+<p>we get</p>
+<div class="math-block">\[
+|V_i|
+=
+|\Lambda_i\cap Q_i(S)|
+\ge
+\frac{S^{d_i-1}}{\det\Lambda_i}
+\ge
+\frac{S^{d_i-1}}{F^{d_i}}.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+\log |V_i|
+\ge
+d_i\log(S/F)-\log S.
+\]</div>
+<p>After discarding finitely many \(i\), we have</p>
+<div class="math-block">\[
+\log|V_i|\ge \alpha d_i.
+\]</div>
+<p>For each \(\lambda\in V_i\), choose one unit \(u_\lambda\in\mathcal O_{K_i}^{\times}\) satisfying</p>
+<div class="math-block">\[
+\ell_i(u_\lambda)=\lambda.
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+U_i:=\{u_\lambda:\lambda\in V_i\}.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+|U_i|=|V_i|.
+\]</div>
+<p>Set</p>
+<div class="math-block">\[
+a_i:=\log |U_i|.
+\]</div>
+<p>So for all remaining \(i\),</p>
+<div class="math-block">\[
+a_i\ge \alpha d_i.
+\]</div>
+<p>Now we prove small multiplicative doubling. Since \(U_i\) consists of units whose logarithmic vectors lie in \(Q_i(S)\),</p>
+<div class="math-block">\[
+\ell_i(U_iU_i)\subseteq \Lambda_i\cap Q_i(2S).
+\]</div>
+<p>The kernel of \(\ell_i\) on \(\mathcal O_{K_i}^{\times}\) consists of units all of whose conjugates have absolute value \(1\). By Kronecker’s theorem, these are roots of unity. Since \(K_i\) is totally real, the only roots of unity are \(\pm1\). Therefore each logarithmic vector has at most two unit preimages.</p>
+<p>Hence</p>
+<div class="math-block">\[
+|U_iU_i|
+\le
+2|\Lambda_i\cap Q_i(2S)|.
+\]</div>
+<p>By Lemma 2.2 in the \((d_i-1)\)-dimensional space \(H_i\), with \(t=2\),</p>
+<div class="math-block">\[
+|\Lambda_i\cap Q_i(2S)|
+\le
+5^{d_i-1}|\Lambda_i\cap Q_i(S)|
+=
+5^{d_i-1}|U_i|.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|U_iU_i|
+\le
+2\cdot 5^{d_i-1}|U_i|
+\le
+10^{d_i}|U_i|.
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+P:=\log 10.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+\log|U_iU_i|\le a_i+P d_i.
+\]</div>
+<hr>
+<h2>4. Additive boxes of algebraic integers</h2>
+<p>For \(R\ge 1\), define</p>
+<div class="math-block">\[
+C_i(R):=
+\left\{
+x\in\mathcal O_{K_i}:
+|\sigma_{i,j}(x)|\le R
+\text{ for all }j=1,\dots,d_i
+\right\}.
+\]</div>
+<p>The Minkowski lattice \(\sigma_i(\mathcal O_{K_i})\subset\mathbb R^{d_i}\) has covolume</p>
+<div class="math-block">\[
+\sqrt{|\Delta_{K_i}|}\le D^{d_i/2}.
+\]</div>
+<h3>Lemma 4.1</h3>
+<p>For every \(R\ge 1\),</p>
+<div class="math-block">\[
+|C_i(R)|\ge R^{d_i}D^{-d_i/2},
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|C_i(R)|\le (5R)^{d_i}.
+\]</div>
+<h4>Proof</h4>
+<p>For the lower bound, apply Lemma 2.1 to the lattice \(\sigma_i(\mathcal O_{K_i})\) and the cube \([-R/2,R/2]^{d_i}\). Its difference body is \([-R,R]^{d_i}\), so</p>
+<div class="math-block">\[
+|C_i(R)|
+\ge
+\frac{R^{d_i}}{\sqrt{|\Delta_{K_i}|}}
+\ge
+R^{d_i}D^{-d_i/2}.
+\]</div>
+<p>For the upper bound, partition \([-R,R]^{d_i}\) into half-open cubes of side length \(1/2\). Since \(R\ge 1\), there are at most \((5R)^{d_i}\) such cubes.</p>
+<p>Each small cube contains at most one point of \(\sigma_i(\mathcal O_{K_i})\). Indeed, if \(x\ne y\in\mathcal O_{K_i}\) had images in the same small cube, then \(z=x-y\ne0\) would satisfy</p>
+<div class="math-block">\[
+|\sigma_{i,j}(z)|&lt;\frac12
+\]</div>
+<p>for every \(j\). Therefore</p>
+<div class="math-block">\[
+|N_{K_i/\mathbb Q}(z)|
+=
+\prod_{j=1}^{d_i}|\sigma_{i,j}(z)|
+&lt;
+1,
+\]</div>
+<p>contradicting the fact that \(N_{K_i/\mathbb Q}(z)\) is a nonzero integer. Thus</p>
+<div class="math-block">\[
+|C_i(R)|\le (5R)^{d_i}.
+\]</div>
+<p>\(\square\)</p>
+<h3>Lemma 4.2</h3>
+<p>For every \(L\ge1\) and \(R\ge1\),</p>
+<div class="math-block">\[
+|C_i(LR)|
+\le
+(2L+1)^{d_i}|C_i(R)|.
+\]</div>
+<h4>Proof</h4>
+<p>Apply Lemma 2.2 to the lattice \(\sigma_i(\mathcal O_{K_i})\subset\mathbb R^{d_i}\) and the cube \([-R,R]^{d_i}\). \(\square\)</p>
+<hr>
+<h2>5. Choosing the additive core</h2>
+<p>Every \(u\in U_i\) satisfies</p>
+<div class="math-block">\[
+|\sigma_{i,j}(u)|\le e^S
+\]</div>
+<p>for all \(j\).</p>
+<p>Define constants</p>
+<div class="math-block">\[
+\Theta:=\log(4e^S+1),
+\]</div>
+<div class="math-block">\[
+M:=\Theta+\frac12\log D+1,
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\Gamma:=M+\log 5.
+\]</div>
+<p>For each \(i\), set</p>
+<div class="math-block">\[
+R_i:=\exp\left(\frac{a_i}{d_i}+M\right),
+\]</div>
+<p>and define</p>
+<div class="math-block">\[
+C_i:=C_i(R_i).
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+c_i:=\log |C_i|.
+\]</div>
+<p>By Lemma 4.1,</p>
+<div class="math-block">\[
+|C_i|
+\ge
+R_i^{d_i}D^{-d_i/2}
+=
+\exp\left(a_i+Md_i-\frac12(\log D)d_i\right)
+=
+\exp\left(a_i+(\Theta+1)d_i\right).
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+c_i\ge a_i+(\Theta+1)d_i.
+\]</div>
+<p>Also by Lemma 4.1,</p>
+<div class="math-block">\[
+|C_i|\le (5R_i)^{d_i}
+=
+\exp\left(a_i+(M+\log5)d_i\right)
+=
+\exp(a_i+\Gamma d_i).
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+c_i\le a_i+\Gamma d_i.
+\]</div>
+<p>So for every \(i\) under consideration,</p>
+<div class="math-block">\[
+a_i\ge\alpha d_i,
+\]</div>
+<div class="math-block">\[
+a_i+(\Theta+1)d_i\le c_i\le a_i+\Gamma d_i.
+\]</div>
+<hr>
+<h2>6. Separating the \(U_i\)-dilates</h2>
+<p>We need a shift ensuring that the sets \(u(q+C_i)\) are disjoint.</p>
+<h3>Lemma 6.1</h3>
+<p>Let \(K\) be a characteristic-zero field, let \(U\subset K^\times\) and \(C\subset K\) be finite. Then all but finitely many integers \(q\) make the map</p>
+<div class="math-block">\[
+U\times C\to K,
+\qquad
+(u,c)\mapsto u(q+c),
+\]</div>
+<p>injective.</p>
+<h4>Proof</h4>
+<p>Suppose</p>
+<div class="math-block">\[
+u(q+c)=v(q+c&#x27;)
+\]</div>
+<p>with \(u,v\in U\), \(c,c'\in C\). If \(u=v\), then \(c=c'\). If \(u\ne v\), then</p>
+<div class="math-block">\[
+q(u-v)=vc&#x27;-uc,
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+q=\frac{vc&#x27;-uc}{u-v}.
+\]</div>
+<p>For each quadruple \((u,v,c,c')\) with \(u\ne v\), this excludes at most one value of \(q\). Since there are finitely many quadruples, only finitely many integers \(q\) are bad. \(\square\)</p>
+<p>Choose such an integer \(q_i\) for \(U_i,C_i\), and define</p>
+<div class="math-block">\[
+E_i:=U_i(q_i+C_i)\subset K_i.
+\]</div>
+<p>By construction,</p>
+<div class="math-block">\[
+|E_i|=|U_i||C_i|.
+\]</div>
+<p>Finally, choose one embedding \(\sigma_{i,1}:K_i\hookrightarrow\mathbb R\), and set</p>
+<div class="math-block">\[
+A_i:=\sigma_{i,1}(E_i)\subset\mathbb R.
+\]</div>
+<p>Since \(\sigma_{i,1}\) is injective,</p>
+<div class="math-block">\[
+|A_i|=|E_i|,
+\]</div>
+<div class="math-block">\[
+|A_i+A_i|=|E_i+E_i|,
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|A_iA_i|=|E_iE_i|.
+\]</div>
+<p>It remains to estimate the sumset and product set of \(E_i\).</p>
+<hr>
+<h2>7. Sumset estimate</h2>
+<p>Fix \(i\), and write</p>
+<div class="math-block">\[
+d=d_i,\qquad a=a_i,\qquad c=c_i,\qquad N=|E_i|.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+\log N=a+c.
+\]</div>
+<p>Take two elements of \(E_i\):</p>
+<div class="math-block">\[
+u(q_i+x),\qquad v(q_i+y),
+\]</div>
+<p>with \(u,v\in U_i\) and \(x,y\in C_i\). Their sum is</p>
+<div class="math-block">\[
+u(q_i+x)+v(q_i+y)
+=
+q_i(u+v)+ux+vy.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+E_i+E_i
+\subseteq
+\bigcup_{u,v\in U_i}
+\bigl(q_i(u+v)+uC_i+vC_i\bigr).
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+|E_i+E_i|
+\le
+|U_i|^2
+\max_{u,v\in U_i}|uC_i+vC_i|.
+\]</div>
+<p>Now if \(x,y\in C_i=C_i(R_i)\), then for every embedding \(\sigma_{i,j}\),</p>
+<div class="math-block">\[
+|\sigma_{i,j}(ux+vy)|
+\le
+|\sigma_{i,j}(u)|\,|\sigma_{i,j}(x)|
++
+|\sigma_{i,j}(v)|\,|\sigma_{i,j}(y)|
+\le
+2e^S R_i.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+uC_i+vC_i\subseteq C_i(2e^S R_i).
+\]</div>
+<p>By Lemma 4.2 with \(L=2e^S\),</p>
+<div class="math-block">\[
+|C_i(2e^S R_i)|
+\le
+(4e^S+1)^d|C_i|
+=
+e^{\Theta d}|C_i|.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|E_i+E_i|
+\le
+|U_i|^2 e^{\Theta d}|C_i|.
+\]</div>
+<p>Taking logarithms,</p>
+<div class="math-block">\[
+\log|E_i+E_i|
+\le
+2a+c+\Theta d.
+\]</div>
+<p>Since \(\log N=a+c\),</p>
+<div class="math-block">\[
+2a+c+\Theta d
+=
+2\log N-(c-\Theta d).
+\]</div>
+<p>But</p>
+<div class="math-block">\[
+c\ge a+(\Theta+1)d,
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+c-\Theta d\ge a+d.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+\log|E_i+E_i|
+\le
+2\log N-(a+d).
+\]</div>
+<p>We now compare \(a+d\) with \(\log N\). Since</p>
+<div class="math-block">\[
+c\le a+\Gamma d,
+\]</div>
+<p>we have</p>
+<div class="math-block">\[
+\log N=a+c\le 2a+\Gamma d.
+\]</div>
+<p>Write \(x=a/d\). We know \(x\ge\alpha\). Hence</p>
+<div class="math-block">\[
+\frac{a+d}{\log N}
+\ge
+\frac{a+d}{2a+\Gamma d}
+=
+\frac{x+1}{2x+\Gamma}.
+\]</div>
+<p>Because \(\Gamma&gt;2\), the function</p>
+<div class="math-block">\[
+x\mapsto \frac{x+1}{2x+\Gamma}
+\]</div>
+<p>is increasing for \(x\ge0\). Thus</p>
+<div class="math-block">\[
+\frac{a+d}{\log N}
+\ge
+\frac{\alpha+1}{2\alpha+\Gamma}.
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+\eta_+:=\frac{\alpha+1}{2\alpha+\Gamma}&gt;0.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+\log|E_i+E_i|
+\le
+(2-\eta_+)\log N,
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+|E_i+E_i|\le N^{2-\eta_+}.
+\]</div>
+<hr>
+<h2>8. Product set estimate</h2>
+<p>We have</p>
+<div class="math-block">\[
+E_iE_i
+\subseteq
+(U_iU_i)(q_i+C_i)(q_i+C_i).
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|E_iE_i|
+\le
+|U_iU_i|\, |(q_i+C_i)(q_i+C_i)|.
+\]</div>
+<p>The trivial bound gives</p>
+<div class="math-block">\[
+|(q_i+C_i)(q_i+C_i)|\le |C_i|^2.
+\]</div>
+<p>Also,</p>
+<div class="math-block">\[
+|U_iU_i|\le 10^d|U_i|.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|E_iE_i|
+\le
+10^d|U_i||C_i|^2.
+\]</div>
+<p>Taking logarithms,</p>
+<div class="math-block">\[
+\log|E_iE_i|
+\le
+Pd+a+2c,
+\]</div>
+<p>where \(P=\log10\). Since \(\log N=a+c\),</p>
+<div class="math-block">\[
+Pd+a+2c
+=
+2\log N-(a-Pd).
+\]</div>
+<p>Because \(a\ge\alpha d\) and \(\alpha&gt;P\),</p>
+<div class="math-block">\[
+a-Pd&gt;0.
+\]</div>
+<p>Again using</p>
+<div class="math-block">\[
+\log N\le 2a+\Gamma d,
+\]</div>
+<p>we get</p>
+<div class="math-block">\[
+\frac{a-Pd}{\log N}
+\ge
+\frac{a-Pd}{2a+\Gamma d}.
+\]</div>
+<p>Writing \(x=a/d\ge\alpha\),</p>
+<div class="math-block">\[
+\frac{a-Pd}{2a+\Gamma d}
+=
+\frac{x-P}{2x+\Gamma}.
+\]</div>
+<p>The function</p>
+<div class="math-block">\[
+x\mapsto \frac{x-P}{2x+\Gamma}
+\]</div>
+<p>is increasing for \(x\ge P\), since its derivative is</p>
+<div class="math-block">\[
+\frac{\Gamma+2P}{(2x+\Gamma)^2}&gt;0.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+\frac{a-Pd}{\log N}
+\ge
+\frac{\alpha-P}{2\alpha+\Gamma}.
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+\eta_\times:=\frac{\alpha-P}{2\alpha+\Gamma}&gt;0.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+\log|E_iE_i|
+\le
+(2-\eta_\times)\log N,
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+|E_iE_i|\le N^{2-\eta_\times}.
+\]</div>
+<hr>
+<h2>9. Final choice of \(\delta\)</h2>
+<p>Set</p>
+<div class="math-block">\[
+\delta
+:=
+\frac12\min\{\eta_+,\eta_\times\}.
+\]</div>
+<p>Since \(\eta_+&gt;0\) and \(\eta_\times&gt;0\), we have \(\delta&gt;0\).</p>
+<p>For every sufficiently large \(i\),</p>
+<div class="math-block">\[
+|E_i+E_i|\le |E_i|^{2-\delta}
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|E_iE_i|\le |E_i|^{2-\delta}.
+\]</div>
+<p>Passing through the embedding \(\sigma_{i,1}\), we obtain</p>
+<div class="math-block">\[
+|A_i+A_i|\le |A_i|^{2-\delta}
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|A_iA_i|\le |A_i|^{2-\delta}.
+\]</div>
+<p>Finally,</p>
+<div class="math-block">\[
+\log|A_i|
+=
+\log|E_i|
+=
+a_i+c_i
+\ge
+2a_i+(\Theta+1)d_i
+\ge
+(2\alpha+\Theta+1)d_i.
+\]</div>
+<p>Since \(d_i\to\infty\), this implies</p>
+<div class="math-block">\[
+|A_i|\to\infty.
+\]</div>
+<p>Discarding finitely many initial terms and reindexing, we get an infinite sequence of finite sets \(A_i\subset\mathbb R\) such that \(|A_i|\to\infty\) and</p>
+<div class="math-block">\[
+\max(|A_i+A_i|,\ |A_iA_i|)
+\le
+|A_i|^{2-\delta}
+\]</div>
+<p>for every \(i\).</p>
+<p>This proves the theorem. \(\square\)</p>
+<hr>
+</main>
+</body>
+</html>

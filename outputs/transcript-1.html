@@ -1,0 +1,2339 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Transcript</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <style>
+    body {
+      margin: 0;
+      background: #f7f7f4;
+      color: #1f2328;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.62;
+    }
+    main {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 40px 28px 80px;
+      background: #fff;
+      min-height: 100vh;
+      box-shadow: 0 0 0 1px #e4e4df;
+    }
+    h1, h2, h3 { line-height: 1.25; margin-top: 1.7em; }
+    h1 { font-size: 30px; }
+    h2 { font-size: 24px; border-bottom: 1px solid #e5e5e0; padding-bottom: 4px; }
+    h3 { font-size: 19px; }
+    p { margin: 0 0 1em; }
+    blockquote {
+      border-left: 4px solid #b8c4d6;
+      margin: 1.2em 0;
+      padding: 0.2em 1em;
+      background: #f7f9fc;
+    }
+    pre {
+      overflow-x: auto;
+      background: #f2f2ee;
+      padding: 12px;
+      border-radius: 6px;
+    }
+    code {
+      background: #f2f2ee;
+      padding: 1px 4px;
+      border-radius: 4px;
+    }
+    pre code {
+      background: none;
+      padding: 0;
+    }
+    .math-block {
+      overflow-x: auto;
+      margin: 1.1em 0;
+      padding: 0.2em 0;
+    }
+    mjx-container {
+      overflow-x: auto;
+      overflow-y: hidden;
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Transcript</h1>
+<h2>System prompt</h2>
+<blockquote><p>The provided theorem was recently proved, and the result is now accepted by the mathematical community. Your task is to independently construct a proof.</p></blockquote>
+<hr>
+<h1>Round 1</h1>
+<h2>User</h2>
+<blockquote><p><strong>Theorem.</strong> There exist an absolute constant $\delta &gt; 0$ and an infinite sequence $\{A_i\}$ of finite subsets of $\mathbb{R}$ such that $|A_i| \to \infty$ and $\max(|A_i+A_i|, |A_iA_i|) \le |A_i|^{2-\delta}$ for all $i$, where $A_i+A_i = \{ a+b : a,b \in A_i \}$ and $A_iA_i = \{ ab : a,b \in A_i \}$ are the sumset and product set of $A_i$, respectively.</p>
+<p><strong>Remark.</strong> This result disproves the Erdős–Szemerédi Sum-Product Conjecture over $\mathbb{R}$.</p>
+<hr>
+<p>As a first step toward a complete proof, identify the most promising approach and develop it as far as possible. Present a step-by-step proof plan. Prove any intermediate claims you can. For each remaining gap, state it precisely and assess whether it can plausibly be closed within the approach or poses a serious obstruction. Include enough detail for the next round to continue from where you leave off.</p></blockquote>
+<h2>Assistant</h2>
+<p>Below is the approach I would pursue first.  I will be explicit about what is proved and what remains.</p>
+<p>The main message is:</p>
+<p><em>The usual “put many integers in a short interval and use smoothness to make products collide” route cannot give a fixed power saving; there is a divisor-function obstruction.  A more promising route is to import the perfect finite-field model through residue rings of totally real number fields, and then control the archimedean “carry” by choosing small lifts of residue classes.</em></p>
+<p>This reduces the theorem to a precise “small structured section” problem for \(\mathcal O_K/q\mathcal O_K\).  I prove the reduction completely.</p>
+<hr>
+<h2>0. Why the standard integer/smooth-number route is not enough</h2>
+<p>A very natural idea is:</p>
+<ol>
+<li>choose \(A\subset \{1,\dots,N\}\), so \(|A+A|\le 2N\);</li>
+<li>make \(A\) multiplicatively structured, so \(|AA|\) is small;</li>
+<li>take \(N\le |A|^{2-\delta}\).</li>
+</ol>
+<p>This is how the classical Erdős–Szemerédi examples with</p>
+<div class="math-block">\[
+\max(|A+A|,|AA|)\le |A|^{2-o(1)}
+\]</div>
+<p>are built, using smooth numbers.  But this route cannot produce a fixed \(\delta&gt;0\).</p>
+<h3>Lemma 0.1: divisor obstruction for integer intervals</h3>
+<p>Let \(A\subset \{1,\dots,N\}\) with \(|A|=n\).  Then</p>
+<div class="math-block">\[
+|AA|\ge \frac{n^2}{\exp(O(\log N/\log\log N))}.
+\]</div>
+<p>In particular, if \(N\le n^C\) for some fixed \(C\), then</p>
+<div class="math-block">\[
+|AA|\ge n^{2-o(1)}.
+\]</div>
+<h4>Proof</h4>
+<p>For each integer \(m\), let</p>
+<div class="math-block">\[
+r(m)=|\{(a,b)\in A^2:ab=m\}|.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+\sum_m r(m)=n^2.
+\]</div>
+<p>Also, for \(m\le N^2\), the number of ordered factorisations \(m=ab\) with \(a,b\in\{1,\dots,N\}\) is at most the divisor function \(\tau(m)\), up to a harmless factor.  The standard divisor bound gives</p>
+<div class="math-block">\[
+\tau(m)\le \exp(O(\log m/\log\log m))
+       \le \exp(O(\log N/\log\log N)).
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+n^2=\sum_{m\in AA} r(m)
+   \le |AA|\exp(O(\log N/\log\log N)),
+\]</div>
+<p>which proves the claim. \(\square\)</p>
+<p>So if additive smallness comes merely from \(A\subset [N]\) with \(N\le n^{2-\delta}\), then the product set still satisfies \(|AA|\ge n^{2-o(1)}\), which is too large for a fixed-power counterexample.</p>
+<p>This is why I think the successful construction must leave the ordinary integer lattice and use algebraic-number “carry” or residue-ring structure.</p>
+<hr>
+<h1>1. Most promising approach: lift a finite ring model into a totally real number field</h1>
+<p>Finite fields give the ideal model: if \(F\) is a finite field, then \(F+F=F\) and \(FF=F\).  The obstruction is that no finite field embeds into \(\mathbb R\).</p>
+<p>The idea is to take a totally real number field \(K\), reduce \(\mathcal O_K\) modulo an integer \(q\), use a highly structured subset \(B\subset \mathcal O_K/q\mathcal O_K\), and choose small real/algebraic lifts of the elements of \(B\).  If the lifts are small enough, then equality modulo \(q\) forces equality over \(K\), or at least gives only boundedly many archimedean carries.</p>
+<p>The real set will be</p>
+<div class="math-block">\[
+A=\{\sigma_1(x_b): b\in B\}\subset \mathbb R,
+\]</div>
+<p>where \(\sigma_1:K\hookrightarrow \mathbb R\) is one fixed real embedding and \(x_b\in\mathcal O_K\) is a chosen lift of \(b\).</p>
+<p>The finite quotient \(B\) controls the number of possible residues of sums and products.  The archimedean size of the lifts controls how many different algebraic integers can occur in one residue class.</p>
+<hr>
+<h1>2. Basic counting in totally real fields</h1>
+<p>Let \(K\) be a totally real number field of degree \(d\).  Let</p>
+<div class="math-block">\[
+\Sigma=\{\sigma_1,\dots,\sigma_d\}
+\]</div>
+<p>be its real embeddings.  For \(\alpha\in K\), define</p>
+<div class="math-block">\[
+\|\alpha\|_\infty:=\max_{1\le j\le d}|\sigma_j(\alpha)|.
+\]</div>
+<p>We will repeatedly use the following elementary packing lemma.</p>
+<h2>Lemma 2.1: algebraic-integer packing</h2>
+<p>For \(T\ge 0\), define</p>
+<div class="math-block">\[
+P_K(T):=
+\sup_{y\in \mathbb R^d}
+\#\left\{
+\alpha\in \mathcal O_K:
+\max_{1\le j\le d}|\sigma_j(\alpha)-y_j|\le T
+\right\}.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+P_K(T)\le (2T+1)^d.
+\]</div>
+<p>In particular, if \(T&lt;1/2\), then \(P_K(T)=1\).</p>
+<h3>Proof</h3>
+<p>If \(\alpha,\beta\in\mathcal O_K\) are distinct, then \(\alpha-\beta\neq 0\), so</p>
+<div class="math-block">\[
+N_{K/\mathbb Q}(\alpha-\beta)\in\mathbb Z\setminus\{0\}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+\prod_{j=1}^d |\sigma_j(\alpha-\beta)|
+=
+|N_{K/\mathbb Q}(\alpha-\beta)|
+\ge 1.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+\max_j |\sigma_j(\alpha-\beta)|\ge 1.
+\]</div>
+<p>So the embedded lattice \(\Sigma(\mathcal O_K)\subset \mathbb R^d\) is \(1\)-separated in the \(\ell^\infty\)-metric.</p>
+<p>Now take any translate \(y+[-T,T]^d\).  Around each point of \(\Sigma(\mathcal O_K)\) in this box, put an \(\ell^\infty\)-ball of radius \(1/2\).  These balls are disjoint and all lie inside</p>
+<div class="math-block">\[
+y+[-T-1/2,T+1/2]^d,
+\]</div>
+<p>whose volume is \((2T+1)^d\).  Each small ball has volume \(1\).  Thus there are at most \((2T+1)^d\) points.</p>
+<p>If \(T&lt;1/2\), the box has \(\ell^\infty\)-diameter \(2T&lt;1\), so it contains at most one point. \(\square\)</p>
+<hr>
+<h1>3. The finite-ring lifting criterion</h1>
+<p>Let \(q\ge 2\) be an integer.  Write</p>
+<div class="math-block">\[
+\rho_q:\mathcal O_K\to \mathcal O_K/q\mathcal O_K
+\]</div>
+<p>for reduction modulo \(q\).</p>
+<p>Let \(B\subset \mathcal O_K/q\mathcal O_K\) be finite.  Suppose we choose a lift</p>
+<div class="math-block">\[
+s:B\to \mathcal O_K,\qquad \rho_q(s(b))=b,
+\]</div>
+<p>with uniform archimedean bound</p>
+<div class="math-block">\[
+\|s(b)\|_\infty\le H
+\qquad\text{for all }b\in B.
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+A:=\{\sigma_1(s(b)):b\in B\}\subset \mathbb R.
+\]</div>
+<p>Because \(\sigma_1\) is injective on \(K\), distinct lifts give distinct real numbers.  Since the residues \(b\in B\) are distinct, the lifts \(s(b)\) are distinct, so</p>
+<div class="math-block">\[
+|A|=|B|.
+\]</div>
+<p>We now bound \(|A+A|\) and \(|AA|\).</p>
+<h2>Proposition 3.1: lifting criterion</h2>
+<p>With notation as above,</p>
+<div class="math-block">\[
+|A+A|
+\le
+|B+B|\,P_K(2H/q),
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|AA|
+\le
+|BB|\,P_K(H^2/q),
+\]</div>
+<p>where \(B+B\) and \(BB\) are computed in the finite ring \(\mathcal O_K/q\mathcal O_K\).</p>
+<h3>Proof</h3>
+<p>First consider sums.  For \(b_1,b_2\in B\),</p>
+<div class="math-block">\[
+\rho_q(s(b_1)+s(b_2))=b_1+b_2.
+\]</div>
+<p>Thus the residue of a sum lies in \(B+B\).  Fix one residue \(r\in B+B\).  We count how many algebraic integers of the form</p>
+<div class="math-block">\[
+s(b_1)+s(b_2)
+\]</div>
+<p>can have residue \(r\).</p>
+<p>All such sums lie in one coset of \(q\mathcal O_K\).  Divide by \(q\).  The corresponding points lie in one translate of \(\mathcal O_K\), and their archimedean coordinates have absolute value at most</p>
+<div class="math-block">\[
+\frac{2H}{q}.
+\]</div>
+<p>Therefore, by the definition of \(P_K\), there are at most \(P_K(2H/q)\) such sums for each residue \(r\).  Hence</p>
+<div class="math-block">\[
+|A+A|\le |B+B|P_K(2H/q).
+\]</div>
+<p>The product bound is analogous.  For \(b_1,b_2\in B\),</p>
+<div class="math-block">\[
+\rho_q(s(b_1)s(b_2))=b_1b_2.
+\]</div>
+<p>The residue lies in \(BB\).  For a fixed residue \(r\in BB\), all products with that residue lie in one coset of \(q\mathcal O_K\), and after dividing by \(q\), their archimedean coordinates have absolute value at most</p>
+<div class="math-block">\[
+\frac{H^2}{q}.
+\]</div>
+<p>So there are at most \(P_K(H^2/q)\) products per residue.  Therefore</p>
+<div class="math-block">\[
+|AA|\le |BB|P_K(H^2/q).
+\]</div>
+<p>\(\square\)</p>
+<hr>
+<h1>4. Immediate consequence: sub-square lifts would finish the theorem</h1>
+<p>Suppose one could arrange a finite quotient model \(B\) with small residue sum/product and lifts with</p>
+<div class="math-block">\[
+H&lt;\min(q/4,\sqrt{q}/2).
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+2H/q&lt;1/2,
+\qquad
+H^2/q&lt;1/2,
+\]</div>
+<p>so by Lemma 2.1,</p>
+<div class="math-block">\[
+P_K(2H/q)=P_K(H^2/q)=1.
+\]</div>
+<p>Hence Proposition 3.1 gives</p>
+<div class="math-block">\[
+|A+A|\le |B+B|,
+\qquad
+|AA|\le |BB|.
+\]</div>
+<p>Therefore, if \(B\) is itself a finite subring of \(\mathcal O_K/q\mathcal O_K\), then</p>
+<div class="math-block">\[
+B+B=B,\qquad BB\subseteq B,
+\]</div>
+<p>and we get the extremely strong bound</p>
+<div class="math-block">\[
+|A+A|,\ |AA|\le |A|.
+\]</div>
+<p>So one route to the theorem would be:</p>
+<blockquote><p>Find finite subrings \(B_i\subset \mathcal O_{K_i}/q_i\mathcal O_{K_i}\) with \(|B_i|\to\infty\), and lift each element \(b\in B_i\) to \(x_b\in\mathcal O_{K_i}\) with \(\|x_b\|_\infty&lt;q_i^{1/2-o(1)}\).</p></blockquote>
+<p>This is an idealized target.  The serious difficulty is that \(q^{1/2}\) is a natural barrier for idempotent-like residue classes, as explained below.</p>
+<hr>
+<h1>5. A concrete borderline model: Boolean residue cubes</h1>
+<p>The cleanest structured residue model is the Boolean cube.</p>
+<p>Assume \(q\) is an odd rational prime that splits completely in \(K\).  Then</p>
+<div class="math-block">\[
+\mathcal O_K/q\mathcal O_K\cong \mathbb F_q^d.
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+B=\{0,1\}^d\subset \mathbb F_q^d.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+|B|=2^d,
+\]</div>
+<p>and since \(q\) is odd,</p>
+<div class="math-block">\[
+|B+B|=3^d,
+\]</div>
+<p>because each coordinate sum is \(0,1,\) or \(2\).  Also</p>
+<div class="math-block">\[
+|BB|=2^d,
+\]</div>
+<p>because coordinatewise products of \(0\)s and \(1\)s are again \(0\)s and \(1\)s.</p>
+<p>Suppose we can lift every Boolean residue vector \(\varepsilon\in\{0,1\}^d\) to an algebraic integer \(x_\varepsilon\in\mathcal O_K\) with</p>
+<div class="math-block">\[
+\rho_q(x_\varepsilon)=\varepsilon,
+\qquad
+\|x_\varepsilon\|_\infty\le C\sqrt q
+\]</div>
+<p>for some absolute constant \(C\).</p>
+<p>Then Proposition 3.1 gives good bounds.</p>
+<h2>Corollary 5.1: Boolean lift criterion</h2>
+<p>Assume \(q&gt;16C^2\), and assume that every Boolean residue class \(\varepsilon\in\{0,1\}^d\) has a lift \(x_\varepsilon\in\mathcal O_K\) satisfying</p>
+<div class="math-block">\[
+\|x_\varepsilon\|_\infty\le C\sqrt q.
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+A=\{\sigma_1(x_\varepsilon):\varepsilon\in\{0,1\}^d\}.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+|A|=2^d,
+\]</div>
+<div class="math-block">\[
+|A+A|\le 3^d,
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|AA|\le 2^d\,P_K(C^2).
+\]</div>
+<p>In particular, if for some \(\eta&lt;1\) we have</p>
+<div class="math-block">\[
+P_K(C^2)\le 2^{\eta d},
+\]</div>
+<p>then</p>
+<div class="math-block">\[
+|A+A|\le |A|^{\log_2 3},
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|AA|\le |A|^{1+\eta}.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+\max(|A+A|,|AA|)
+\le
+|A|^{2-\delta}
+\]</div>
+<p>with</p>
+<div class="math-block">\[
+\delta
+=
+\min\{2-\log_2 3,\ 1-\eta\}&gt;0.
+\]</div>
+<h3>Proof</h3>
+<p>We have \(|B|=2^d\), \(|B+B|=3^d\), \(|BB|=2^d\).</p>
+<p>Since \(H=C\sqrt q\),</p>
+<div class="math-block">\[
+2H/q=\frac{2C}{\sqrt q}&lt;\frac12
+\]</div>
+<p>by the assumption \(q&gt;16C^2\).  Therefore</p>
+<div class="math-block">\[
+P_K(2H/q)=1.
+\]</div>
+<p>So Proposition 3.1 gives</p>
+<div class="math-block">\[
+|A+A|\le 3^d.
+\]</div>
+<p>For products,</p>
+<div class="math-block">\[
+H^2/q=C^2,
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+|AA|\le 2^dP_K(C^2).
+\]</div>
+<p>If \(P_K(C^2)\le 2^{\eta d}\), then</p>
+<div class="math-block">\[
+|AA|\le 2^{(1+\eta)d}=|A|^{1+\eta}.
+\]</div>
+<p>The claimed \(\delta\) follows. \(\square\)</p>
+<p>This is a sharp, concrete reduction.</p>
+<hr>
+<h1>6. The square-root barrier is real</h1>
+<p>The \(\sqrt q\) scale in the Boolean lifting criterion is not accidental.  It is forced by a norm argument.</p>
+<h2>Lemma 6.1: norm lower bound for Boolean lifts</h2>
+<p>Let \(q\) split completely in \(K\), and suppose \(x\in\mathcal O_K\) reduces modulo \(q\mathcal O_K\) to a Boolean vector \(\varepsilon\in\{0,1\}^d\) that is not identically \(0\) or identically \(1\).  If</p>
+<div class="math-block">\[
+\|x\|_\infty\le H,
+\]</div>
+<p>then</p>
+<div class="math-block">\[
+H(H+1)\ge q.
+\]</div>
+<p>In particular,</p>
+<div class="math-block">\[
+H\ge \frac{\sqrt{1+4q}-1}{2}
+=
+(1+o(1))\sqrt q.
+\]</div>
+<h3>Proof</h3>
+<p>Since the residue of \(x\) is coordinatewise \(0\) or \(1\), we have</p>
+<div class="math-block">\[
+x(x-1)\equiv 0\pmod{q\mathcal O_K}.
+\]</div>
+<p>Because \(\varepsilon\) is not identically \(0\) or \(1\), \(x(x-1)\neq 0\).  Therefore</p>
+<div class="math-block">\[
+q\mathcal O_K\mid x(x-1)\mathcal O_K,
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+q^d=N(q\mathcal O_K)\mid |N_{K/\mathbb Q}(x(x-1))|.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+q^d
+\le
+\prod_{j=1}^d |\sigma_j(x)(\sigma_j(x)-1)|.
+\]</div>
+<p>But</p>
+<div class="math-block">\[
+|\sigma_j(x)(\sigma_j(x)-1)|
+\le
+H(H+1)
+\]</div>
+<p>for every \(j\).  Thus</p>
+<div class="math-block">\[
+q^d\le (H(H+1))^d,
+\]</div>
+<p>so \(H(H+1)\ge q\). \(\square\)</p>
+<p>So the Boolean-lift route must operate at the borderline scale \(H\asymp \sqrt q\).  This is why the product multiplicity term \(P_K(C^2)\) in Corollary 5.1 is unavoidable.</p>
+<hr>
+<h1>7. Precise remaining gaps in the Boolean-lift approach</h1>
+<p>The reduction above shows that the theorem follows from the following two statements.</p>
+<h2>Gap A: Square-root Boolean section</h2>
+<p>Find constants \(C&gt;1\) and an infinite sequence of pairs \((K_i,q_i)\), where \(K_i\) is totally real of degree \(d_i\to\infty\) and \(q_i\) is an odd rational prime splitting completely in \(K_i\), such that every Boolean residue vector</p>
+<div class="math-block">\[
+\varepsilon\in \{0,1\}^{d_i}
+\subset
+\mathcal O_{K_i}/q_i\mathcal O_{K_i}
+\]</div>
+<p>has a lift \(x_\varepsilon\in\mathcal O_{K_i}\) satisfying</p>
+<div class="math-block">\[
+\|x_\varepsilon\|_\infty\le C\sqrt{q_i}.
+\]</div>
+<h3>Assessment</h3>
+<p>This is the main construction problem.  Lemma 6.1 shows that \(\sqrt q\) is the correct lower scale, so the target is optimally sharp up to constants.</p>
+<p>Standard geometry of numbers only gives representatives of arbitrary residue classes modulo \(q\mathcal O_K\) of size \(O(q)\), not \(O(\sqrt q)\).  However, we do not need all \(q^d\) residue classes; we only need the \(2^d\) Boolean classes.  Counting does not rule this out, especially for fixed or moderately sized \(q\).  But one needs a special arithmetic construction, not a generic lattice argument.</p>
+<p>Possible tools to investigate:</p>
+<ol>
+<li>totally real towers where a fixed odd prime \(q\) splits completely;</li>
+<li>carefully chosen defining polynomials whose roots give small CRT idempotent lifts;</li>
+<li>trace-lattice or Voronoi-cell estimates for the image of the Boolean cube;</li>
+<li>class field tower methods to control discriminant and splitting simultaneously.</li>
+</ol>
+<p>This is plausible but serious.</p>
+<hr>
+<h2>Gap B: Few small algebraic integers</h2>
+<p>For the Boolean lift criterion, we also need some \(\eta&lt;1\) such that</p>
+<div class="math-block">\[
+P_{K_i}(C^2)\le 2^{\eta d_i}.
+\]</div>
+<p>The crude packing bound gives</p>
+<div class="math-block">\[
+P_{K_i}(C^2)\le (2C^2+1)^{d_i},
+\]</div>
+<p>which is far too weak when \(C\ge 1\).  We need the chosen fields to have substantially fewer algebraic integers of house \(\le C^2\) than the trivial packing estimate allows.</p>
+<h3>Assessment</h3>
+<p>This is also serious, but it is more flexible than Gap A.  We do not need a uniform bound independent of \(d\); we only need the exponential base to be \(&lt;2\).  Equivalently, for some \(\eta&lt;1\),</p>
+<div class="math-block">\[
+\#\{\alpha\in\mathcal O_K:\|\alpha-y\|_\infty\le C^2\}
+\le 2^{\eta d}
+\]</div>
+<p>uniformly over all translates \(y\).</p>
+<p>Possible tools:</p>
+<ol>
+<li>lower bounds for norms of differences;</li>
+<li>trace-form arguments;</li>
+<li>excluding small-degree subfields with many low-house elements;</li>
+<li>potential-theoretic estimates for algebraic integers with all conjugates in a short interval;</li>
+<li>choosing \(K_i\) with large enough discriminant or suitable local restrictions to suppress low-house elements.</li>
+</ol>
+<p>Gap B may be closable by choosing the fields in Gap A carefully.</p>
+<hr>
+<h2>Gap C: Compatibility of A and B</h2>
+<p>There is tension between Gaps A and B.</p>
+<p>Gap A asks for many small representatives of Boolean residue classes.  Gap B asks that there not be too many small algebraic integers in general.  These demands are not contradictory, because Gap A asks for elements of size \(\asymp \sqrt q\), while Gap B concerns elements of bounded size \(C^2\), independent of \(q\).  But in an actual construction one must make sure the mechanism producing the square-root lifts does not also create too many small differences/products.</p>
+<hr>
+<h1>8. A larger-alphabet variant</h1>
+<p>The Boolean cube is clean but has one drawback: \(|B|=2^d\), so the product multiplicity \(P_K(C^2)\) must have exponential base \(&lt;2\).</p>
+<p>One way to loosen this requirement is to use larger finite-field alphabets.</p>
+<p>Suppose</p>
+<div class="math-block">\[
+\mathcal O_K/q\mathcal O_K
+\]</div>
+<p>contains a product of finite fields</p>
+<div class="math-block">\[
+\mathbb F_m^g
+\]</div>
+<p>as a subring, and take</p>
+<div class="math-block">\[
+B=\mathbb F_m^g.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+|B|=m^g,
+\qquad
+B+B=B,
+\qquad
+BB=B.
+\]</div>
+<p>If we can lift every \(b\in B\) to \(x_b\in\mathcal O_K\) of height \(H\), Proposition 3.1 gives</p>
+<div class="math-block">\[
+|A+A|\le |B|P_K(2H/q),
+\]</div>
+<div class="math-block">\[
+|AA|\le |B|P_K(H^2/q).
+\]</div>
+<p>Thus even if</p>
+<div class="math-block">\[
+P_K(H^2/q)\le M^g
+\]</div>
+<p>for some \(M&gt;2\), we can absorb this if \(m\gg M\).  In that case</p>
+<div class="math-block">\[
+|AA|\le (mM)^g=|A|^{1+\log_m M},
+\]</div>
+<p>which is \(&lt;|A|^{2-\delta}\) as soon as \(M&lt;m^{1-\delta}\).</p>
+<p>So an alternative precise target is:</p>
+<blockquote><p>Construct residue subrings \(B_i\cong \mathbb F_{m_i}^{g_i}\) with \(m_i\to\infty\), and lift them with \(H_i\lesssim \sqrt{q_i}\), while keeping \(P_{K_i}(H_i^2/q_i)\le m_i^{\eta g_i}\) for some \(\eta&lt;1\).</p></blockquote>
+<p>This may be more robust than the Boolean model because the finite-field alphabet can absorb some bounded archimedean carry.</p>
+<p>The obstruction is that lifting a whole subring \(\mathbb F_m^g\) at square-root scale is harder than lifting Boolean residues.  Still, this is a natural next variant if the Boolean multiplicity bound is too strong.</p>
+<hr>
+<h1>9. Step-by-step proof plan from here</h1>
+<p>The approach can now be organized as follows.</p>
+<hr>
+<h2>Step 1: Choose a finite quotient model</h2>
+<p>Pick one of the following residue models.</p>
+<h3>Option 1: Boolean cube</h3>
+<p>Use</p>
+<div class="math-block">\[
+B=\{0,1\}^d\subset \mathbb F_q^d.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+|B|=2^d,
+\qquad
+|B+B|=3^d,
+\qquad
+|BB|=2^d.
+\]</div>
+<p>This gives an additive exponent \(\log_2 3&lt;2\) automatically.</p>
+<h3>Option 2: finite-field alphabet</h3>
+<p>Use</p>
+<div class="math-block">\[
+B=\mathbb F_m^g
+\]</div>
+<p>inside a residue quotient.  Then</p>
+<div class="math-block">\[
+|B+B|,|BB|\le |B|.
+\]</div>
+<p>This is stronger, but constructing small lifts is harder.</p>
+<hr>
+<h2>Step 2: Build totally real fields with the right residue quotient</h2>
+<p>For the Boolean model, we need totally real \(K\) of degree \(d\) with an odd prime \(q\) splitting completely:</p>
+<div class="math-block">\[
+\mathcal O_K/q\mathcal O_K\cong \mathbb F_q^d.
+\]</div>
+<p>For the larger-alphabet model, we need a quotient containing a product of fields</p>
+<div class="math-block">\[
+\mathbb F_m^g.
+\]</div>
+<p>Possible sources:</p>
+<ol>
+<li>totally real class field towers with prescribed splitting;</li>
+<li>Hilbert irreducibility constructions forcing a prime to split completely;</li>
+<li>iterated extensions in which \(q\) remains totally split;</li>
+<li>explicit polynomial families with controlled real roots and prescribed factorization mod \(q\).</li>
+</ol>
+<hr>
+<h2>Step 3: Prove a small-section theorem</h2>
+<p>For the Boolean model, prove:</p>
+<blockquote><p>There is an absolute \(C\) such that every Boolean residue vector has a lift \(x_\varepsilon\) with</p>
+<div class="math-block">\[
+\|x_\varepsilon\|_\infty\le C\sqrt q.
+\]</div></blockquote>
+<p>This is the main missing construction.</p>
+<p>The norm lower bound in Lemma 6.1 shows this is optimal up to constants.</p>
+<hr>
+<h2>Step 4: Bound small archimedean carries</h2>
+<p>Prove that for the same fields,</p>
+<div class="math-block">\[
+P_K(C^2)\le 2^{\eta d}
+\]</div>
+<p>for some \(\eta&lt;1\).</p>
+<p>For the larger-alphabet model, prove instead something like</p>
+<div class="math-block">\[
+P_K(H^2/q)\le |B|^{\eta}
+\]</div>
+<p>with \(\eta&lt;1\).</p>
+<hr>
+<h2>Step 5: Apply Proposition 3.1</h2>
+<p>Once Steps 1–4 are done, define</p>
+<div class="math-block">\[
+A=\{\sigma_1(x_b):b\in B\}.
+\]</div>
+<p>Then Proposition 3.1 gives</p>
+<div class="math-block">\[
+|A+A|
+\le
+|B+B|P_K(2H/q),
+\]</div>
+<div class="math-block">\[
+|AA|
+\le
+|BB|P_K(H^2/q).
+\]</div>
+<p>In the Boolean case with \(H=C\sqrt q\), \(q\) large, and \(P_K(C^2)\le 2^{\eta d}\), we get</p>
+<div class="math-block">\[
+|A|=2^d,
+\]</div>
+<div class="math-block">\[
+|A+A|\le 3^d=|A|^{\log_2 3},
+\]</div>
+<div class="math-block">\[
+|AA|\le 2^{(1+\eta)d}=|A|^{1+\eta}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+\max(|A+A|,|AA|)
+\le
+|A|^{2-\delta},
+\]</div>
+<p>where</p>
+<div class="math-block">\[
+\delta
+=
+\min\{2-\log_2 3,\ 1-\eta\}&gt;0.
+\]</div>
+<p>This gives the desired theorem.</p>
+<hr>
+<h1>10. Current status of the approach</h1>
+<p>What has been proved here:</p>
+<ol>
+<li>Integer-interval/smooth-number constructions cannot yield fixed \(\delta\).</li>
+<li>A finite-ring lifting criterion has been proved.</li>
+<li>A concrete Boolean-cube criterion has been proved.</li>
+<li>The square-root height barrier has been proved.</li>
+<li><p>The theorem has been reduced to two precise arithmetic tasks:</p>
+<ul>
+<li>square-root lifts of Boolean residue classes;</li>
+<li>few bounded-house algebraic integers.</li>
+</ul></li>
+</ol>
+<p>The most precise next target is the following proposition.</p>
+<hr>
+<h2>Target Proposition for the next round</h2>
+<p>There exist constants \(C&gt;1\), \(\eta&lt;1\), and an infinite sequence of totally real fields \(K_i\) of degrees \(d_i\to\infty\), together with odd rational primes \(q_i&gt;16C^2\) splitting completely in \(K_i\), such that:</p>
+<ol>
+<li><p>For every</p>
+<div class="math-block">\[
+\varepsilon\in\{0,1\}^{d_i}
+\cong
+\{0,1\}^{d_i}\subset \mathcal O_{K_i}/q_i\mathcal O_{K_i},
+\]</div>
+<p>there exists \(x_\varepsilon\in\mathcal O_{K_i}\) with</p>
+<div class="math-block">\[
+\rho_{q_i}(x_\varepsilon)=\varepsilon
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\|x_\varepsilon\|_\infty\le C\sqrt{q_i}.
+\]</div></li>
+<li><p>The small-carry count satisfies</p>
+<div class="math-block">\[
+P_{K_i}(C^2)\le 2^{\eta d_i}.
+\]</div></li>
+</ol>
+<p>If this proposition is proved, the theorem follows immediately from Corollary 5.1 with</p>
+<div class="math-block">\[
+\delta=\min\{2-\log_2 3,\ 1-\eta\}&gt;0.
+\]</div>
+<p>This is the point at which I would continue in the next round.</p>
+<hr>
+<h1>Round 2</h1>
+<h2>User</h2>
+<blockquote><p>Construct a complete and rigorous proof, adapting your approach as needed.</p></blockquote>
+<h2>Assistant</h2>
+<p>We prove the theorem by a different route from the finite-ring lifting approach sketched earlier.</p>
+<p>The construction uses two facts from algebraic number theory:</p>
+<ol>
+<li>There are totally real number fields of arbitrarily large degree and bounded root discriminant.</li>
+<li>In such fields, the unit lattice has exponentially many units in a fixed archimedean box.</li>
+</ol>
+<p>The rough idea is this.</p>
+<p>Let \(K/\mathbb Q\) be totally real of degree \(d\), with embeddings</p>
+<div class="math-block">\[
+\sigma_1,\dots,\sigma_d:K\hookrightarrow \mathbb R.
+\]</div>
+<p>We construct a finite set</p>
+<div class="math-block">\[
+\mathcal A\subset \mathcal O_K
+\]</div>
+<p>and then project it to the real line by one embedding:</p>
+<div class="math-block">\[
+A=\sigma_1(\mathcal A)\subset \mathbb R.
+\]</div>
+<p>The set \(\mathcal A\) will have the form</p>
+<div class="math-block">\[
+\mathcal A=U S,
+\]</div>
+<p>where:</p>
+<ul>
+<li>\(U\) is a large set of units of \(\mathcal O_K\) lying in a bounded logarithmic box;</li>
+<li>\(S\) is a carefully chosen sparse random subset of a bounded archimedean box.</li>
+</ul>
+<p>The additive smallness comes from the fact that all elements of \(US\) lie in a bounded box in all \(d\) real embeddings. Hence \(US+US\) also lies in a bounded box, which contains at most exponentially many algebraic integers.</p>
+<p>The multiplicative smallness comes from the factorization</p>
+<div class="math-block">\[
+(US)(US)\subset (UU)(SS).
+\]</div>
+<p>The unit set \(U\) has small multiplicative doubling, so \(|UU|\ll^d |U|\), while \(|SS|\le |S|^2\). If \(|US|\approx |U||S|\), this gives a saving by a factor of roughly \(|U|\) in the product set.</p>
+<p>The only delicate point is to choose \(S\) so that the products \(us\), with \(u\in U\) and \(s\in S\), are mostly distinct. We do this by a random selection argument.</p>
+<hr>
+<h1>1. Standard number-theoretic input</h1>
+<p>We use the following standard facts.</p>
+<h2>Theorem 1.1: bounded totally real root-discriminant towers</h2>
+<p>There is an absolute constant \(\Delta&gt;1\) and an infinite sequence of totally real number fields</p>
+<div class="math-block">\[
+K_i/\mathbb Q
+\]</div>
+<p>with degrees</p>
+<div class="math-block">\[
+d_i=[K_i:\mathbb Q]\to\infty
+\]</div>
+<p>such that</p>
+<div class="math-block">\[
+\operatorname{rd}(K_i):=|D_{K_i}|^{1/d_i}\le \Delta
+\]</div>
+<p>for all \(i\).</p>
+<p>This is a classical consequence of the Golod–Shafarevich class field tower method; explicit such towers were constructed by Martinet.</p>
+<p>We also need a regulator bound.</p>
+<h2>Lemma 1.2: regulator bound in bounded-root-discriminant families</h2>
+<p>There is a constant \(C_{\mathrm{reg}}&gt;1\), depending only on \(\Delta\), such that for every totally real field \(K\) of degree \(d\) with</p>
+<div class="math-block">\[
+\operatorname{rd}(K)\le \Delta,
+\]</div>
+<p>the regulator \(R_K\) satisfies</p>
+<div class="math-block">\[
+R_K\le C_{\mathrm{reg}}^d.
+\]</div>
+<h3>Proof</h3>
+<p>We recall the standard argument.</p>
+<p>For number fields with</p>
+<div class="math-block">\[
+|D_K|^{1/d}\le \Delta,
+\]</div>
+<p>standard residue bounds for Dedekind zeta-functions, for example the Louboutin bound, imply</p>
+<div class="math-block">\[
+\operatorname*{Res}_{s=1}\zeta_K(s)\le C_0^d
+\]</div>
+<p>for some constant \(C_0=C_0(\Delta)\).</p>
+<p>Since \(K\) is totally real of degree \(d\), the analytic class number formula gives</p>
+<div class="math-block">\[
+\operatorname*{Res}_{s=1}\zeta_K(s)
+=
+\frac{2^d h_K R_K}{2\sqrt{|D_K|}}
+=
+\frac{2^{d-1}h_KR_K}{\sqrt{|D_K|}}.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+R_K
+=
+\frac{\sqrt{|D_K|}}{2^{d-1}h_K}
+\operatorname*{Res}_{s=1}\zeta_K(s)
+\le
+2\left(\frac{\sqrt\Delta}{2}\right)^d C_0^d.
+\]</div>
+<p>Since \(h_K\ge1\), this gives</p>
+<div class="math-block">\[
+R_K\le C_{\mathrm{reg}}^d
+\]</div>
+<p>for a suitable constant \(C_{\mathrm{reg}}\). \(\square\)</p>
+<hr>
+<h1>2. Two elementary lattice-counting lemmas</h1>
+<p>We will repeatedly use the following simple facts.</p>
+<p>Let \(K\) be totally real of degree \(d\), and write</p>
+<div class="math-block">\[
+\Sigma:K\to\mathbb R^d,
+\qquad
+\Sigma(x)=(\sigma_1(x),\dots,\sigma_d(x)).
+\]</div>
+<p>For \(x\in K\), set</p>
+<div class="math-block">\[
+\|x\|_\infty=\max_{1\le j\le d}|\sigma_j(x)|.
+\]</div>
+<h2>Lemma 2.1: packing of algebraic integers</h2>
+<p>For every \(T\ge0\) and every \(y\in\mathbb R^d\),</p>
+<div class="math-block">\[
+\#\left\{
+\alpha\in\mathcal O_K:
+|\sigma_j(\alpha)-y_j|\le T \text{ for all }j
+\right\}
+\le (2T+1)^d.
+\]</div>
+<h3>Proof</h3>
+<p>If \(\alpha,\beta\in\mathcal O_K\) are distinct, then</p>
+<div class="math-block">\[
+\alpha-\beta\neq0
+\]</div>
+<p>and hence</p>
+<div class="math-block">\[
+|N_{K/\mathbb Q}(\alpha-\beta)|
+=
+\prod_{j=1}^d|\sigma_j(\alpha-\beta)|
+\]</div>
+<p>is a nonzero integer. Therefore</p>
+<div class="math-block">\[
+\prod_{j=1}^d|\sigma_j(\alpha-\beta)|\ge1,
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+\max_j|\sigma_j(\alpha-\beta)|\ge1.
+\]</div>
+<p>Thus \(\Sigma(\mathcal O_K)\) is \(1\)-separated in the \(\ell^\infty\)-metric.</p>
+<p>Now place around every point of</p>
+<div class="math-block">\[
+\Sigma(\mathcal O_K)\cap \prod_{j=1}^d[y_j-T,y_j+T]
+\]</div>
+<p>an \(\ell^\infty\)-cube of radius \(1/2\). These cubes are disjoint and lie inside the cube of side length \(2T+1\). Hence the number of points is at most</p>
+<div class="math-block">\[
+(2T+1)^d.
+\]</div>
+<p>\(\square\)</p>
+<hr>
+<h2>Lemma 2.2: a Blichfeldt difference-body lower bound</h2>
+<p>Let \(\Lambda\subset\mathbb R^r\) be a lattice of covolume \(\det\Lambda\). If \(\Omega\subset\mathbb R^r\) is measurable and bounded, then</p>
+<div class="math-block">\[
+|\Lambda\cap(\Omega-\Omega)|
+\ge
+\frac{\operatorname{vol}(\Omega)}{\det\Lambda}.
+\]</div>
+<h3>Proof</h3>
+<p>By Blichfeldt’s principle, there exists a translate \(x+\Omega\) containing at least</p>
+<div class="math-block">\[
+\frac{\operatorname{vol}(\Omega)}{\det\Lambda}
+\]</div>
+<p>points of \(\Lambda\). Fix one such point \(\lambda_0\). For every other lattice point \(\lambda\in \Lambda\cap(x+\Omega)\), the difference</p>
+<div class="math-block">\[
+\lambda-\lambda_0
+\]</div>
+<p>belongs to</p>
+<div class="math-block">\[
+\Lambda\cap(\Omega-\Omega).
+\]</div>
+<p>The differences are distinct, so the claim follows. \(\square\)</p>
+<hr>
+<h2>Lemma 2.3: doubling for lattice points in boxes</h2>
+<p>There is an absolute constant \(C_{\mathrm{box}}&gt;1\) such that the following holds.</p>
+<p>Let \(\Lambda\subset\mathbb R^r\) be any lattice, and for \(L&gt;0\) let</p>
+<div class="math-block">\[
+Q_L=[-L,L]^r.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+|\Lambda\cap Q_{2L}|
+\le
+C_{\mathrm{box}}^r |\Lambda\cap Q_L|.
+\]</div>
+<p>More generally, the same estimate holds, up to changing \(C_{\mathrm{box}}\), for boxes inside any fixed codimension-one subspace.</p>
+<h3>Proof</h3>
+<p>Cover \(Q_{2L}\) by at most \(5^r\) translates of \(Q_{L/2}\). Let \(x+Q_{L/2}\) be one such translate. If</p>
+<div class="math-block">\[
+\lambda_0,\lambda_1,\dots,\lambda_m
+\in
+\Lambda\cap(x+Q_{L/2}),
+\]</div>
+<p>then</p>
+<div class="math-block">\[
+\lambda_i-\lambda_0\in \Lambda\cap Q_L.
+\]</div>
+<p>Thus each translate contains at most \(|\Lambda\cap Q_L|\) lattice points. Therefore</p>
+<div class="math-block">\[
+|\Lambda\cap Q_{2L}|
+\le
+5^r|\Lambda\cap Q_L|.
+\]</div>
+<p>The codimension-one version is identical. \(\square\)</p>
+<hr>
+<h1>3. Many bounded units</h1>
+<p>Let \(K\) be one of the totally real fields from Theorem 1.1, with degree \(d\).</p>
+<p>Let</p>
+<div class="math-block">\[
+H_d=\left\{x=(x_1,\dots,x_d)\in\mathbb R^d:\sum_{j=1}^d x_j=0\right\}.
+\]</div>
+<p>The logarithmic embedding of the unit group is</p>
+<div class="math-block">\[
+\ell:\mathcal O_K^\times\to H_d,
+\qquad
+\ell(u)=\bigl(\log|\sigma_1(u)|,\dots,\log|\sigma_d(u)|\bigr).
+\]</div>
+<p>Its image is a lattice in \(H_d\), with covolume comparable to the regulator \(R_K\). We absorb the harmless normalization constant into \(C_{\mathrm{reg}}\).</p>
+<p>For \(L&gt;0\), define</p>
+<div class="math-block">\[
+Q_L^{(d)}
+=
+\left\{x\in H_d:\|x\|_\infty\le L\right\}.
+\]</div>
+<p>There is an absolute constant \(c_0&gt;0\) such that</p>
+<div class="math-block">\[
+\operatorname{vol}_{H_d}(Q_L^{(d)})
+\ge
+(c_0L)^{d-1}
+\]</div>
+<p>for all \(d\ge2\).</p>
+<p>Choose a large constant \(L&gt;1\), to be fixed permanently below, and define</p>
+<div class="math-block">\[
+U_K
+=
+\left\{
+u\in\mathcal O_K^\times:
+\|\ell(u)\|_\infty\le L
+\right\}.
+\]</div>
+<p>Equivalently,</p>
+<div class="math-block">\[
+e^{-L}\le |\sigma_j(u)|\le e^L
+\qquad
+\text{for all }u\in U_K,\ 1\le j\le d.
+\]</div>
+<p>We now record the properties of \(U_K\).</p>
+<h2>Lemma 3.1: size and doubling of \(U_K\)</h2>
+<p>There are constants</p>
+<div class="math-block">\[
+\rho&gt;1,\qquad \rho_+&gt;1,\qquad C_U&gt;1
+\]</div>
+<p>depending only on \(L\) and \(\Delta\), such that, after discarding finitely many fields in the tower, for every remaining \(K\) of degree \(d\),</p>
+<ol>
+<li><div class="math-block">\[
+|U_K|\ge \rho^d;
+\]</div></li>
+<li><div class="math-block">\[
+|U_K|\le \rho_+^d;
+\]</div></li>
+<li><div class="math-block">\[
+|U_KU_K|\le C_U^d|U_K|;
+\]</div></li>
+<li><div class="math-block">\[
+|U_KU_K^{-1}|\le C_U^d|U_K|.
+\]</div></li>
+</ol>
+<p>Moreover, by choosing \(L\) sufficiently large, we may make \(\rho\) arbitrarily large.</p>
+<h3>Proof</h3>
+<p>Let</p>
+<div class="math-block">\[
+\Lambda_K=\ell(\mathcal O_K^\times)\subset H_d.
+\]</div>
+<p>By Lemma 2.2 applied inside \(H_d\),</p>
+<div class="math-block">\[
+|\Lambda_K\cap Q_L^{(d)}|
+\ge
+\frac{\operatorname{vol}_{H_d}(Q_{L/2}^{(d)})}{\operatorname{covol}(\Lambda_K)}
+\gg
+\frac{(c_0L)^{d-1}}{R_K}.
+\]</div>
+<p>Using Lemma 1.2,</p>
+<div class="math-block">\[
+R_K\le C_{\mathrm{reg}}^d.
+\]</div>
+<p>Thus, after decreasing \(c_0\) slightly and discarding finitely many small degrees,</p>
+<div class="math-block">\[
+|\Lambda_K\cap Q_L^{(d)}|
+\ge
+\left(\frac{c_0L}{C_{\mathrm{reg}}}\right)^d.
+\]</div>
+<p>The kernel of the logarithmic embedding consists only of \(\{\pm1\}\), so this gives</p>
+<div class="math-block">\[
+|U_K|\ge \rho^d
+\]</div>
+<p>for</p>
+<div class="math-block">\[
+\rho=\frac{c_0L}{2C_{\mathrm{reg}}},
+\]</div>
+<p>say. By taking \(L\) large, \(\rho\) can be made as large as desired.</p>
+<p>For the upper bound, if \(u\in U_K\), then</p>
+<div class="math-block">\[
+|\sigma_j(u)|\le e^L
+\]</div>
+<p>for every \(j\). By Lemma 2.1,</p>
+<div class="math-block">\[
+|U_K|
+\le
+(2e^L+1)^d.
+\]</div>
+<p>Thus we may take</p>
+<div class="math-block">\[
+\rho_+=2e^L+1.
+\]</div>
+<p>For the doubling estimate, note that</p>
+<div class="math-block">\[
+\ell(U_KU_K),\ \ell(U_KU_K^{-1})
+\subset
+\Lambda_K\cap Q_{2L}^{(d)}.
+\]</div>
+<p>By Lemma 2.3, inside the hyperplane \(H_d\),</p>
+<div class="math-block">\[
+|\Lambda_K\cap Q_{2L}^{(d)}|
+\le
+C_U^d|\Lambda_K\cap Q_L^{(d)}|
+\]</div>
+<p>for an absolute \(C_U&gt;1\). Accounting for the kernel \(\{\pm1\}\) only changes \(C_U\) by an absolute factor. Hence</p>
+<div class="math-block">\[
+|U_KU_K|,\ |U_KU_K^{-1}|
+\le
+C_U^d|U_K|.
+\]</div>
+<p>\(\square\)</p>
+<hr>
+<h1>4. A large bounded pool of algebraic integers</h1>
+<p>Fix a large constant \(W&gt;1\), to be chosen later.</p>
+<p>For a totally real field \(K\) of degree \(d\), define</p>
+<div class="math-block">\[
+T_{0,K}
+=
+\left\{
+t\in\mathcal O_K:
+|\sigma_j(t)|\le 2W\text{ for all }j
+\right\}.
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+P_K:=|T_{0,K}|.
+\]</div>
+<h2>Lemma 4.1: size of the pool</h2>
+<p>There are constants</p>
+<div class="math-block">\[
+\Pi_-=\frac{2W}{\sqrt\Delta},
+\qquad
+\Pi_+=4W+1
+\]</div>
+<p>such that</p>
+<div class="math-block">\[
+\Pi_-^d\le P_K\le \Pi_+^d.
+\]</div>
+<h3>Proof</h3>
+<p>For the lower bound, apply Lemma 2.2 to the lattice</p>
+<div class="math-block">\[
+\Sigma(\mathcal O_K)\subset\mathbb R^d
+\]</div>
+<p>and the box</p>
+<div class="math-block">\[
+\Omega=[-W,W]^d.
+\]</div>
+<p>The covolume of \(\Sigma(\mathcal O_K)\) is \(\sqrt{|D_K|}\). Since</p>
+<div class="math-block">\[
+|D_K|^{1/d}\le\Delta,
+\]</div>
+<p>we have</p>
+<div class="math-block">\[
+\sqrt{|D_K|}\le \Delta^{d/2}.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+P_K
+=
+|\Sigma(\mathcal O_K)\cap[-2W,2W]^d|
+\ge
+\frac{(2W)^d}{\sqrt{|D_K|}}
+\ge
+\left(\frac{2W}{\sqrt\Delta}\right)^d
+=
+\Pi_-^d.
+\]</div>
+<p>For the upper bound, apply Lemma 2.1 with \(T=2W\):</p>
+<div class="math-block">\[
+P_K\le (4W+1)^d=\Pi_+^d.
+\]</div>
+<p>\(\square\)</p>
+<p>Now translate this pool away from the coordinate hyperplanes. Let</p>
+<div class="math-block">\[
+M=\lceil 4W\rceil
+\]</div>
+<p>and set</p>
+<div class="math-block">\[
+T_K=M+T_{0,K}.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+|T_K|=P_K,
+\]</div>
+<p>and for every \(s\in T_K\),</p>
+<div class="math-block">\[
+W\le \sigma_j(s)\le 7W
+\qquad
+\text{for all }j.
+\]</div>
+<p>Indeed, \(M\ge4W\), while \(|\sigma_j(t)|\le2W\) for \(t\in T_{0,K}\).</p>
+<p>Thus every element of \(T_K\) is totally positive, and all of its conjugates are comparable to \(W\).</p>
+<hr>
+<h1>5. Choosing a sparse subset \(S_K\subset T_K\)</h1>
+<p>Let</p>
+<div class="math-block">\[
+R_K^U:=|U_K|.
+\]</div>
+<p>To avoid confusion with the regulator, in this section write</p>
+<div class="math-block">\[
+R:=|U_K|.
+\]</div>
+<p>Let \(\kappa&gt;1\) be a large constant, fixed below. We choose a random subset</p>
+<div class="math-block">\[
+S\subset T_K
+\]</div>
+<p>by including each element of \(T_K\) independently with probability</p>
+<div class="math-block">\[
+p=\frac1{\kappa^d R}.
+\]</div>
+<p>We will show that, for suitable \(\kappa\), with positive probability \(S\) has the two properties we need.</p>
+<p>Let</p>
+<div class="math-block">\[
+X=|S|.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+\mathbb E X=pP_K.
+\]</div>
+<p>We also define the collision count</p>
+<div class="math-block">\[
+Y
+=
+\#\left\{
+(u,u&#x27;,s,s&#x27;)\in U_K^2\times S^2:
+us=u&#x27;s&#x27;,\ (u,s)\neq(u&#x27;,s&#x27;)
+\right\}.
+\]</div>
+<p>The goal is to make \(Y\) much smaller than the trivial representation count \(R X\).</p>
+<h2>Lemma 5.1: sparse selection with few collisions</h2>
+<p>If \(\kappa\) is chosen sufficiently large in terms of \(C_U\), then, for all sufficiently large \(d\), there exists \(S_K\subset T_K\) such that, writing \(X=|S_K|\),</p>
+<ol>
+<li><div class="math-block">\[
+\frac12pP_K\le X\le 2pP_K;
+\]</div></li>
+<li><div class="math-block">\[
+Y\le \frac14 RX.
+\]</div></li>
+</ol>
+<h3>Proof</h3>
+<p>First,</p>
+<div class="math-block">\[
+\mathbb E X=pP_K.
+\]</div>
+<p>Since later \(W\) will be chosen so that \(pP_K\) grows exponentially in \(d\), standard Chernoff bounds give</p>
+<div class="math-block">\[
+\mathbb P\left(\frac12pP_K\le X\le2pP_K\right)&gt;0.9
+\]</div>
+<p>for all sufficiently large \(d\).</p>
+<p>Now estimate \(\mathbb E Y\).</p>
+<p>If</p>
+<div class="math-block">\[
+us=u&#x27;s&#x27;,
+\]</div>
+<p>then</p>
+<div class="math-block">\[
+s&#x27;=w s,
+\qquad
+w=u&#x27;^{-1}u\in U_K^{-1}U_K.
+\]</div>
+<p>For a fixed ordered pair \((u,u')\), hence fixed \(w\), the number of \(s\in T_K\) such that both \(s\) and \(ws\) lie in \(T_K\) is at most \(|T_K|=P_K\). Each such pair survives in \(S\) with probability at most \(p^2\). Therefore</p>
+<div class="math-block">\[
+\mathbb E Y
+\le
+|U_K|\,|U_K^{-1}U_K|\,p^2P_K.
+\]</div>
+<p>Using Lemma 3.1,</p>
+<div class="math-block">\[
+|U_K^{-1}U_K|\le C_U^dR.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+\mathbb E Y
+\le
+R(C_U^dR)p^2P_K
+=
+C_U^dR^2\frac{P_K}{\kappa^{2d}R^2}
+=
+\left(\frac{C_U}{\kappa^2}\right)^dP_K.
+\]</div>
+<p>On the other hand,</p>
+<div class="math-block">\[
+R\mathbb E X
+=
+R pP_K
+=
+\frac{P_K}{\kappa^d}.
+\]</div>
+<p>Choosing \(\kappa\) so large that</p>
+<div class="math-block">\[
+\left(\frac{C_U}{\kappa^2}\right)^dP_K
+\le
+\frac1{100}\cdot \frac{P_K}{\kappa^d}
+\]</div>
+<p>for all \(d\), we get</p>
+<div class="math-block">\[
+\mathbb E Y\le \frac1{100}R\mathbb E X.
+\]</div>
+<p>By Markov’s inequality,</p>
+<div class="math-block">\[
+\mathbb P\left(Y\le \frac14R X\right)&gt;0.9
+\]</div>
+<p>for all sufficiently large \(d\). Hence the two desired properties hold simultaneously with positive probability.</p>
+<p>Fix such a set \(S_K\). \(\square\)</p>
+<hr>
+<h1>6. The algebraic set \(\mathcal A_K=U_KS_K\)</h1>
+<p>Fix \(K\) in the tower, of sufficiently large degree \(d\). Let</p>
+<div class="math-block">\[
+U=U_K,\qquad S=S_K,
+\qquad
+\mathcal A_K=US=\{us:u\in U,\ s\in S\}\subset\mathcal O_K.
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+n_K:=|\mathcal A_K|.
+\]</div>
+<p>The representation map</p>
+<div class="math-block">\[
+U\times S\to \mathcal A_K,
+\qquad
+(u,s)\mapsto us
+\]</div>
+<p>may not be injective, but the collision bound from Lemma 5.1 implies that it is injective up to a bounded factor.</p>
+<h2>Lemma 6.1: size of \(\mathcal A_K\)</h2>
+<p>For all sufficiently large \(d\),</p>
+<div class="math-block">\[
+\frac12 |U||S|\le |\mathcal A_K|\le |U||S|.
+\]</div>
+<h3>Proof</h3>
+<p>For \(a\in\mathcal A_K\), let</p>
+<div class="math-block">\[
+r(a)=|\{(u,s)\in U\times S:us=a\}|.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+\sum_{a\in\mathcal A_K}r(a)=|U||S|=RX.
+\]</div>
+<p>Also,</p>
+<div class="math-block">\[
+\sum_{a\in\mathcal A_K}r(a)^2
+\]</div>
+<p>counts all pairs of representations of the same element. The diagonal contributes \(RX\), and the non-diagonal contribution is \(Y\). By Lemma 5.1,</p>
+<div class="math-block">\[
+\sum_a r(a)^2
+\le
+RX+\frac14RX
+=
+\frac54RX.
+\]</div>
+<p>By Cauchy–Schwarz,</p>
+<div class="math-block">\[
+(RX)^2
+=
+\left(\sum_a r(a)\right)^2
+\le
+|\mathcal A_K|\sum_a r(a)^2
+\le
+|\mathcal A_K|\frac54RX.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+|\mathcal A_K|\ge \frac45RX.
+\]</div>
+<p>In particular,</p>
+<div class="math-block">\[
+|\mathcal A_K|\ge \frac12RX.
+\]</div>
+<p>The upper bound is trivial. \(\square\)</p>
+<hr>
+<h1>7. Parameter choice</h1>
+<p>We now choose the constants once and for all.</p>
+<p>Recall the constants:</p>
+<ul>
+<li>\(\Delta\) from the bounded-root-discriminant tower;</li>
+<li>\(C_{\mathrm{reg}}\) from the regulator bound;</li>
+<li>\(C_U\) from the unit doubling estimate.</li>
+</ul>
+<p>From Lemma 3.1, by choosing \(L\) large, we may make</p>
+<div class="math-block">\[
+\rho&gt;1
+\]</div>
+<p>as large as we like, where</p>
+<div class="math-block">\[
+|U_K|\ge \rho^d.
+\]</div>
+<p>Choose \(L\) so large that</p>
+<div class="math-block">\[
+\rho&gt;C_\times^4,
+\]</div>
+<p>where</p>
+<div class="math-block">\[
+C_\times:=4C_U.
+\]</div>
+<p>Once \(L\) is fixed, \(\rho_+\) is fixed, where</p>
+<div class="math-block">\[
+|U_K|\le \rho_+^d.
+\]</div>
+<p>Choose \(\kappa&gt;1\) sufficiently large in terms of \(C_U\), as required in Lemma 5.1.</p>
+<p>Now choose \(W\) sufficiently large so that the following hold.</p>
+<p>Let</p>
+<div class="math-block">\[
+\Pi_-=\frac{2W}{\sqrt\Delta},
+\qquad
+\Pi_+=2(4W+1),
+\]</div>
+<p>and define</p>
+<div class="math-block">\[
+\nu=\frac{\Pi_-}{4\kappa}.
+\]</div>
+<p>Also define</p>
+<div class="math-block">\[
+\gamma=\frac{\log\rho}{\log\Pi_+}.
+\]</div>
+<p>Since \(\rho&gt;1\), we have \(\gamma&gt;0\).</p>
+<p>We choose \(W\) large enough that:</p>
+<ol>
+<li><p>The random selection has exponentially many available points:</p>
+<div class="math-block">\[
+\Pi_-&gt;8\kappa\rho_+.
+\]</div></li>
+<li><p>Product constants are absorbed:</p>
+<div class="math-block">\[
+C_\times\le \nu^{\gamma/2}.
+\]</div></li>
+<li><p>Additive constants are absorbed:</p>
+<div class="math-block">\[
+30e^L W\le \nu^{2-\gamma/4}.
+\]</div></li>
+</ol>
+<p>Such a \(W\) exists.</p>
+<p>Indeed, as \(W\to\infty\),</p>
+<div class="math-block">\[
+\frac{\log\nu}{\log\Pi_+}\to1,
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+\nu^{\gamma/2}
+=
+\exp\left(\frac{\gamma}{2}\log\nu\right)
+\to
+\exp\left(\frac12\log\rho\right)
+=
+\rho^{1/2}.
+\]</div>
+<p>Since \(\rho&gt;C_\times^4\), we have \(\rho^{1/2}&gt;C_\times\), so condition 2 holds for all sufficiently large \(W\). Condition 3 holds because its left-hand side grows linearly in \(W\), while its right-hand side grows like \(W^{2-o(1)}\).</p>
+<p>Finally set</p>
+<div class="math-block">\[
+\delta:=\frac{\gamma}{4}&gt;0.
+\]</div>
+<p>This \(\delta\) is an absolute constant.</p>
+<hr>
+<h1>8. Lower and upper bounds for \(n_K=|\mathcal A_K|\)</h1>
+<p>Let</p>
+<div class="math-block">\[
+P=|T_K|.
+\]</div>
+<p>By Lemma 4.1,</p>
+<div class="math-block">\[
+\Pi_-^d\le P\le (4W+1)^d.
+\]</div>
+<p>By Lemma 5.1,</p>
+<div class="math-block">\[
+\frac12\frac{P}{\kappa^dR}
+\le |S|
+\le
+2\frac{P}{\kappa^dR}.
+\]</div>
+<p>Using Lemma 6.1,</p>
+<div class="math-block">\[
+\frac12 R|S|\le n_K\le R|S|.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+n_K\ge
+\frac12 R\cdot \frac12\frac{P}{\kappa^dR}
+=
+\frac{P}{4\kappa^d}
+\ge
+\left(\frac{\Pi_-}{4\kappa}\right)^d
+=
+\nu^d.
+\]</div>
+<p>Also,</p>
+<div class="math-block">\[
+n_K\le R\cdot 2\frac{P}{\kappa^dR}
+=
+2\frac{P}{\kappa^d}
+\le
+2P
+\le
+\Pi_+^d.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+\nu^d\le n_K\le \Pi_+^d.
+\]</div>
+<p>Since</p>
+<div class="math-block">\[
+|U_K|\ge \rho^d
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+n_K\le \Pi_+^d,
+\]</div>
+<p>we get</p>
+<div class="math-block">\[
+|U_K|\ge n_K^\gamma,
+\]</div>
+<p>where</p>
+<div class="math-block">\[
+\gamma=\frac{\log\rho}{\log\Pi_+}.
+\]</div>
+<hr>
+<h1>9. The sumset bound</h1>
+<p>Every element of \(S\subset T_K\) satisfies</p>
+<div class="math-block">\[
+|\sigma_j(s)|\le 7W.
+\]</div>
+<p>Every \(u\in U_K\) satisfies</p>
+<div class="math-block">\[
+|\sigma_j(u)|\le e^L.
+\]</div>
+<p>Therefore every element \(a=us\in\mathcal A_K\) satisfies</p>
+<div class="math-block">\[
+|\sigma_j(a)|\le 7e^L W
+\qquad
+\text{for all }j.
+\]</div>
+<p>Hence every element of</p>
+<div class="math-block">\[
+\mathcal A_K+\mathcal A_K
+\]</div>
+<p>satisfies</p>
+<div class="math-block">\[
+|\sigma_j(x)|\le 14e^L W
+\qquad
+\text{for all }j.
+\]</div>
+<p>By Lemma 2.1,</p>
+<div class="math-block">\[
+|\mathcal A_K+\mathcal A_K|
+\le
+(28e^LW+1)^d
+\le
+(30e^LW)^d.
+\]</div>
+<p>By the choice of \(W\),</p>
+<div class="math-block">\[
+30e^LW\le \nu^{2-\gamma/4}.
+\]</div>
+<p>Since</p>
+<div class="math-block">\[
+n_K\ge \nu^d,
+\]</div>
+<p>we obtain</p>
+<div class="math-block">\[
+|\mathcal A_K+\mathcal A_K|
+\le
+\nu^{(2-\gamma/4)d}
+\le
+n_K^{2-\gamma/4}.
+\]</div>
+<p>Since</p>
+<div class="math-block">\[
+\delta=\frac{\gamma}{4},
+\]</div>
+<p>this gives</p>
+<div class="math-block">\[
+|\mathcal A_K+\mathcal A_K|
+\le
+n_K^{2-\delta}.
+\]</div>
+<hr>
+<h1>10. The product set bound</h1>
+<p>We have</p>
+<div class="math-block">\[
+\mathcal A_K\mathcal A_K
+=
+(US)(US)
+\subset
+(UU)(SS).
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|\mathcal A_K\mathcal A_K|
+\le
+|UU|\,|SS|.
+\]</div>
+<p>By Lemma 3.1,</p>
+<div class="math-block">\[
+|UU|\le C_U^d|U|.
+\]</div>
+<p>Also trivially</p>
+<div class="math-block">\[
+|SS|\le |S|^2.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+|\mathcal A_K\mathcal A_K|
+\le
+C_U^d|U||S|^2.
+\]</div>
+<p>Since Lemma 6.1 gives</p>
+<div class="math-block">\[
+n_K=|\mathcal A_K|\ge \frac12|U||S|,
+\]</div>
+<p>we have</p>
+<div class="math-block">\[
+|S|
+\le
+\frac{2n_K}{|U|}.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|\mathcal A_K\mathcal A_K|
+\le
+C_U^d |U|\left(\frac{2n_K}{|U|}\right)^2
+=
+4C_U^d\frac{n_K^2}{|U|}.
+\]</div>
+<p>By definition,</p>
+<div class="math-block">\[
+C_\times=4C_U,
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+|\mathcal A_K\mathcal A_K|
+\le
+C_\times^d\frac{n_K^2}{|U|}.
+\]</div>
+<p>Since</p>
+<div class="math-block">\[
+|U|\ge n_K^\gamma,
+\]</div>
+<p>we get</p>
+<div class="math-block">\[
+|\mathcal A_K\mathcal A_K|
+\le
+C_\times^d n_K^{2-\gamma}.
+\]</div>
+<p>By the choice of \(W\),</p>
+<div class="math-block">\[
+C_\times\le \nu^{\gamma/2}.
+\]</div>
+<p>Since</p>
+<div class="math-block">\[
+n_K\ge\nu^d,
+\]</div>
+<p>we have</p>
+<div class="math-block">\[
+C_\times^d
+\le
+n_K^{\gamma/2}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|\mathcal A_K\mathcal A_K|
+\le
+n_K^{2-\gamma/2}.
+\]</div>
+<p>Because</p>
+<div class="math-block">\[
+\delta=\frac{\gamma}{4},
+\]</div>
+<p>we have</p>
+<div class="math-block">\[
+2-\frac{\gamma}{2}
+\le
+2-\delta.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|\mathcal A_K\mathcal A_K|
+\le
+n_K^{2-\delta}.
+\]</div>
+<hr>
+<h1>11. Passing from algebraic integers to real numbers</h1>
+<p>For each field \(K_i\) in the tower, choose one real embedding</p>
+<div class="math-block">\[
+\sigma_{i,1}:K_i\hookrightarrow\mathbb R.
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+A_i=\sigma_{i,1}(\mathcal A_{K_i})\subset\mathbb R.
+\]</div>
+<p>Because \(\sigma_{i,1}\) is injective on \(K_i\),</p>
+<div class="math-block">\[
+|A_i|=|\mathcal A_{K_i}|=n_{K_i}.
+\]</div>
+<p>Moreover, for any finite set \(B\subset K_i\),</p>
+<div class="math-block">\[
+|\sigma_{i,1}(B+B)|=|B+B|,
+\qquad
+|\sigma_{i,1}(BB)|=|BB|.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|A_i+A_i|
+=
+|\mathcal A_{K_i}+\mathcal A_{K_i}|
+\le
+n_{K_i}^{2-\delta}
+=
+|A_i|^{2-\delta},
+\]</div>
+<p>and similarly</p>
+<div class="math-block">\[
+|A_iA_i|
+=
+|\mathcal A_{K_i}\mathcal A_{K_i}|
+\le
+|A_i|^{2-\delta}.
+\]</div>
+<p>Finally, since</p>
+<div class="math-block">\[
+n_{K_i}\ge \nu^{d_i}
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+d_i\to\infty,
+\]</div>
+<p>we have</p>
+<div class="math-block">\[
+|A_i|=n_{K_i}\to\infty.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+\max(|A_i+A_i|,\ |A_iA_i|)
+\le
+|A_i|^{2-\delta}
+\]</div>
+<p>for all sufficiently large \(i\), with an absolute constant</p>
+<div class="math-block">\[
+\delta&gt;0.
+\]</div>
+<p>This proves the theorem. \(\square\)</p>
+<hr>
+<h1>12. Summary of the construction</h1>
+<p>The construction can be summarized as follows.</p>
+<ol>
+<li>Take totally real number fields \(K_i\) of increasing degree and bounded root discriminant.</li>
+<li><p>In each \(K_i\), the unit group has exponentially many units \(u\) whose conjugates all have bounded size:</p>
+<div class="math-block">\[
+e^{-L}\le |\sigma_j(u)|\le e^L.
+\]</div>
+<p>Let this unit set be \(U_i\).</p></li>
+<li>Take a large bounded archimedean box of algebraic integers \(T_i\), translate it away from zero, and choose a sparse random subset \(S_i\subset T_i\).</li>
+<li><p>Define</p>
+<div class="math-block">\[
+\mathcal A_i=U_iS_i\subset\mathcal O_{K_i}.
+\]</div></li>
+<li><p>Random sparsity guarantees</p>
+<div class="math-block">\[
+|\mathcal A_i|\asymp |U_i||S_i|.
+\]</div></li>
+<li>Additively, \(\mathcal A_i+\mathcal A_i\) lies in a bounded box in all embeddings, so it has only exponentially many possible values.</li>
+<li><p>Multiplicatively,</p>
+<div class="math-block">\[
+\mathcal A_i\mathcal A_i\subset (U_iU_i)(S_iS_i),
+\]</div>
+<p>and since \(U_i\) has small multiplicative doubling,</p>
+<div class="math-block">\[
+|\mathcal A_i\mathcal A_i|
+\ll^d
+\frac{|\mathcal A_i|^2}{|U_i|}.
+\]</div>
+<p>Because \(|U_i|\) is a fixed positive power of \(|\mathcal A_i|\), this gives a fixed power saving.</p></li>
+<li>Project by one real embedding to get the desired finite subsets of \(\mathbb R\).</li>
+</ol>
+<hr>
+<h1>Round 3</h1>
+<h2>User</h2>
+<blockquote><p>Critically examine the proof you constructed to identify and resolve any errors or logical gaps. Then, present a complete, rigorous, step-by-step proof. Clearly justify each step with sufficient detail so that an expert can verify your reasoning without needing to fill in any gaps.</p></blockquote>
+<h2>Assistant</h2>
+<h2>Critical corrections to the previous proof</h2>
+<p>The broad unit-based construction is viable, but the previous write-up had several gaps:</p>
+<ol>
+<li><p><strong>Regulator control was not fully justified.</strong> We need an infinite totally real family with both bounded root discriminant and regulator at most exponential in the degree. This follows from Martinet’s totally real class-field towers together with Landau’s residue bound and the analytic class number formula. I state this precisely below.</p></li>
+<li><p><strong>The random collision argument used a random threshold incorrectly.</strong> Previously I bounded \(Y\) by a multiple of \(R X\), where \(X=|S|\) is random, directly via Markov. The correct argument first proves \(X\) is close to its mean and \(Y\) is small compared with that mean, then combines the two events.</p></li>
+<li><p><strong>The unit-lattice covolume and hyperplane-volume factors need to be handled.</strong> The logarithmic unit lattice has covolume \(\asymp \sqrt d\,R_K\), not exactly \(R_K\). This polynomial factor is harmless but must be absorbed carefully.</p></li>
+<li><p><strong>The collision expectation had a constant error.</strong> The ratio is essentially \((C_U/\kappa)^d\), not \((C_U/\kappa^2)^d\), after comparing to the correct normalization.</p></li>
+</ol>
+<p>With those points fixed, the proof is as follows.</p>
+<hr>
+<h1>Proof</h1>
+<p>We use the following standard arithmetic input.</p>
+<h2>1. Arithmetic input</h2>
+<p>There exist absolute constants \(\Delta&gt;1\), \(C_R&gt;1\), and an infinite sequence of totally real number fields</p>
+<div class="math-block">\[
+K_i/\mathbb Q
+\]</div>
+<p>with degrees</p>
+<div class="math-block">\[
+d_i=[K_i:\mathbb Q]\to\infty
+\]</div>
+<p>such that</p>
+<div class="math-block">\[
+|D_{K_i}|^{1/d_i}\le \Delta
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+R_{K_i}\le C_R^{d_i},
+\]</div>
+<p>where \(D_K\) is the discriminant and \(R_K\) the regulator.</p>
+<p>Indeed, Martinet constructed infinite totally real class-field towers with bounded root discriminant. Landau’s residue estimate gives, for a number field \(K\) of degree \(d\),</p>
+<div class="math-block">\[
+\operatorname*{Res}_{s=1}\zeta_K(s)\le C_1^d
+\]</div>
+<p>whenever \(|D_K|^{1/d}\le \Delta\), for some \(C_1=C_1(\Delta)\). For totally real \(K\),</p>
+<div class="math-block">\[
+\operatorname*{Res}_{s=1}\zeta_K(s)
+=
+\frac{2^{d-1}h_KR_K}{\sqrt{|D_K|}}.
+\]</div>
+<p>Since \(h_K\ge1\), this implies</p>
+<div class="math-block">\[
+R_K
+\le
+\frac{\sqrt{|D_K|}}{2^{d-1}}
+\operatorname*{Res}_{s=1}\zeta_K(s)
+\le
+C_R^d
+\]</div>
+<p>for some \(C_R=C_R(\Delta)\).</p>
+<p>Fix such a sequence \(K_i\).</p>
+<hr>
+<h1>2. Basic counting lemmas</h1>
+<p>Let \(K\) be totally real of degree \(d\), with real embeddings</p>
+<div class="math-block">\[
+\sigma_1,\dots,\sigma_d:K\hookrightarrow \mathbb R.
+\]</div>
+<p>Write</p>
+<div class="math-block">\[
+\Sigma(x)=(\sigma_1(x),\dots,\sigma_d(x)).
+\]</div>
+<h2>Lemma 2.1: packing of algebraic integers</h2>
+<p>For every \(T\ge0\) and every \(y\in\mathbb R^d\),</p>
+<div class="math-block">\[
+\#\left\{
+\alpha\in\mathcal O_K:
+|\sigma_j(\alpha)-y_j|\le T\text{ for all }j
+\right\}
+\le (2T+1)^d.
+\]</div>
+<h3>Proof</h3>
+<p>If \(\alpha\neq\beta\in\mathcal O_K\), then</p>
+<div class="math-block">\[
+N_{K/\mathbb Q}(\alpha-\beta)\in\mathbb Z\setminus\{0\},
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+\prod_{j=1}^d|\sigma_j(\alpha-\beta)|\ge1.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+\max_j|\sigma_j(\alpha-\beta)|\ge1.
+\]</div>
+<p>Thus \(\Sigma(\mathcal O_K)\) is \(1\)-separated in the \(\ell^\infty\)-metric. Disjoint \(\ell^\infty\)-balls of radius \(1/2\) around all points in a box of radius \(T\) lie in the concentric box of radius \(T+1/2\), whose volume is \((2T+1)^d\). \(\square\)</p>
+<hr>
+<h2>Lemma 2.2: Blichfeldt difference lemma</h2>
+<p>Let \(\Lambda\subset\mathbb R^r\) be a lattice of covolume \(\det\Lambda\), and let \(\Omega\subset\mathbb R^r\) be bounded and measurable. Then</p>
+<div class="math-block">\[
+|\Lambda\cap(\Omega-\Omega)|
+\ge
+\frac{\operatorname{vol}(\Omega)}{\det\Lambda}.
+\]</div>
+<p>This is the usual Blichfeldt principle: some translate of \(\Omega\) contains at least \(\operatorname{vol}(\Omega)/\det\Lambda\) lattice points, and their pairwise differences lie in \(\Omega-\Omega\).</p>
+<hr>
+<h1>3. Many bounded units</h1>
+<p>Let</p>
+<div class="math-block">\[
+H_d=\left\{x\in\mathbb R^d:\sum_{j=1}^d x_j=0\right\}.
+\]</div>
+<p>The logarithmic embedding of units is</p>
+<div class="math-block">\[
+\ell:\mathcal O_K^\times\to H_d,
+\qquad
+\ell(u)=\left(\log|\sigma_1(u)|,\dots,\log|\sigma_d(u)|\right).
+\]</div>
+<p>Its image \(\Lambda_K=\ell(\mathcal O_K^\times)\) is a lattice in \(H_d\) with covolume \(\asymp \sqrt d\,R_K\).</p>
+<p>For \(L&gt;0\), define</p>
+<div class="math-block">\[
+Q_L^{(d)}=\{x\in H_d:\|x\|_\infty\le L\}.
+\]</div>
+<p>By the cube-slicing theorem of Vaaler/Ball, there is an absolute constant \(c_0&gt;0\) such that</p>
+<div class="math-block">\[
+\operatorname{vol}_{H_d}(Q_L^{(d)})\ge (c_0L)^{d-1}.
+\]</div>
+<p>Also, by a simple covering argument, there is an absolute constant \(C_U&gt;1\) such that for every lattice \(\Lambda\subset H_d\),</p>
+<div class="math-block">\[
+|\Lambda\cap Q_{2L}^{(d)}|
+\le
+C_U^d|\Lambda\cap Q_L^{(d)}|.
+\]</div>
+<p>Indeed, cover the cube \([-2L,2L]^d\) by \(O(1)^d\) cubes of side length \(L\). In each small cube, after subtracting one lattice point, all other lattice points inject into \(\Lambda\cap Q_L^{(d)}\).</p>
+<p>Now choose \(L&gt;1\) large, to be specified later, and define</p>
+<div class="math-block">\[
+U_K=
+\left\{
+u\in\mathcal O_K^\times:
+|\log|\sigma_j(u)||\le L\text{ for all }j
+\right\}.
+\]</div>
+<p>Equivalently,</p>
+<div class="math-block">\[
+e^{-L}\le |\sigma_j(u)|\le e^L
+\qquad
+\forall u\in U_K,\ \forall j.
+\]</div>
+<p>By Lemma 2.2 applied to \(\Lambda_K\subset H_d\),</p>
+<div class="math-block">\[
+|\Lambda_K\cap Q_L^{(d)}|
+\ge
+\frac{\operatorname{vol}(Q_{L/2}^{(d)})}{\operatorname{covol}(\Lambda_K)}
+\gg
+\frac{(c_0L)^{d-1}}{\sqrt d\,R_K}.
+\]</div>
+<p>Since \(R_K\le C_R^d\), after discarding finitely many fields,</p>
+<div class="math-block">\[
+|U_K|\ge \rho^d
+\]</div>
+<p>for some</p>
+<div class="math-block">\[
+\rho=\rho(L)&gt;1,
+\]</div>
+<p>and by taking \(L\) sufficiently large, \(\rho\) can be made arbitrarily large.</p>
+<p>On the other hand, Lemma 2.1 gives</p>
+<div class="math-block">\[
+|U_K|\le (2e^L+1)^d.
+\]</div>
+<p>Set</p>
+<div class="math-block">\[
+\rho_+=2e^L+1.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+\rho^d\le |U_K|\le \rho_+^d.
+\]</div>
+<p>Moreover,</p>
+<div class="math-block">\[
+U_KU_K,\ U_KU_K^{-1}
+\subset
+\{u\in\mathcal O_K^\times:\|\ell(u)\|_\infty\le 2L\},
+\]</div>
+<p>so the lattice doubling bound gives</p>
+<div class="math-block">\[
+|U_KU_K|\le C_U^d|U_K|,
+\qquad
+|U_KU_K^{-1}|\le C_U^d|U_K|.
+\]</div>
+<hr>
+<h1>4. A large bounded pool of algebraic integers</h1>
+<p>Fix a large parameter \(W&gt;1\), to be chosen later. Define</p>
+<div class="math-block">\[
+T_{0,K}
+=
+\left\{
+t\in\mathcal O_K:
+|\sigma_j(t)|\le 2W\text{ for all }j
+\right\}.
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+P_K=|T_{0,K}|.
+\]</div>
+<p>By Lemma 2.2 applied to the lattice \(\Sigma(\mathcal O_K)\subset\mathbb R^d\), whose covolume is \(\sqrt{|D_K|}\),</p>
+<div class="math-block">\[
+P_K
+\ge
+\frac{(2W)^d}{\sqrt{|D_K|}}
+\ge
+\left(\frac{2W}{\sqrt\Delta}\right)^d.
+\]</div>
+<p>Set</p>
+<div class="math-block">\[
+\Pi_-=\frac{2W}{\sqrt\Delta}.
+\]</div>
+<p>By Lemma 2.1,</p>
+<div class="math-block">\[
+P_K\le (4W+1)^d.
+\]</div>
+<p>Now choose the integer</p>
+<div class="math-block">\[
+M=\lceil 4W\rceil
+\]</div>
+<p>and set</p>
+<div class="math-block">\[
+T_K=M+T_{0,K}.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+|T_K|=P_K,
+\]</div>
+<p>and every \(s\in T_K\) satisfies</p>
+<div class="math-block">\[
+W\le \sigma_j(s)\le 7W
+\qquad
+\forall j.
+\]</div>
+<p>In particular, every element of \(T_K\) is nonzero.</p>
+<hr>
+<h1>5. Random sparse selection</h1>
+<p>Write</p>
+<div class="math-block">\[
+U=U_K,\qquad N=|U|.
+\]</div>
+<p>Choose a random subset</p>
+<div class="math-block">\[
+S\subset T_K
+\]</div>
+<p>by including each element independently with probability</p>
+<div class="math-block">\[
+p=\frac1{\kappa^dN},
+\]</div>
+<p>where \(\kappa&gt;1\) is a constant to be chosen later.</p>
+<p>Let</p>
+<div class="math-block">\[
+X=|S|,
+\qquad
+\mu=\mathbb E X=pP_K.
+\]</div>
+<p>We also count collisions:</p>
+<div class="math-block">\[
+Y=
+\#\left\{
+(u,u&#x27;,s,s&#x27;)\in U^2\times S^2:
+us=u&#x27;s&#x27;,\ (u,s)\neq(u&#x27;,s&#x27;)
+\right\}.
+\]</div>
+<p>For \(us=u's'\), we have</p>
+<div class="math-block">\[
+s&#x27;=u&#x27;^{-1}us.
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+w=u&#x27;^{-1}u\in U^{-1}U.
+\]</div>
+<p>For fixed \(w\), there are at most \(N\) ordered pairs \((u,u')\in U^2\) with \(u'^{-1}u=w\). Also,</p>
+<div class="math-block">\[
+|U^{-1}U|\le C_U^dN.
+\]</div>
+<p>For each fixed \(w\neq1\), the number of \(s\in T_K\) with \(ws\in T_K\) is at most \(P_K\). Since every \(s\in T_K\) is nonzero, \(ws=s\) would force \(w=1\). Hence for \(w\neq1\), the two elements \(s\) and \(ws\) are distinct, so the probability that both lie in \(S\) is \(p^2\).</p>
+<p>Therefore</p>
+<div class="math-block">\[
+\mathbb E Y
+\le
+N|U^{-1}U|P_Kp^2
+\le
+C_U^dN^2P_Kp^2.
+\]</div>
+<p>Since</p>
+<div class="math-block">\[
+p=\frac1{\kappa^dN},
+\]</div>
+<p>we get</p>
+<div class="math-block">\[
+\mathbb E Y
+\le
+\left(\frac{C_U}{\kappa^2}\right)^dP_K.
+\]</div>
+<p>But</p>
+<div class="math-block">\[
+N\mu=NpP_K=\frac{P_K}{\kappa^d}.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+\mathbb E Y
+\le
+\left(\frac{C_U}{\kappa}\right)^dN\mu.
+\]</div>
+<p>Choose \(\kappa\) so large that, for all sufficiently large \(d\),</p>
+<div class="math-block">\[
+\left(\frac{C_U}{\kappa}\right)^d\le \frac1{1000}.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+\mathbb E Y\le \frac1{1000}N\mu.
+\]</div>
+<p>Later we choose \(W\) so large that</p>
+<div class="math-block">\[
+\mu=pP_K
+=
+\frac{P_K}{\kappa^dN}
+\ge
+\left(\frac{\Pi_-}{\kappa\rho_+}\right)^d
+\to\infty.
+\]</div>
+<p>Hence by Chernoff’s inequality,</p>
+<div class="math-block">\[
+\frac12\mu\le X\le2\mu
+\]</div>
+<p>with probability tending to \(1\). By Markov’s inequality,</p>
+<div class="math-block">\[
+Y\le \frac18N\mu
+\]</div>
+<p>with probability at least \(1-8/1000\).</p>
+<p>Thus, for all sufficiently large \(d\), there exists a subset \(S_K\subset T_K\) such that</p>
+<div class="math-block">\[
+\frac12\mu\le |S_K|\le2\mu
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+Y\le \frac18N\mu.
+\]</div>
+<p>Since \(|S_K|\ge\mu/2\), this implies</p>
+<div class="math-block">\[
+Y\le \frac14N|S_K|.
+\]</div>
+<p>Fix such an \(S_K\).</p>
+<hr>
+<h1>6. The algebraic set</h1>
+<p>Define</p>
+<div class="math-block">\[
+\mathcal A_K=U_KS_K
+=
+\{us:u\in U_K,\ s\in S_K\}
+\subset\mathcal O_K.
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+n_K=|\mathcal A_K|.
+\]</div>
+<p>For \(a\in\mathcal A_K\), let</p>
+<div class="math-block">\[
+r(a)=|\{(u,s)\in U_K\times S_K:us=a\}|.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+\sum_a r(a)=N|S_K|.
+\]</div>
+<p>Also,</p>
+<div class="math-block">\[
+\sum_a r(a)^2
+\]</div>
+<p>counts all pairs of representations of the same element. The diagonal contribution is \(N|S_K|\), and the off-diagonal contribution is \(Y\). Hence</p>
+<div class="math-block">\[
+\sum_a r(a)^2
+\le
+N|S_K|+\frac14N|S_K|
+=
+\frac54N|S_K|.
+\]</div>
+<p>By Cauchy–Schwarz,</p>
+<div class="math-block">\[
+(N|S_K|)^2
+\le
+n_K\sum_a r(a)^2
+\le
+\frac54n_KN|S_K|.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+n_K\ge \frac45N|S_K|.
+\]</div>
+<p>In particular,</p>
+<div class="math-block">\[
+\frac12N|S_K|\le n_K\le N|S_K|.
+\]</div>
+<p>Using \(|S_K|\ge\mu/2\), \(\mu=P_K/(\kappa^dN)\), we get</p>
+<div class="math-block">\[
+n_K\ge \frac12N\cdot\frac12\mu
+=
+\frac{P_K}{4\kappa^d}.
+\]</div>
+<p>Using \(P_K\ge \Pi_-^d\),</p>
+<div class="math-block">\[
+n_K\ge
+\frac{\Pi_-^d}{4\kappa^d}
+\ge
+\left(\frac{\Pi_-}{4\kappa}\right)^d.
+\]</div>
+<p>Set</p>
+<div class="math-block">\[
+\nu=\frac{\Pi_-}{4\kappa}.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+n_K\ge \nu^d.
+\]</div>
+<p>Similarly, since \(|S_K|\le2\mu\),</p>
+<div class="math-block">\[
+n_K\le N|S_K|\le 2N\mu=\frac{2P_K}{\kappa^d}\le2P_K.
+\]</div>
+<p>Since \(P_K\le(4W+1)^d\), after enlarging constants,</p>
+<div class="math-block">\[
+n_K\le \Pi_+^d,
+\qquad
+\Pi_+=2(4W+1).
+\]</div>
+<hr>
+<h1>7. Choice of parameters</h1>
+<p>We now choose constants in order.</p>
+<p>First choose \(L\) so large that the corresponding \(\rho\) satisfies</p>
+<div class="math-block">\[
+\rho&gt;(4C_U)^4.
+\]</div>
+<p>Set</p>
+<div class="math-block">\[
+C_\times=4C_U.
+\]</div>
+<p>Next choose \(\kappa\) sufficiently large in terms of \(C_U\), as above.</p>
+<p>Finally choose \(W\) sufficiently large that:</p>
+<ol>
+<li>\(\Pi_-&gt;8\kappa\rho_+\), ensuring \(\mu\to\infty\);</li>
+<li><p>with</p>
+<div class="math-block">\[
+\gamma=\frac{\log\rho}{\log\Pi_+},
+\]</div>
+<p>one has</p>
+<div class="math-block">\[
+C_\times\le \nu^{\gamma/2};
+\]</div></li>
+<li><p>and</p>
+<div class="math-block">\[
+30e^LW\le \nu^{2-\gamma/4}.
+\]</div></li>
+</ol>
+<p>Such a \(W\) exists. Indeed, as \(W\to\infty\),</p>
+<div class="math-block">\[
+\frac{\log\nu}{\log\Pi_+}\to1,
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+\nu^{\gamma/2}
+=
+\exp\left(\frac{\gamma}{2}\log\nu\right)
+\to
+\exp\left(\frac12\log\rho\right)
+=
+\rho^{1/2}
+&gt;
+C_\times.
+\]</div>
+<p>Also,</p>
+<div class="math-block">\[
+\nu^{2-\gamma/4}
+\asymp W^{2-o(1)},
+\]</div>
+<p>while \(30e^LW\) grows only linearly in \(W\). Hence condition 3 also holds for large \(W\).</p>
+<p>Now fix</p>
+<div class="math-block">\[
+\delta=\frac{\gamma}{4}&gt;0.
+\]</div>
+<p>All constants are absolute.</p>
+<hr>
+<h1>8. Sumset bound</h1>
+<p>For every \(a=us\in\mathcal A_K\),</p>
+<div class="math-block">\[
+|\sigma_j(a)|
+\le
+|\sigma_j(u)|\,|\sigma_j(s)|
+\le
+e^L\cdot7W
+=
+7e^LW.
+\]</div>
+<p>Therefore every element of</p>
+<div class="math-block">\[
+\mathcal A_K+\mathcal A_K
+\]</div>
+<p>has all conjugates bounded in absolute value by</p>
+<div class="math-block">\[
+14e^LW.
+\]</div>
+<p>By Lemma 2.1,</p>
+<div class="math-block">\[
+|\mathcal A_K+\mathcal A_K|
+\le
+(28e^LW+1)^d
+\le
+(30e^LW)^d.
+\]</div>
+<p>By the choice of \(W\),</p>
+<div class="math-block">\[
+30e^LW\le \nu^{2-\gamma/4}.
+\]</div>
+<p>Since \(n_K\ge\nu^d\),</p>
+<div class="math-block">\[
+|\mathcal A_K+\mathcal A_K|
+\le
+\nu^{(2-\gamma/4)d}
+\le
+n_K^{2-\gamma/4}
+=
+n_K^{2-\delta}.
+\]</div>
+<hr>
+<h1>9. Product-set bound</h1>
+<p>We have</p>
+<div class="math-block">\[
+\mathcal A_K\mathcal A_K
+=
+(U_KS_K)(U_KS_K)
+\subset
+(U_KU_K)(S_KS_K).
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+|\mathcal A_K\mathcal A_K|
+\le
+|U_KU_K|\,|S_KS_K|.
+\]</div>
+<p>Using</p>
+<div class="math-block">\[
+|U_KU_K|\le C_U^d|U_K|
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|S_KS_K|\le |S_K|^2,
+\]</div>
+<p>we obtain</p>
+<div class="math-block">\[
+|\mathcal A_K\mathcal A_K|
+\le
+C_U^dN|S_K|^2.
+\]</div>
+<p>Since</p>
+<div class="math-block">\[
+n_K\ge\frac12N|S_K|,
+\]</div>
+<p>we have</p>
+<div class="math-block">\[
+|S_K|\le \frac{2n_K}{N}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|\mathcal A_K\mathcal A_K|
+\le
+4C_U^d\frac{n_K^2}{N}
+\le
+C_\times^d\frac{n_K^2}{N}.
+\]</div>
+<p>Now \(N=|U_K|\ge\rho^d\), while \(n_K\le\Pi_+^d\). Thus</p>
+<div class="math-block">\[
+N\ge n_K^\gamma,
+\qquad
+\gamma=\frac{\log\rho}{\log\Pi_+}.
+\]</div>
+<p>So</p>
+<div class="math-block">\[
+|\mathcal A_K\mathcal A_K|
+\le
+C_\times^d n_K^{2-\gamma}.
+\]</div>
+<p>By the choice of \(W\),</p>
+<div class="math-block">\[
+C_\times\le \nu^{\gamma/2}.
+\]</div>
+<p>Since \(n_K\ge\nu^d\),</p>
+<div class="math-block">\[
+C_\times^d\le n_K^{\gamma/2}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|\mathcal A_K\mathcal A_K|
+\le
+n_K^{2-\gamma/2}
+\le
+n_K^{2-\delta}.
+\]</div>
+<hr>
+<h1>10. Projection to the real line</h1>
+<p>For each sufficiently large \(K_i\) in the tower, choose one real embedding</p>
+<div class="math-block">\[
+\sigma_{i,1}:K_i\hookrightarrow\mathbb R.
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+A_i=\sigma_{i,1}(\mathcal A_{K_i})\subset\mathbb R.
+\]</div>
+<p>Since \(\sigma_{i,1}\) is injective,</p>
+<div class="math-block">\[
+|A_i|=|\mathcal A_{K_i}|=n_{K_i}.
+\]</div>
+<p>Also,</p>
+<div class="math-block">\[
+A_i+A_i
+=
+\sigma_{i,1}(\mathcal A_{K_i}+\mathcal A_{K_i}),
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+A_iA_i
+=
+\sigma_{i,1}(\mathcal A_{K_i}\mathcal A_{K_i}),
+\]</div>
+<p>so cardinalities are preserved.</p>
+<p>Thus</p>
+<div class="math-block">\[
+|A_i+A_i|
+\le
+|A_i|^{2-\delta}
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|A_iA_i|
+\le
+|A_i|^{2-\delta}.
+\]</div>
+<p>Finally,</p>
+<div class="math-block">\[
+|A_i|=n_{K_i}\ge \nu^{d_i},
+\]</div>
+<p>and \(d_i\to\infty\), so \(|A_i|\to\infty\).</p>
+<p>Therefore</p>
+<div class="math-block">\[
+\max(|A_i+A_i|,\ |A_iA_i|)
+\le
+|A_i|^{2-\delta}
+\]</div>
+<p>for infinitely many finite sets \(A_i\subset\mathbb R\), with one absolute constant \(\delta&gt;0\).</p>
+<p>This proves the theorem. \(\square\)</p>
+<hr>
+</main>
+</body>
+</html>

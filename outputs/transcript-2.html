@@ -1,0 +1,2233 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Transcript</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <style>
+    body {
+      margin: 0;
+      background: #f7f7f4;
+      color: #1f2328;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.62;
+    }
+    main {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 40px 28px 80px;
+      background: #fff;
+      min-height: 100vh;
+      box-shadow: 0 0 0 1px #e4e4df;
+    }
+    h1, h2, h3 { line-height: 1.25; margin-top: 1.7em; }
+    h1 { font-size: 30px; }
+    h2 { font-size: 24px; border-bottom: 1px solid #e5e5e0; padding-bottom: 4px; }
+    h3 { font-size: 19px; }
+    p { margin: 0 0 1em; }
+    blockquote {
+      border-left: 4px solid #b8c4d6;
+      margin: 1.2em 0;
+      padding: 0.2em 1em;
+      background: #f7f9fc;
+    }
+    pre {
+      overflow-x: auto;
+      background: #f2f2ee;
+      padding: 12px;
+      border-radius: 6px;
+    }
+    code {
+      background: #f2f2ee;
+      padding: 1px 4px;
+      border-radius: 4px;
+    }
+    pre code {
+      background: none;
+      padding: 0;
+    }
+    .math-block {
+      overflow-x: auto;
+      margin: 1.1em 0;
+      padding: 0.2em 0;
+    }
+    mjx-container {
+      overflow-x: auto;
+      overflow-y: hidden;
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Transcript</h1>
+<h2>System prompt</h2>
+<blockquote><p>The provided theorem was recently proved, and the result is now accepted by the mathematical community. Your task is to independently construct a proof.</p></blockquote>
+<hr>
+<h1>Round 1</h1>
+<h2>User</h2>
+<blockquote><p><strong>Theorem.</strong> There exist an absolute constant $\delta &gt; 0$ and an infinite sequence $\{A_i\}$ of finite subsets of $\mathbb{R}$ such that $|A_i| \to \infty$ and $\max(|A_i+A_i|, |A_iA_i|) \le |A_i|^{2-\delta}$ for all $i$, where $A_i+A_i = \{ a+b : a,b \in A_i \}$ and $A_iA_i = \{ ab : a,b \in A_i \}$ are the sumset and product set of $A_i$, respectively.</p>
+<p><strong>Remark.</strong> This result disproves the Erdős–Szemerédi Sum-Product Conjecture over $\mathbb{R}$.</p>
+<hr>
+<p>As a first step toward a complete proof, identify the most promising approach and develop it as far as possible. Present a step-by-step proof plan. Prove any intermediate claims you can. For each remaining gap, state it precisely and assess whether it can plausibly be closed within the approach or poses a serious obstruction. Include enough detail for the next round to continue from where you leave off.</p></blockquote>
+<h2>Assistant</h2>
+<p>Below is the approach I think is most promising for a complete proof, developed to a precise reduction.  The key idea is to replace the usual integer/smooth-number constructions by <strong>high-degree totally real number fields with many small units</strong>.</p>
+<p>The reason units are natural is:</p>
+<ul>
+<li>Multiplication of units is governed by a rank-\(d-1\) lattice, so a bounded box of units has controlled multiplicative doubling.</li>
+<li>Addition of two units is not a unit, but if all conjugates of the units are bounded, then all conjugates of their sums are bounded; hence the sumset is controlled by the number of algebraic integers in a fixed archimedean box.</li>
+</ul>
+<p>The proof below reduces the theorem to a concrete arithmetic construction of totally real fields satisfying two counting estimates.  I prove the reduction and several lattice-counting lemmas.  The main remaining gap is an arithmetic one: constructing fields with sufficiently many bounded units but not too many bounded algebraic integers.</p>
+<hr>
+<h1>1. The proposed construction</h1>
+<p>Let \(K/\mathbb Q\) be a totally real number field of degree \(d\), with real embeddings</p>
+<div class="math-block">\[
+\sigma_1,\dots,\sigma_d:K\hookrightarrow \mathbb R.
+\]</div>
+<p>For \(R&gt;0\), define the set of \(R\)-bounded units</p>
+<div class="math-block">\[
+U_K(R)
+:=
+\left\{
+u\in \mathcal O_K^\times:
+e^{-R}\le |\sigma_j(u)|\le e^R \ \text{for every } j=1,\dots,d
+\right\}.
+\]</div>
+<p>Equivalently, under the logarithmic embedding</p>
+<div class="math-block">\[
+\ell: \mathcal O_K^\times \to H_d
+:=\left\{(x_1,\dots,x_d)\in \mathbb R^d:\sum_{j=1}^d x_j=0\right\},
+\]</div>
+<div class="math-block">\[
+\ell(u)=(\log|\sigma_1(u)|,\dots,\log|\sigma_d(u)|),
+\]</div>
+<p>we have</p>
+<div class="math-block">\[
+U_K(R)=\ell^{-1}(C_R),
+\qquad
+C_R:=H_d\cap [-R,R]^d.
+\]</div>
+<p>Now define a finite subset of \(\mathbb R\) by choosing one embedding, say \(\sigma_1\), and setting</p>
+<div class="math-block">\[
+A_K(R):=\sigma_1\bigl(U_K(R)\bigr)\subset \mathbb R.
+\]</div>
+<p>Because \(\sigma_1\) is injective on \(K\),</p>
+<div class="math-block">\[
+|A_K(R)|=|U_K(R)|.
+\]</div>
+<p>The goal is to find a sequence of totally real fields \(K_i\) with \(d_i=[K_i:\mathbb Q]\to\infty\), and a fixed \(R&gt;0\), such that</p>
+<div class="math-block">\[
+|U_{K_i}(R)|\to\infty
+\]</div>
+<p>and both the sumset and product set of \(A_{K_i}(R)\) are \(&lt; |A_{K_i}(R)|^{2-\delta}\).</p>
+<p>The following reduction isolates the arithmetic input needed.</p>
+<hr>
+<h1>2. Basic containment estimates</h1>
+<p>For \(M&gt;0\), define the set of algebraic integers with all conjugates bounded by \(M\):</p>
+<div class="math-block">\[
+B_K(M):=
+\left\{
+x\in \mathcal O_K:
+|\sigma_j(x)|\le M \ \text{for every } j=1,\dots,d
+\right\}.
+\]</div>
+<p>We need two simple containments.</p>
+<h2>Lemma 1: Sumset and product set containment</h2>
+<p>Let \(K\) be totally real and \(R&gt;0\).  Put \(A=A_K(R)=\sigma_1(U_K(R))\). Then</p>
+<div class="math-block">\[
+A+A \subseteq \sigma_1\bigl(B_K(2e^R)\bigr),
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+AA \subseteq \sigma_1\bigl(U_K(2R)\bigr).
+\]</div>
+<p>Consequently,</p>
+<div class="math-block">\[
+|A+A|\le |B_K(2e^R)|,
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|AA|\le |U_K(2R)|.
+\]</div>
+<h3>Proof</h3>
+<p>Take \(u,v\in U_K(R)\).  For every embedding \(\sigma_j\),</p>
+<div class="math-block">\[
+|\sigma_j(u+v)|
+\le |\sigma_j(u)|+|\sigma_j(v)|
+\le 2e^R.
+\]</div>
+<p>Also \(u+v\in\mathcal O_K\).  Hence</p>
+<div class="math-block">\[
+u+v\in B_K(2e^R),
+\]</div>
+<p>which gives</p>
+<div class="math-block">\[
+A+A\subseteq \sigma_1(B_K(2e^R)).
+\]</div>
+<p>For products,</p>
+<div class="math-block">\[
+\sigma_j(uv)=\sigma_j(u)\sigma_j(v),
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+e^{-2R}\le |\sigma_j(uv)|\le e^{2R}
+\]</div>
+<p>for every \(j\).  Thus</p>
+<div class="math-block">\[
+uv\in U_K(2R),
+\]</div>
+<p>and therefore</p>
+<div class="math-block">\[
+AA\subseteq \sigma_1(U_K(2R)).
+\]</div>
+<p>Since \(\sigma_1\) is injective, the cardinality bounds follow. \(\square\)</p>
+<p>So the problem becomes: find fields \(K\) for which</p>
+<ol>
+<li>\(U_K(R)\) is large;</li>
+<li>\(B_K(2e^R)\) is not too large;</li>
+<li>\(U_K(2R)\) is not too large compared with \(U_K(R)\).</li>
+</ol>
+<p>The third point follows from a general lattice-doubling lemma.</p>
+<hr>
+<h1>3. A lattice-doubling lemma for units</h1>
+<p>Let</p>
+<div class="math-block">\[
+\Lambda_K:=\ell(\mathcal O_K^\times)\subset H_d
+\]</div>
+<p>be the unit lattice.  Since \(K\) is totally real, \(\ker \ell=\{\pm 1\}\), so</p>
+<div class="math-block">\[
+|U_K(R)|=2|\Lambda_K\cap C_R|.
+\]</div>
+<p>We need to control \(|U_K(2R)|\) in terms of \(|U_K(R)|\).</p>
+<h2>Lemma 2: Lattice points in a doubled convex body</h2>
+<p>Let \(\Lambda\) be a lattice of rank \(r\) in a real vector space \(V\), and let \(C\subset V\) be a centrally symmetric convex body. Then</p>
+<div class="math-block">\[
+|\Lambda\cap 2C|\le 5^r |\Lambda\cap C|.
+\]</div>
+<h3>Proof</h3>
+<p>Set</p>
+<div class="math-block">\[
+S:=\Lambda\cap 2C.
+\]</div>
+<p>Choose a maximal subset \(Y\subseteq S\) such that for distinct \(y,y'\in Y\),</p>
+<div class="math-block">\[
+y-y&#x27;\notin C.
+\]</div>
+<p>Then the translates</p>
+<div class="math-block">\[
+y+\frac12 C,\qquad y\in Y,
+\]</div>
+<p>are pairwise disjoint. Indeed, if</p>
+<div class="math-block">\[
+\left(y+\frac12 C\right)\cap\left(y&#x27;+\frac12 C\right)\neq\varnothing,
+\]</div>
+<p>then</p>
+<div class="math-block">\[
+y-y&#x27;\in \frac12 C-\frac12 C=C,
+\]</div>
+<p>contradicting the choice of \(Y\).</p>
+<p>Also, since \(y\in 2C\),</p>
+<div class="math-block">\[
+y+\frac12 C\subseteq \frac52 C.
+\]</div>
+<p>Therefore,</p>
+<div class="math-block">\[
+|Y|\operatorname{vol}\left(\frac12 C\right)
+\le
+\operatorname{vol}\left(\frac52 C\right).
+\]</div>
+<p>Since \(\dim V=r\),</p>
+<div class="math-block">\[
+\frac{\operatorname{vol}((5/2)C)}
+{\operatorname{vol}((1/2)C)}
+=
+5^r.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+|Y|\le 5^r.
+\]</div>
+<p>By maximality of \(Y\), every \(s\in S\) satisfies</p>
+<div class="math-block">\[
+s-y\in C
+\]</div>
+<p>for some \(y\in Y\).  Since \(s,y\in\Lambda\), we have \(s-y\in\Lambda\cap C\).  Thus</p>
+<div class="math-block">\[
+S\subseteq Y+(\Lambda\cap C),
+\]</div>
+<p>and therefore</p>
+<div class="math-block">\[
+|\Lambda\cap 2C|=|S|
+\le |Y|\,|\Lambda\cap C|
+\le 5^r|\Lambda\cap C|.
+\]</div>
+<p>\(\square\)</p>
+<p>Applying this to \(C=C_R\subset H_d\), whose ambient dimension is \(d-1\), gives:</p>
+<h2>Corollary 3: Unit doubling</h2>
+<p>For every totally real field \(K\) of degree \(d\),</p>
+<div class="math-block">\[
+|U_K(2R)|\le 5^{d-1}|U_K(R)|.
+\]</div>
+<h3>Proof</h3>
+<p>Since \(C_{2R}=2C_R\),</p>
+<div class="math-block">\[
+|U_K(2R)|
+=
+2|\Lambda_K\cap C_{2R}|
+=
+2|\Lambda_K\cap 2C_R|.
+\]</div>
+<p>By Lemma 2,</p>
+<div class="math-block">\[
+|\Lambda_K\cap 2C_R|
+\le
+5^{d-1}|\Lambda_K\cap C_R|.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|U_K(2R)|
+\le
+2\cdot 5^{d-1}|\Lambda_K\cap C_R|
+=
+5^{d-1}|U_K(R)|.
+\]</div>
+<p>\(\square\)</p>
+<p>This already gives a robust multiplicative estimate.  The price is the factor \(5^d\).  If one can prove stronger regularity of the unit lattice, this factor can plausibly be improved to \(2^{d+o(d)}\), but \(5^d\) is enough for a first reduction.</p>
+<hr>
+<h1>4. Conditional theorem: the arithmetic input needed</h1>
+<p>The preceding lemmas show that the sum-product theorem follows from the existence of totally real fields with many bounded units and comparatively few bounded algebraic integers.</p>
+<p>Here is the clean conditional statement.</p>
+<h2>Proposition 4: Reduction to two counting estimates</h2>
+<p>Suppose there exist constants</p>
+<div class="math-block">\[
+R&gt;0,\qquad \lambda&gt;0,\qquad \mu&gt;0
+\]</div>
+<p>with</p>
+<div class="math-block">\[
+\lambda&gt;\log 5
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\mu&lt;2\lambda,
+\]</div>
+<p>and an infinite sequence of totally real fields \(K_i\) of degrees \(d_i\to\infty\), such that</p>
+<div class="math-block">\[
+|U_{K_i}(R)|\ge \exp\bigl((\lambda-o(1))d_i\bigr),
+\tag{1}
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|B_{K_i}(2e^R)|\le \exp\bigl((\mu+o(1))d_i\bigr).
+\tag{2}
+\]</div>
+<p>Then there exists \(\delta&gt;0\) and an infinite sequence of finite sets \(A_i\subset\mathbb R\), with \(|A_i|\to\infty\), such that</p>
+<div class="math-block">\[
+\max(|A_i+A_i|,|A_iA_i|)
+\le
+|A_i|^{2-\delta}.
+\]</div>
+<p>More explicitly, any</p>
+<div class="math-block">\[
+0&lt;\delta&lt;
+\min\left\{
+1-\frac{\log 5}{\lambda},
+\,
+2-\frac{\mu}{\lambda}
+\right\}
+\]</div>
+<p>works.</p>
+<h3>Proof</h3>
+<p>Let</p>
+<div class="math-block">\[
+A_i:=A_{K_i}(R)=\sigma_{i,1}(U_{K_i}(R)).
+\]</div>
+<p>Since \(\sigma_{i,1}\) is injective,</p>
+<div class="math-block">\[
+|A_i|=|U_{K_i}(R)|.
+\]</div>
+<p>By assumption,</p>
+<div class="math-block">\[
+|A_i|
+\ge
+\exp((\lambda-o(1))d_i),
+\]</div>
+<p>so \(|A_i|\to\infty\).</p>
+<p>For the sumset, Lemma 1 gives</p>
+<div class="math-block">\[
+|A_i+A_i|
+\le
+|B_{K_i}(2e^R)|
+\le
+\exp((\mu+o(1))d_i).
+\]</div>
+<p>Since</p>
+<div class="math-block">\[
+|A_i|\ge \exp((\lambda-o(1))d_i),
+\]</div>
+<p>we have</p>
+<div class="math-block">\[
+|A_i+A_i|
+\le
+|A_i|^{\mu/\lambda+o(1)}.
+\]</div>
+<p>Because \(\mu&lt;2\lambda\), for every</p>
+<div class="math-block">\[
+\delta&lt;2-\frac{\mu}{\lambda},
+\]</div>
+<p>we get</p>
+<div class="math-block">\[
+|A_i+A_i|\le |A_i|^{2-\delta}
+\]</div>
+<p>for all sufficiently large \(i\).</p>
+<p>For the product set, Lemma 1 and Corollary 3 give</p>
+<div class="math-block">\[
+|A_iA_i|
+\le
+|U_{K_i}(2R)|
+\le
+5^{d_i-1}|U_{K_i}(R)|
+=
+5^{d_i-1}|A_i|.
+\]</div>
+<p>Again using</p>
+<div class="math-block">\[
+|A_i|\ge \exp((\lambda-o(1))d_i),
+\]</div>
+<p>we get</p>
+<div class="math-block">\[
+5^{d_i-1}
+\le
+|A_i|^{\log 5/\lambda+o(1)}.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+|A_iA_i|
+\le
+|A_i|^{1+\log 5/\lambda+o(1)}.
+\]</div>
+<p>Because \(\lambda&gt;\log 5\),</p>
+<div class="math-block">\[
+1+\frac{\log 5}{\lambda}&lt;2.
+\]</div>
+<p>Therefore, for every</p>
+<div class="math-block">\[
+\delta&lt;1-\frac{\log 5}{\lambda},
+\]</div>
+<p>we have</p>
+<div class="math-block">\[
+|A_iA_i|\le |A_i|^{2-\delta}
+\]</div>
+<p>for all sufficiently large \(i\).</p>
+<p>Choosing</p>
+<div class="math-block">\[
+0&lt;\delta&lt;
+\min\left\{
+1-\frac{\log 5}{\lambda},
+\,
+2-\frac{\mu}{\lambda}
+\right\}
+\]</div>
+<p>proves the claim. \(\square\)</p>
+<p>So the theorem is reduced to proving the following arithmetic input.</p>
+<hr>
+<h1>5. The arithmetic input to prove next</h1>
+<p>We need:</p>
+<blockquote><p><strong>Arithmetic Input.</strong>   There exist constants \(R&gt;0\), \(\lambda&gt;\log 5\), \(\mu&lt;2\lambda\), and infinitely many totally real fields \(K_i\) of degrees \(d_i\to\infty\), such that</p>
+<div class="math-block">\[
+|U_{K_i}(R)|\ge \exp((\lambda-o(1))d_i),
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|B_{K_i}(2e^R)|\le \exp((\mu+o(1))d_i).
+\]</div></blockquote>
+<p>The rest of this answer explains why this input is plausible, how to attack it, and what the precise remaining gaps are.</p>
+<hr>
+<h1>6. How one expects to prove the arithmetic input</h1>
+<p>The two quantities in the arithmetic input are controlled by two lattices attached to \(K\):</p>
+<ol>
+<li><p>The <strong>unit log lattice</strong></p>
+<div class="math-block">\[
+\Lambda_K=\ell(\mathcal O_K^\times)\subset H_d.
+\]</div></li>
+<li><p>The <strong>Minkowski lattice</strong></p>
+<div class="math-block">\[
+\Sigma_K(\mathcal O_K)
+:=
+\{(\sigma_1(x),\dots,\sigma_d(x)):x\in\mathcal O_K\}
+\subset \mathbb R^d.
+\]</div></li>
+</ol>
+<p>The first controls \(U_K(R)\).  The second controls \(B_K(2e^R)\).</p>
+<hr>
+<h2>6.1. Counting bounded units from the regulator and lattice shape</h2>
+<p>Let</p>
+<div class="math-block">\[
+\mathcal R_K:=\operatorname{covol}(\Lambda_K\subset H_d).
+\]</div>
+<p>Up to a factor \(d^{1/2}\), this is the usual regulator of \(K\).  Since \(d^{1/2}=\exp(o(d))\), this factor is irrelevant for exponential estimates.</p>
+<p>The body</p>
+<div class="math-block">\[
+C_R=H_d\cap[-R,R]^d
+\]</div>
+<p>has \((d-1)\)-dimensional volume</p>
+<div class="math-block">\[
+\operatorname{vol}_{H_d}(C_R)
+=
+\exp(o(d))(2R)^{d-1}.
+\tag{3}
+\]</div>
+<p>This follows, for example, from standard cube-slicing estimates: the central hyperplane section of the cube \([-R,R]^d\) has volume \(e^{o(d)}(2R)^{d-1}\).</p>
+<p>So if the unit lattice is reasonably well-distributed, one expects</p>
+<div class="math-block">\[
+|U_K(R)|
+=
+2|\Lambda_K\cap C_R|
+\approx
+\frac{\operatorname{vol}_{H_d}(C_R)}{\mathcal R_K}
+\approx
+\frac{(2R)^d}{\mathcal R_K}.
+\]</div>
+<p>Thus a sufficient condition for</p>
+<div class="math-block">\[
+|U_K(R)|\ge \exp(\lambda d)
+\]</div>
+<p>is roughly</p>
+<div class="math-block">\[
+\mathcal R_K\le \exp(\rho d)
+\]</div>
+<p>with</p>
+<div class="math-block">\[
+\lambda&lt;\log(2R)-\rho.
+\]</div>
+<p>To make \(\lambda&gt;\log 5\), we want</p>
+<div class="math-block">\[
+\log(2R)-\rho&gt;\log 5.
+\]</div>
+<p>For example, if \(R=4\), then \(\log(2R)=\log 8\), so one needs roughly</p>
+<div class="math-block">\[
+\rho&lt;\log 8-\log 5=\log(8/5)\approx 0.470.
+\]</div>
+<p>That is not absurd: known lower bounds for regulators are exponential, but the exponent is small enough that this numerical range is plausible.</p>
+<p>A precise lattice-counting lemma is useful here.</p>
+<hr>
+<h2>Lemma 5: Counting lattice points from a bounded fundamental domain</h2>
+<p>Let \(\Lambda\subset H_d\) be a lattice, and suppose \(\Lambda\) has a measurable fundamental domain \(F\subset C_\eta\). Then for \(R&gt;\eta\),</p>
+<div class="math-block">\[
+|\Lambda\cap C_R|
+\ge
+\frac{\operatorname{vol}_{H_d}(C_{R-\eta})}
+{\operatorname{covol}(\Lambda)}.
+\]</div>
+<h3>Proof</h3>
+<p>Every point \(y\in H_d\) has a unique representation</p>
+<div class="math-block">\[
+y=\lambda+f,
+\]</div>
+<p>with \(\lambda\in\Lambda\), \(f\in F\).</p>
+<p>If \(y\in C_{R-\eta}\) and \(f\in C_\eta\), then</p>
+<div class="math-block">\[
+\lambda=y-f\in C_R.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+C_{R-\eta}
+\subseteq
+\bigcup_{\lambda\in \Lambda\cap C_R}(\lambda+F).
+\]</div>
+<p>Taking volumes gives</p>
+<div class="math-block">\[
+\operatorname{vol}_{H_d}(C_{R-\eta})
+\le
+|\Lambda\cap C_R|\operatorname{covol}(\Lambda).
+\]</div>
+<p>So</p>
+<div class="math-block">\[
+|\Lambda\cap C_R|
+\ge
+\frac{\operatorname{vol}_{H_d}(C_{R-\eta})}
+{\operatorname{covol}(\Lambda)}.
+\]</div>
+<p>\(\square\)</p>
+<p>Thus, if one can construct fields \(K_i\) whose unit lattices have:</p>
+<ul>
+<li>covolume \(\mathcal R_{K_i}\le \exp(\rho d_i)\), and</li>
+<li>bounded covering radius in the \(\|\cdot\|_\infty\)-geometry of \(H_d\),</li>
+</ul>
+<p>then one gets the desired lower bound for \(|U_K(R)|\).</p>
+<hr>
+<h2>6.2. Counting bounded algebraic integers from the discriminant and lattice shape</h2>
+<p>Now consider</p>
+<div class="math-block">\[
+B_K(M)
+=
+\{x\in\mathcal O_K:|\sigma_j(x)|\le M\ \forall j\}.
+\]</div>
+<p>Under the Minkowski embedding, this is</p>
+<div class="math-block">\[
+\Sigma_K(\mathcal O_K)\cap[-M,M]^d.
+\]</div>
+<p>The Minkowski lattice has covolume</p>
+<div class="math-block">\[
+\operatorname{covol}\bigl(\Sigma_K(\mathcal O_K)\bigr)
+=
+\sqrt{D_K},
+\]</div>
+<p>where \(D_K\) is the absolute discriminant of \(K\).</p>
+<p>If this lattice is reasonably well-distributed, then one expects</p>
+<div class="math-block">\[
+|B_K(M)|
+\approx
+\frac{(2M)^d}{\sqrt{D_K}}.
+\]</div>
+<p>Writing the root discriminant as</p>
+<div class="math-block">\[
+\operatorname{rd}(K):=D_K^{1/d},
+\]</div>
+<p>this becomes</p>
+<div class="math-block">\[
+|B_K(M)|
+\approx
+\left(\frac{2M}{\sqrt{\operatorname{rd}(K)}}\right)^d.
+\]</div>
+<p>For our application,</p>
+<div class="math-block">\[
+M=2e^R.
+\]</div>
+<p>So the desired upper bound</p>
+<div class="math-block">\[
+|B_K(2e^R)|\le \exp(\mu d)
+\]</div>
+<p>should follow from</p>
+<div class="math-block">\[
+\mu
+&gt;
+\log(4e^R)-\frac12\log\operatorname{rd}(K),
+\]</div>
+<p>again assuming decent lattice shape.</p>
+<p>Here is a precise version.</p>
+<hr>
+<h2>Lemma 6: Counting algebraic integers from a bounded fundamental domain</h2>
+<p>Let \(L\subset\mathbb R^d\) be a full-rank lattice with covolume \(\det L\). Suppose \(L\) has a measurable fundamental domain \(F\subset [-\eta,\eta]^d\). Then for every \(M&gt;0\),</p>
+<div class="math-block">\[
+|L\cap[-M,M]^d|
+\le
+\frac{(2(M+\eta))^d}{\det L}.
+\]</div>
+<p>In particular, for \(L=\Sigma_K(\mathcal O_K)\),</p>
+<div class="math-block">\[
+|B_K(M)|
+\le
+\frac{(2(M+\eta))^d}{\sqrt{D_K}}.
+\]</div>
+<h3>Proof</h3>
+<p>For every \(x\in L\cap[-M,M]^d\), the translate \(x+F\) lies inside</p>
+<div class="math-block">\[
+[-M-\eta,M+\eta]^d.
+\]</div>
+<p>The translates \(x+F\) are disjoint as \(x\) ranges over \(L\).  Therefore,</p>
+<div class="math-block">\[
+|L\cap[-M,M]^d|\det L
+\le
+(2(M+\eta))^d.
+\]</div>
+<p>Dividing by \(\det L\) proves the claim. \(\square\)</p>
+<p>Thus, if we can arrange</p>
+<div class="math-block">\[
+\sqrt{D_K}\ge \exp\left(\frac r2 d\right)
+\]</div>
+<p>with \(r=\log\operatorname{rd}(K)\), and if the Minkowski lattice has bounded shape, then</p>
+<div class="math-block">\[
+|B_K(2e^R)|
+\lesssim
+\exp\left(
+\left[
+\log(4e^R+O(1))-\frac r2
+\right]d
+\right).
+\]</div>
+<p>So we want</p>
+<div class="math-block">\[
+\mu
+\approx
+\log(4e^R)-\frac12\log\operatorname{rd}(K)
+\]</div>
+<p>to satisfy</p>
+<div class="math-block">\[
+\mu&lt;2\lambda.
+\]</div>
+<hr>
+<h1>7. Numerical feasibility of the plan</h1>
+<p>The inequalities have genuine room.</p>
+<p>Suppose, optimistically but plausibly, that for a sequence of fields \(K_i\) we have:</p>
+<div class="math-block">\[
+\mathcal R_{K_i}\le \exp(\rho d_i),
+\]</div>
+<p>with \(\rho\approx 0.30\), and the unit lattice is regular enough that</p>
+<div class="math-block">\[
+|U_{K_i}(R)|
+\approx
+\exp((\log(2R)-\rho)d_i).
+\]</div>
+<p>Take \(R=4\). Then</p>
+<div class="math-block">\[
+\log(2R)=\log 8\approx 2.079,
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+\lambda\approx 2.079-0.30=1.779.
+\]</div>
+<p>This exceeds</p>
+<div class="math-block">\[
+\log 5\approx 1.609.
+\]</div>
+<p>So the product-set condition is satisfied, because</p>
+<div class="math-block">\[
+1+\frac{\log 5}{\lambda}
+\approx
+1+\frac{1.609}{1.779}
+\approx
+1.904&lt;2.
+\]</div>
+<p>For the sumset, we need</p>
+<div class="math-block">\[
+|B_K(2e^4)|\le \exp(\mu d)
+\]</div>
+<p>with</p>
+<div class="math-block">\[
+\mu&lt;2\lambda\approx 3.558.
+\]</div>
+<p>The naive volume/discriminant heuristic gives</p>
+<div class="math-block">\[
+\mu
+\approx
+\log(4e^4)-\frac12\log\operatorname{rd}(K)
+=
+(4+\log 4)-\frac12\log\operatorname{rd}(K).
+\]</div>
+<p>Since</p>
+<div class="math-block">\[
+4+\log 4\approx 5.386,
+\]</div>
+<p>we need roughly</p>
+<div class="math-block">\[
+5.386-\frac12\log\operatorname{rd}(K)&lt;3.558,
+\]</div>
+<p>or</p>
+<div class="math-block">\[
+\frac12\log\operatorname{rd}(K)&gt;1.828,
+\]</div>
+<p>i.e.</p>
+<div class="math-block">\[
+\operatorname{rd}(K)&gt;e^{3.656}\approx 38.7.
+\]</div>
+<p>That is also a plausible range for high-degree totally real fields.</p>
+<p>Thus the inequalities are numerically compatible.  The heart of the matter is to construct fields where the regulator is small enough and both lattices have controlled shape.</p>
+<hr>
+<h1>8. Precise remaining gaps</h1>
+<p>The reduction above leaves a clear arithmetic problem.  I separate it into several sub-gaps.</p>
+<hr>
+<h2>Gap 1: Many bounded units</h2>
+<p>We need infinitely many totally real fields \(K_i\), \(d_i\to\infty\), and a fixed \(R&gt;0\), such that</p>
+<div class="math-block">\[
+|U_{K_i}(R)|
+\ge
+\exp((\lambda-o(1))d_i)
+\]</div>
+<p>for some</p>
+<div class="math-block">\[
+\lambda&gt;\log 5.
+\]</div>
+<p>A sufficient structural condition is:</p>
+<ol>
+<li><p>The unit regulator satisfies</p>
+<div class="math-block">\[
+\mathcal R_{K_i}\le \exp(\rho d_i)
+\]</div>
+<p>with</p>
+<div class="math-block">\[
+\rho&lt;\log(2R)-\log 5.
+\]</div></li>
+<li><p>The unit log lattice \(\Lambda_{K_i}\) has bounded covering radius in \(H_{d_i}\) with respect to \(\|\cdot\|_\infty\), or at least enough regularity that</p>
+<div class="math-block">\[
+|\Lambda_{K_i}\cap C_R|
+\gg
+\frac{\operatorname{vol}(C_R)}{\mathcal R_{K_i}}
+\]</div>
+<p>exponentially sharply.</p></li>
+</ol>
+<h3>Assessment</h3>
+<p>This is a serious arithmetic construction problem, but it is the most plausible heart of the proof.</p>
+<p>Merely having a small regulator is not quite enough: the unit lattice could be extremely skew, in which case the box \(C_R\) might contain far fewer points than its volume suggests.  So the construction must control the <strong>shape</strong> of the unit lattice, not just its covolume.</p>
+<p>Possible routes:</p>
+<ul>
+<li>Use class field towers with many independent relative units of bounded height.</li>
+<li>Construct totally real Galois fields with many “flat” units whose logarithmic embeddings behave like a random or well-rounded lattice.</li>
+<li>Use arithmetic torus/Cartan-lattice constructions to realize well-rounded log-unit lattices.</li>
+</ul>
+<p>This is plausibly closeable but nontrivial.</p>
+<hr>
+<h2>Gap 2: Few bounded algebraic integers</h2>
+<p>We need</p>
+<div class="math-block">\[
+|B_{K_i}(2e^R)|
+\le
+\exp((\mu+o(1))d_i)
+\]</div>
+<p>for some</p>
+<div class="math-block">\[
+\mu&lt;2\lambda.
+\]</div>
+<p>A sufficient condition is:</p>
+<ol>
+<li><p>The root discriminant is large enough:</p>
+<div class="math-block">\[
+\operatorname{rd}(K_i)\ge e^r
+\]</div>
+<p>with</p>
+<div class="math-block">\[
+\log(4e^R)-\frac r2&lt;2\lambda.
+\]</div></li>
+<li><p>The Minkowski lattice \(\Sigma_K(\mathcal O_K)\) is not too skew, so that the volume estimate</p>
+<div class="math-block">\[
+|B_K(2e^R)|
+\lesssim
+\frac{(4e^R)^d}{\sqrt{D_K}}
+\]</div>
+<p>is exponentially accurate.</p></li>
+</ol>
+<h3>Assessment</h3>
+<p>This is also serious.  A large discriminant alone does not automatically give a sharp upper bound for lattice points in a box if the lattice is very skew.  One needs shape control.</p>
+<p>However, this gap is somewhat orthogonal to Gap 1: the unit lattice lives in logarithmic space, while the Minkowski lattice lives in additive archimedean space.  The construction must balance them.</p>
+<p>The desired inequality allows</p>
+<div class="math-block">\[
+|B_K(2e^R)|
+\]</div>
+<p>to be exponentially larger than</p>
+<div class="math-block">\[
+|U_K(R)|
+\]</div>
+<p>as long as the exponent is \(&lt;2\lambda\).  So the additive lattice does not need to be extremely sparse; it just cannot be too dense.</p>
+<hr>
+<h2>Gap 3: Product-set control</h2>
+<p>This gap is essentially closed by Lemma 2.</p>
+<p>We proved unconditionally that</p>
+<div class="math-block">\[
+|U_K(2R)|
+\le
+5^{d-1}|U_K(R)|.
+\]</div>
+<p>Thus, if</p>
+<div class="math-block">\[
+|U_K(R)|\ge e^{\lambda d}
+\]</div>
+<p>with</p>
+<div class="math-block">\[
+\lambda&gt;\log 5,
+\]</div>
+<p>then</p>
+<div class="math-block">\[
+|U_K(2R)|
+\le
+|U_K(R)|^{1+\log 5/\lambda+o(1)}
+=
+|U_K(R)|^{2-\delta_1}
+\]</div>
+<p>for</p>
+<div class="math-block">\[
+\delta_1&lt;1-\frac{\log 5}{\lambda}.
+\]</div>
+<p>This is enough.  If one proves additional regularity of the unit lattice, one can likely replace \(5\) by \(2+o(1)\), improving constants, but that is not necessary for the reduction.</p>
+<hr>
+<h2>Gap 4: Injectivity into \(\mathbb R\)</h2>
+<p>No gap here.  Once \(K\) is totally real, any embedding</p>
+<div class="math-block">\[
+\sigma:K\hookrightarrow\mathbb R
+\]</div>
+<p>is injective, so cardinalities are preserved when passing from algebraic units to real numbers.</p>
+<hr>
+<h1>9. Step-by-step proof plan from here</h1>
+<p>Here is the full proof plan in modular form.</p>
+<hr>
+<h2>Step 1: Choose numerical constants</h2>
+<p>Choose constants \(R,\lambda,\mu\) such that</p>
+<div class="math-block">\[
+\lambda&gt;\log 5,
+\qquad
+\mu&lt;2\lambda.
+\]</div>
+<p>A concrete target is something like:</p>
+<div class="math-block">\[
+R=4,\qquad \lambda\approx 1.75,\qquad \mu\approx 3.3.
+\]</div>
+<p>These numbers would give a positive \(\delta\), for example</p>
+<div class="math-block">\[
+\delta
+&lt;
+\min\left\{
+1-\frac{\log 5}{1.75},
+\,
+2-\frac{3.3}{1.75}
+\right\}
+\approx
+\min\{0.0806,0.1143\}.
+\]</div>
+<p>So even weak margins suffice.</p>
+<hr>
+<h2>Step 2: Construct totally real fields with many bounded units</h2>
+<p>Prove that there are totally real fields \(K_i\), \(d_i\to\infty\), such that</p>
+<div class="math-block">\[
+|U_{K_i}(R)|
+\ge
+\exp((\lambda-o(1))d_i).
+\]</div>
+<p>A sufficient route is to prove:</p>
+<ul>
+<li>the regulators satisfy</li>
+</ul>
+<div class="math-block">  \[
+  \mathcal R_{K_i}\le \exp(\rho d_i)
+  \]</div>
+<p>  with</p>
+<div class="math-block">  \[
+  \rho&lt;\log(2R)-\lambda;
+  \]</div>
+<ul>
+<li>the unit lattices are well-rounded enough that the box \(C_R\) contains the expected number of lattice points.</li>
+</ul>
+<p>This is the central arithmetic construction.</p>
+<hr>
+<h2>Step 3: Prove the bounded-integer estimate</h2>
+<p>For the same fields, prove</p>
+<div class="math-block">\[
+|B_{K_i}(2e^R)|
+\le
+\exp((\mu+o(1))d_i).
+\]</div>
+<p>A sufficient route is to show:</p>
+<ul>
+<li>the root discriminants satisfy</li>
+</ul>
+<div class="math-block">  \[
+  \operatorname{rd}(K_i)\ge e^r
+  \]</div>
+<p>  with</p>
+<div class="math-block">  \[
+  \log(4e^R)-\frac r2&lt;\mu;
+  \]</div>
+<ul>
+<li>the Minkowski lattices have controlled shape, so Lemma 6 gives an exponentially sharp upper bound.</li>
+</ul>
+<hr>
+<h2>Step 4: Define the sets \(A_i\)</h2>
+<p>Fix an embedding</p>
+<div class="math-block">\[
+\sigma_i:K_i\hookrightarrow\mathbb R,
+\]</div>
+<p>and define</p>
+<div class="math-block">\[
+A_i:=\sigma_i(U_{K_i}(R)).
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+|A_i|=|U_{K_i}(R)|\to\infty.
+\]</div>
+<hr>
+<h2>Step 5: Bound the sumset</h2>
+<p>By Lemma 1,</p>
+<div class="math-block">\[
+A_i+A_i
+\subseteq
+\sigma_i(B_{K_i}(2e^R)).
+\]</div>
+<p>Therefore,</p>
+<div class="math-block">\[
+|A_i+A_i|
+\le
+|B_{K_i}(2e^R)|
+\le
+\exp((\mu+o(1))d_i).
+\]</div>
+<p>Since</p>
+<div class="math-block">\[
+|A_i|\ge \exp((\lambda-o(1))d_i),
+\]</div>
+<p>we get</p>
+<div class="math-block">\[
+|A_i+A_i|
+\le
+|A_i|^{\mu/\lambda+o(1)}
+\le
+|A_i|^{2-\delta}
+\]</div>
+<p>for every</p>
+<div class="math-block">\[
+\delta&lt;2-\frac{\mu}{\lambda}.
+\]</div>
+<hr>
+<h2>Step 6: Bound the product set</h2>
+<p>By Lemma 1,</p>
+<div class="math-block">\[
+A_iA_i
+\subseteq
+\sigma_i(U_{K_i}(2R)).
+\]</div>
+<p>By Corollary 3,</p>
+<div class="math-block">\[
+|U_{K_i}(2R)|
+\le
+5^{d_i-1}|U_{K_i}(R)|.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|A_iA_i|
+\le
+5^{d_i}|A_i|.
+\]</div>
+<p>Since</p>
+<div class="math-block">\[
+|A_i|\ge \exp((\lambda-o(1))d_i),
+\]</div>
+<p>we have</p>
+<div class="math-block">\[
+5^{d_i}
+\le
+|A_i|^{\log 5/\lambda+o(1)}.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+|A_iA_i|
+\le
+|A_i|^{1+\log 5/\lambda+o(1)}
+\le
+|A_i|^{2-\delta}
+\]</div>
+<p>for every</p>
+<div class="math-block">\[
+\delta&lt;1-\frac{\log 5}{\lambda}.
+\]</div>
+<hr>
+<h2>Step 7: Choose \(\delta\)</h2>
+<p>Take</p>
+<div class="math-block">\[
+0&lt;\delta&lt;
+\min\left\{
+1-\frac{\log 5}{\lambda},
+\,
+2-\frac{\mu}{\lambda}
+\right\}.
+\]</div>
+<p>Then for all sufficiently large \(i\),</p>
+<div class="math-block">\[
+\max(|A_i+A_i|,|A_iA_i|)
+\le
+|A_i|^{2-\delta}.
+\]</div>
+<p>Discarding finitely many initial terms gives the desired infinite sequence.</p>
+<hr>
+<h1>10. Why this approach seems more promising than standard constructions</h1>
+<p>It is useful to contrast the number-field-unit strategy with more classical attempts.</p>
+<hr>
+<h2>10.1. Smooth integers do not seem to give a fixed power saving</h2>
+<p>Let \(A\) be the set of \(y\)-smooth integers up to \(X\).  Then</p>
+<div class="math-block">\[
+|A+A|\le 2X,
+\]</div>
+<p>so the sumset is small if \(A\) is dense enough in \([1,X]\).  Also,</p>
+<div class="math-block">\[
+AA\subseteq \{y\text{-smooth integers }\le X^2\}.
+\]</div>
+<p>However, standard Dickman–de Bruijn asymptotics show that whenever</p>
+<div class="math-block">\[
+|A|=X^{\alpha+o(1)}
+\]</div>
+<p>for fixed \(\alpha&gt;0\), one typically has</p>
+<div class="math-block">\[
+|AA|=X^{2\alpha+o(1)}
+=
+|A|^{2+o(1)}.
+\]</div>
+<p>Thus smooth-number constructions naturally give only subpolynomial savings, not a fixed power saving.</p>
+<hr>
+<h2>10.2. One-generator algebraic digit sets also hit a square barrier</h2>
+<p>Take a fixed algebraic number \(\theta\) and sets of the form</p>
+<div class="math-block">\[
+A_n=
+\left\{
+\sum_{j=0}^{n-1}\varepsilon_j\theta^j:
+\varepsilon_j\in\{0,1\}
+\right\}.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+A_n+A_n
+\]</div>
+<p>has digit set \(\{0,1,2\}\), so addition is controlled.  But products have digit convolutions of length roughly \(2n\).  The growth of the number of distinct values is governed by the Mahler measure of \(\theta\), and the product set naturally has growth roughly the square of the growth of \(A_n\).  Without additional structure, this does not yield a fixed \(\delta&gt;0\).</p>
+<hr>
+<h2>10.3. Finite-field or CRT lifting has a carry-volume obstruction</h2>
+<p>One might try to lift a finite field or finite ring into real numbers through representatives modulo an ideal.  Modulo the ideal, addition and multiplication are small.  But exact real sums and products include “carry” information.  In one dimension this is precisely why representatives of \(\mathbb Z/q\mathbb Z\) in \([0,q)\) have product set essentially quadratic.  In high-dimensional number fields, one can reduce the carry problem using geometry of numbers, but then one is led back to the same issue: one needs many small representatives closed under multiplication.  Units provide exactly that mechanism.</p>
+<hr>
+<h1>11. Summary of what has been proved here</h1>
+<p>We proved the following solid reduction.</p>
+<p>If there are infinitely many totally real fields \(K_i\), \(d_i\to\infty\), and constants \(R,\lambda,\mu\) satisfying</p>
+<div class="math-block">\[
+\lambda&gt;\log 5,
+\qquad
+\mu&lt;2\lambda,
+\]</div>
+<p>such that</p>
+<div class="math-block">\[
+|U_{K_i}(R)|\ge \exp((\lambda-o(1))d_i),
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|B_{K_i}(2e^R)|\le \exp((\mu+o(1))d_i),
+\]</div>
+<p>then the desired finite sets \(A_i\subset\mathbb R\) exist.</p>
+<p>The construction is</p>
+<div class="math-block">\[
+A_i=\sigma_i(U_{K_i}(R)).
+\]</div>
+<p>The product-set estimate is essentially complete, using only a general lattice-doubling lemma:</p>
+<div class="math-block">\[
+|A_iA_i|
+\le
+5^{d_i}|A_i|.
+\]</div>
+<p>The sumset estimate reduces to bounding algebraic integers with all conjugates bounded by \(2e^R\):</p>
+<div class="math-block">\[
+|A_i+A_i|
+\le
+|B_{K_i}(2e^R)|.
+\]</div>
+<p>Thus the main remaining task is a precise arithmetic construction of totally real fields with:</p>
+<ol>
+<li>exponentially many uniformly bounded units;</li>
+<li>not too many uniformly bounded algebraic integers.</li>
+</ol>
+<p>This is the point at which the next round should focus.</p>
+<hr>
+<h1>Round 2</h1>
+<h2>User</h2>
+<blockquote><p>Construct a complete and rigorous proof, adapting your approach as needed.</p></blockquote>
+<h2>Assistant</h2>
+<p>I need to be very direct here.  I cannot honestly manufacture a complete rigorous proof of the stated theorem from the previous approach.  The reason is not merely that the problem is historically difficult; the previous approach reduces the theorem to a very specific arithmetic construction, and that construction is not a routine missing lemma.  It is essentially the entire difficulty.  Several natural ways of trying to close it are false or run into precise obstructions.</p>
+<p>What I can do rigorously is the following:</p>
+<ol>
+<li>Give the complete reduction from a precise number-field input to the desired sum-product counterexample.</li>
+<li>Prove all reduction lemmas.</li>
+<li>Identify exactly what arithmetic theorem would complete the proof.</li>
+<li>Explain why the most tempting completions do not work.</li>
+<li>State what kind of genuinely new ingredient a full proof would need.</li>
+</ol>
+<p>If a recent accepted proof exists outside my training data, then its decisive new ingredient should be recognizable as a proof of, or replacement for, the arithmetic input isolated below.</p>
+<hr>
+<h1>1. The number-field reduction is rigorous</h1>
+<p>Let \(K/\mathbb Q\) be a totally real number field of degree \(d\), with real embeddings</p>
+<div class="math-block">\[
+\sigma_1,\dots,\sigma_d:K\hookrightarrow \mathbb R.
+\]</div>
+<p>For \(R&gt;0\), define</p>
+<div class="math-block">\[
+U_K(R)
+:=
+\left\{
+u\in \mathcal O_K^\times:
+e^{-R}\le |\sigma_j(u)|\le e^R
+\ \text{for every } j=1,\dots,d
+\right\}.
+\]</div>
+<p>For \(M&gt;0\), define</p>
+<div class="math-block">\[
+B_K(M)
+:=
+\left\{
+x\in \mathcal O_K:
+|\sigma_j(x)|\le M
+\ \text{for every } j=1,\dots,d
+\right\}.
+\]</div>
+<p>Given \(R\), choose one embedding, say \(\sigma_1\), and set</p>
+<div class="math-block">\[
+A_K(R):=\sigma_1(U_K(R))\subset \mathbb R.
+\]</div>
+<p>Since \(\sigma_1\) is injective on \(K\),</p>
+<div class="math-block">\[
+|A_K(R)|=|U_K(R)|.
+\]</div>
+<hr>
+<h2>Lemma 1: Sumset and product-set containment</h2>
+<p>For \(A=A_K(R)\),</p>
+<div class="math-block">\[
+A+A\subseteq \sigma_1(B_K(2e^R)),
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+AA\subseteq \sigma_1(U_K(2R)).
+\]</div>
+<p>Consequently,</p>
+<div class="math-block">\[
+|A+A|\le |B_K(2e^R)|,
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|AA|\le |U_K(2R)|.
+\]</div>
+<h3>Proof</h3>
+<p>Let \(u,v\in U_K(R)\).  For every embedding \(\sigma_j\),</p>
+<div class="math-block">\[
+|\sigma_j(u+v)|
+\le |\sigma_j(u)|+|\sigma_j(v)|
+\le 2e^R.
+\]</div>
+<p>Also \(u+v\in\mathcal O_K\).  Hence</p>
+<div class="math-block">\[
+u+v\in B_K(2e^R).
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+\sigma_1(u)+\sigma_1(v)=\sigma_1(u+v)\in \sigma_1(B_K(2e^R)).
+\]</div>
+<p>This proves the sumset containment.</p>
+<p>For products,</p>
+<div class="math-block">\[
+\sigma_j(uv)=\sigma_j(u)\sigma_j(v),
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+e^{-2R}\le |\sigma_j(uv)|\le e^{2R}
+\]</div>
+<p>for every \(j\).  Hence</p>
+<div class="math-block">\[
+uv\in U_K(2R),
+\]</div>
+<p>and therefore</p>
+<div class="math-block">\[
+\sigma_1(u)\sigma_1(v)=\sigma_1(uv)\in \sigma_1(U_K(2R)).
+\]</div>
+<p>The cardinality estimates follow from injectivity of \(\sigma_1\). \(\square\)</p>
+<hr>
+<h1>2. Product-set control from the unit lattice</h1>
+<p>Let</p>
+<div class="math-block">\[
+H_d:=\left\{(x_1,\dots,x_d)\in\mathbb R^d:\sum_{j=1}^d x_j=0\right\}.
+\]</div>
+<p>The logarithmic embedding is</p>
+<div class="math-block">\[
+\ell:\mathcal O_K^\times\to H_d,
+\qquad
+\ell(u):=(\log|\sigma_1(u)|,\dots,\log|\sigma_d(u)|).
+\]</div>
+<p>Its image</p>
+<div class="math-block">\[
+\Lambda_K:=\ell(\mathcal O_K^\times)
+\]</div>
+<p>is a lattice of rank \(d-1\).  The kernel is \(\{\pm1\}\).  Define</p>
+<div class="math-block">\[
+C_R:=H_d\cap[-R,R]^d.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+U_K(R)=\ell^{-1}(C_R),
+\]</div>
+<p>and hence</p>
+<div class="math-block">\[
+|U_K(R)|=2|\Lambda_K\cap C_R|.
+\]</div>
+<p>We need a general lattice-doubling bound.</p>
+<hr>
+<h2>Lemma 2: Lattice doubling in a symmetric convex body</h2>
+<p>Let \(\Lambda\) be a lattice of rank \(r\) in a real vector space \(V\), and let \(C\subset V\) be a centrally symmetric convex body. Then</p>
+<div class="math-block">\[
+|\Lambda\cap 2C|\le 5^r|\Lambda\cap C|.
+\]</div>
+<h3>Proof</h3>
+<p>Let</p>
+<div class="math-block">\[
+S:=\Lambda\cap 2C.
+\]</div>
+<p>Choose a maximal subset \(Y\subseteq S\) such that for distinct \(y,y'\in Y\),</p>
+<div class="math-block">\[
+y-y&#x27;\notin C.
+\]</div>
+<p>Then the translates</p>
+<div class="math-block">\[
+y+\frac12 C,\qquad y\in Y,
+\]</div>
+<p>are pairwise disjoint.  Indeed, if two such translates intersect, then</p>
+<div class="math-block">\[
+y-y&#x27;\in \frac12 C-\frac12 C=C,
+\]</div>
+<p>contradicting the construction of \(Y\).</p>
+<p>Also, since \(y\in 2C\),</p>
+<div class="math-block">\[
+y+\frac12 C\subseteq \frac52 C.
+\]</div>
+<p>Therefore,</p>
+<div class="math-block">\[
+|Y|\operatorname{vol}\left(\frac12 C\right)
+\le
+\operatorname{vol}\left(\frac52 C\right).
+\]</div>
+<p>Since \(\dim V=r\),</p>
+<div class="math-block">\[
+|Y|\le 5^r.
+\]</div>
+<p>By maximality of \(Y\), every \(s\in S\) satisfies</p>
+<div class="math-block">\[
+s-y\in C
+\]</div>
+<p>for some \(y\in Y\).  Since \(s,y\in\Lambda\),</p>
+<div class="math-block">\[
+s-y\in \Lambda\cap C.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+S\subseteq Y+(\Lambda\cap C),
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+|\Lambda\cap 2C|
+\le
+|Y|\,|\Lambda\cap C|
+\le
+5^r|\Lambda\cap C|.
+\]</div>
+<p>\(\square\)</p>
+<p>Applying this to \(C=C_R\subset H_d\), whose dimension is \(d-1\), gives:</p>
+<hr>
+<h2>Corollary 3: Unit doubling</h2>
+<p>For every totally real field \(K\) of degree \(d\),</p>
+<div class="math-block">\[
+|U_K(2R)|\le 5^{d-1}|U_K(R)|.
+\]</div>
+<h3>Proof</h3>
+<p>Since \(C_{2R}=2C_R\),</p>
+<div class="math-block">\[
+|U_K(2R)|
+=
+2|\Lambda_K\cap C_{2R}|
+=
+2|\Lambda_K\cap 2C_R|.
+\]</div>
+<p>By Lemma 2,</p>
+<div class="math-block">\[
+|\Lambda_K\cap 2C_R|
+\le
+5^{d-1}|\Lambda_K\cap C_R|.
+\]</div>
+<p>Therefore,</p>
+<div class="math-block">\[
+|U_K(2R)|
+\le
+2\cdot 5^{d-1}|\Lambda_K\cap C_R|
+=
+5^{d-1}|U_K(R)|.
+\]</div>
+<p>\(\square\)</p>
+<hr>
+<h1>3. Conditional theorem: the exact arithmetic input needed</h1>
+<p>The preceding lemmas prove the following conditional theorem.</p>
+<hr>
+<h2>Proposition 4: Precise conditional reduction</h2>
+<p>Suppose there exist constants</p>
+<div class="math-block">\[
+R&gt;0,\qquad \lambda&gt;0,\qquad \mu&gt;0
+\]</div>
+<p>with</p>
+<div class="math-block">\[
+\lambda&gt;\log 5,
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\mu&lt;2\lambda,
+\]</div>
+<p>and an infinite sequence of totally real fields \(K_i\) of degrees \(d_i\to\infty\), such that</p>
+<div class="math-block">\[
+|U_{K_i}(R)|\ge \exp((\lambda-o(1))d_i),
+\tag{AI1}
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|B_{K_i}(2e^R)|\le \exp((\mu+o(1))d_i).
+\tag{AI2}
+\]</div>
+<p>Then there are \(\delta&gt;0\) and finite sets \(A_i\subset\mathbb R\) with \(|A_i|\to\infty\) such that</p>
+<div class="math-block">\[
+\max(|A_i+A_i|,|A_iA_i|)
+\le
+|A_i|^{2-\delta}.
+\]</div>
+<p>More precisely, any</p>
+<div class="math-block">\[
+0&lt;\delta&lt;
+\min\left\{
+1-\frac{\log 5}{\lambda},
+\,
+2-\frac{\mu}{\lambda}
+\right\}
+\]</div>
+<p>works.</p>
+<h3>Proof</h3>
+<p>For each \(i\), choose an embedding</p>
+<div class="math-block">\[
+\sigma_i:K_i\hookrightarrow\mathbb R
+\]</div>
+<p>and set</p>
+<div class="math-block">\[
+A_i:=\sigma_i(U_{K_i}(R)).
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+|A_i|=|U_{K_i}(R)|.
+\]</div>
+<p>By (AI1),</p>
+<div class="math-block">\[
+|A_i|\ge \exp((\lambda-o(1))d_i),
+\]</div>
+<p>so \(|A_i|\to\infty\).</p>
+<p>For the sumset, Lemma 1 gives</p>
+<div class="math-block">\[
+|A_i+A_i|
+\le
+|B_{K_i}(2e^R)|.
+\]</div>
+<p>Using (AI2),</p>
+<div class="math-block">\[
+|A_i+A_i|
+\le
+\exp((\mu+o(1))d_i).
+\]</div>
+<p>Since</p>
+<div class="math-block">\[
+|A_i|\ge \exp((\lambda-o(1))d_i),
+\]</div>
+<p>we obtain</p>
+<div class="math-block">\[
+|A_i+A_i|
+\le
+|A_i|^{\mu/\lambda+o(1)}.
+\]</div>
+<p>Because \(\mu&lt;2\lambda\), for any</p>
+<div class="math-block">\[
+\delta&lt;2-\frac{\mu}{\lambda},
+\]</div>
+<p>we have</p>
+<div class="math-block">\[
+|A_i+A_i|\le |A_i|^{2-\delta}
+\]</div>
+<p>for all sufficiently large \(i\).</p>
+<p>For the product set, Lemma 1 and Corollary 3 give</p>
+<div class="math-block">\[
+|A_iA_i|
+\le
+|U_{K_i}(2R)|
+\le
+5^{d_i-1}|U_{K_i}(R)|
+=
+5^{d_i-1}|A_i|.
+\]</div>
+<p>Again using (AI1),</p>
+<div class="math-block">\[
+5^{d_i-1}
+\le
+|A_i|^{\log 5/\lambda+o(1)}.
+\]</div>
+<p>Therefore,</p>
+<div class="math-block">\[
+|A_iA_i|
+\le
+|A_i|^{1+\log 5/\lambda+o(1)}.
+\]</div>
+<p>Because</p>
+<div class="math-block">\[
+\lambda&gt;\log 5,
+\]</div>
+<p>we have</p>
+<div class="math-block">\[
+1+\frac{\log 5}{\lambda}&lt;2.
+\]</div>
+<p>Thus, for every</p>
+<div class="math-block">\[
+\delta&lt;1-\frac{\log 5}{\lambda},
+\]</div>
+<p>we have</p>
+<div class="math-block">\[
+|A_iA_i|\le |A_i|^{2-\delta}
+\]</div>
+<p>for all sufficiently large \(i\).</p>
+<p>Choosing</p>
+<div class="math-block">\[
+0&lt;\delta&lt;
+\min\left\{
+1-\frac{\log 5}{\lambda},
+\,
+2-\frac{\mu}{\lambda}
+\right\}
+\]</div>
+<p>proves the claim after discarding finitely many initial \(i\). \(\square\)</p>
+<hr>
+<h1>4. The missing arithmetic theorem</h1>
+<p>Thus a complete proof by this approach requires proving the following.</p>
+<hr>
+<h2>Required Arithmetic Input</h2>
+<p>There exist constants</p>
+<div class="math-block">\[
+R&gt;0,\qquad \lambda&gt;\log 5,\qquad \mu&lt;2\lambda,
+\]</div>
+<p>and infinitely many totally real fields \(K_i\), \(d_i=[K_i:\mathbb Q]\to\infty\), such that</p>
+<div class="math-block">\[
+|U_{K_i}(R)|\ge \exp((\lambda-o(1))d_i),
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|B_{K_i}(2e^R)|\le \exp((\mu+o(1))d_i).
+\]</div>
+<p>Equivalently:</p>
+<ol>
+<li>There must be exponentially many units whose logarithmic embeddings all lie in a fixed box \(C_R\).</li>
+<li>At the same time, the number of algebraic integers whose conjugates lie in the fixed archimedean box \([-2e^R,2e^R]^d\) must be exponentially smaller than the square of that number of units.</li>
+</ol>
+<p>This is the genuine hard point.</p>
+<hr>
+<h1>5. Why the obvious attempts do not close the gap</h1>
+<p>I now explain why the gap above is not a routine matter.</p>
+<hr>
+<h2>5.1. Small regulator alone is not enough to control \(B_K(M)\)</h2>
+<p>One might hope to use the root discriminant of \(K\) to bound</p>
+<div class="math-block">\[
+B_K(M)=\mathcal O_K\cap[-M,M]^d
+\]</div>
+<p>under the Minkowski embedding.</p>
+<p>The Minkowski lattice</p>
+<div class="math-block">\[
+\Sigma_K(\mathcal O_K)
+:=
+\{(\sigma_1(x),\dots,\sigma_d(x)):x\in\mathcal O_K\}
+\subset\mathbb R^d
+\]</div>
+<p>has covolume</p>
+<div class="math-block">\[
+\sqrt{D_K},
+\]</div>
+<p>where \(D_K\) is the absolute discriminant.</p>
+<p>A naive volume heuristic would suggest</p>
+<div class="math-block">\[
+|B_K(M)|\approx \frac{(2M)^d}{\sqrt{D_K}}.
+\]</div>
+<p>But this estimate is false without a strong shape hypothesis on the lattice.</p>
+<p>Indeed, in \(\mathbb R^d\), consider the lattice</p>
+<div class="math-block">\[
+L_T:=\mathbb Z^{d-1}\oplus T\mathbb Z.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+\det L_T=T.
+\]</div>
+<p>For any fixed \(M\ge 1\), if \(T&gt;M\), then</p>
+<div class="math-block">\[
+L_T\cap[-M,M]^d
+=
+(\mathbb Z^{d-1}\cap[-M,M]^{d-1})\times\{0\}.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+|L_T\cap[-M,M]^d|
+=
+(2\lfloor M\rfloor+1)^{d-1},
+\]</div>
+<p>independently of how large \(T\) is.</p>
+<p>Thus a lattice can have arbitrarily large determinant but still have exponentially many points in a fixed box.</p>
+<p>Therefore, a discriminant lower bound alone cannot prove (AI2).  One needs serious control of the <strong>shape</strong> of the Minkowski lattice of \(\mathcal O_K\), not merely its covolume.</p>
+<hr>
+<h2>5.2. Small regulator alone does not automatically produce the needed fields</h2>
+<p>The unit lattice</p>
+<div class="math-block">\[
+\Lambda_K=\ell(\mathcal O_K^\times)\subset H_d
+\]</div>
+<p>has covolume comparable to the regulator \(R_K\).  If the regulator is small, then one expects many bounded units.</p>
+<p>There is a useful general lower bound.</p>
+<hr>
+<h3>Lemma 5: Blichfeldt lower bound for lattice points</h3>
+<p>Let \(\Lambda\) be a lattice of rank \(r\) in a real vector space \(V\), and let \(C\subset V\) be centrally symmetric and convex. Then</p>
+<div class="math-block">\[
+|\Lambda\cap C|
+\ge
+\frac{\operatorname{vol}(C)}{2^r\det\Lambda}.
+\]</div>
+<p>Up to harmless rounding constants, this is sharp in general.</p>
+<h3>Proof</h3>
+<p>Apply Blichfeldt’s theorem to the body \(\frac12 C\).  If</p>
+<div class="math-block">\[
+\operatorname{vol}\left(\frac12 C\right)&gt;m\det\Lambda,
+\]</div>
+<p>then \(\frac12 C\) contains \(m+1\) points whose pairwise differences lie in \(\Lambda\).  Those differences lie in</p>
+<div class="math-block">\[
+\frac12 C-\frac12 C=C.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|\Lambda\cap C|\ge m+1.
+\]</div>
+<p>Since</p>
+<div class="math-block">\[
+\operatorname{vol}\left(\frac12 C\right)
+=
+2^{-r}\operatorname{vol}(C),
+\]</div>
+<p>we get</p>
+<div class="math-block">\[
+|\Lambda\cap C|
+\ge
+\frac{\operatorname{vol}(C)}{2^r\det\Lambda}
+\]</div>
+<p>up to the usual floor/ceiling adjustment, which is negligible in exponential estimates. \(\square\)</p>
+<hr>
+<p>For \(C=C_R\subset H_d\), this gives roughly</p>
+<div class="math-block">\[
+|U_K(R)|
+\gtrsim
+\frac{\operatorname{vol}_{H_d}(C_R)}{2^{d-1}R_K}.
+\]</div>
+<p>Since</p>
+<div class="math-block">\[
+\operatorname{vol}_{H_d}(C_R)
+=
+\exp(o(d))(2R)^{d-1},
+\]</div>
+<p>one would get</p>
+<div class="math-block">\[
+|U_K(R)|
+\gtrsim
+\exp(o(d))\frac{R^{d-1}}{R_K}.
+\]</div>
+<p>Thus a sufficient condition for (AI1) would be</p>
+<div class="math-block">\[
+R_K\le \exp((\log R-\lambda-o(1))d).
+\]</div>
+<p>But this only addresses the unit count.  It does not address (AI2).  A sequence of fields with small regulators and simultaneously sparse archimedean integer lattices is a highly nontrivial object.</p>
+<hr>
+<h2>5.3. Tensor amplification of trivial savings cannot be embedded in \(\mathbb R\)</h2>
+<p>A tempting idea is the following.</p>
+<p>For any finite set \(S\) of size \(n\),</p>
+<div class="math-block">\[
+|S+S|\le \frac{n(n+1)}2,
+\qquad
+|SS|\le \frac{n(n+1)}2.
+\]</div>
+<p>So every finite set has a constant-factor saving compared with \(n^2\).  If one could tensor this construction coordinatewise, one would get a fixed power saving.</p>
+<p>For example, in the direct product semiring, the cube</p>
+<div class="math-block">\[
+\{0,1\}^r
+\]</div>
+<p>has coordinatewise sumset size</p>
+<div class="math-block">\[
+3^r,
+\]</div>
+<p>coordinatewise product set size</p>
+<div class="math-block">\[
+2^r,
+\]</div>
+<p>and size</p>
+<div class="math-block">\[
+2^r.
+\]</div>
+<p>This would be a spectacular counterexample if it could be embedded into \(\mathbb R\) while preserving enough pairwise sums and products.</p>
+<p>But it cannot be embedded in a field of characteristic \(0\) with the needed collision pattern.</p>
+<hr>
+<h3>Lemma 6: Coordinatewise cube collisions cannot be realized in a field</h3>
+<p>Let \(F\) be an integral domain of characteristic \(0\), and let \(r\ge 2\).  Suppose there is an injective map</p>
+<div class="math-block">\[
+\phi:\{0,1\}^r\to F
+\]</div>
+<p>with the following two properties.</p>
+<ol>
+<li><p>Whenever</p>
+<div class="math-block">\[
+\varepsilon+\eta=\varepsilon&#x27;+\eta&#x27;
+\]</div>
+<p>coordinatewise as vectors in \(\{0,1,2\}^r\), one has</p>
+<div class="math-block">\[
+\phi(\varepsilon)+\phi(\eta)
+=
+\phi(\varepsilon&#x27;)+\phi(\eta&#x27;).
+\]</div></li>
+<li><p>Whenever</p>
+<div class="math-block">\[
+\varepsilon\eta=\varepsilon&#x27;\eta&#x27;
+\]</div>
+<p>coordinatewise as vectors in \(\{0,1\}^r\), one has</p>
+<div class="math-block">\[
+\phi(\varepsilon)\phi(\eta)
+=
+\phi(\varepsilon&#x27;)\phi(\eta&#x27;).
+\]</div></li>
+</ol>
+<p>Then no such injective \(\phi\) exists.</p>
+<h3>Proof</h3>
+<p>Let \(0\in\{0,1\}^r\) denote the zero vector, and let \(e_i\) be the \(i\)-th standard basis vector.</p>
+<p>The additive relations imply that \(\phi\) is affine-linear on the cube.</p>
+<p>Indeed, set</p>
+<div class="math-block">\[
+c:=\phi(0),
+\qquad
+a_i:=\phi(e_i)-c.
+\]</div>
+<p>If \(S\subseteq\{1,\dots,r\}\), write \(1_S\in\{0,1\}^r\) for its indicator vector.</p>
+<p>We claim</p>
+<div class="math-block">\[
+\phi(1_S)=c+\sum_{i\in S}a_i.
+\]</div>
+<p>This follows by induction on \(|S|\).  If \(i\in S\), then coordinatewise</p>
+<div class="math-block">\[
+1_S+0=1_{S\setminus\{i\}}+e_i.
+\]</div>
+<p>Therefore,</p>
+<div class="math-block">\[
+\phi(1_S)+\phi(0)
+=
+\phi(1_{S\setminus\{i\}})+\phi(e_i).
+\]</div>
+<p>Using the induction hypothesis,</p>
+<div class="math-block">\[
+\phi(1_S)+c
+=
+\left(c+\sum_{j\in S\setminus\{i\}}a_j\right)+(c+a_i),
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+\phi(1_S)=c+\sum_{j\in S}a_j.
+\]</div>
+<p>Now use the multiplicative collision condition.</p>
+<p>For every \(\varepsilon\in\{0,1\}^r\),</p>
+<div class="math-block">\[
+\varepsilon\cdot 0=0.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+\phi(\varepsilon)\phi(0)=\phi(0)\phi(0).
+\]</div>
+<p>So</p>
+<div class="math-block">\[
+\phi(\varepsilon)c=c^2
+\]</div>
+<p>for every \(\varepsilon\).</p>
+<p>If \(c\ne 0\), then since \(F\) is an integral domain,</p>
+<div class="math-block">\[
+\phi(\varepsilon)=c
+\]</div>
+<p>for every \(\varepsilon\), contradicting injectivity.</p>
+<p>Hence \(c=0\).</p>
+<p>Now for distinct \(i,j\), we have</p>
+<div class="math-block">\[
+e_i\cdot e_j=0.
+\]</div>
+<p>Therefore,</p>
+<div class="math-block">\[
+\phi(e_i)\phi(e_j)=\phi(0)\phi(0)=0.
+\]</div>
+<p>Since \(c=0\), \(\phi(e_i)=a_i\).  Hence</p>
+<div class="math-block">\[
+a_i a_j=0
+\]</div>
+<p>for all \(i\ne j\).  Because \(F\) is an integral domain, at most one of the \(a_i\) is nonzero.  But if \(r\ge 2\), this makes \(\phi\) non-injective on the cube.</p>
+<p>Contradiction. \(\square\)</p>
+<p>So the most naive tensoring of constant-factor savings cannot work in \(\mathbb R\).</p>
+<hr>
+<h2>5.4. Finite-field examples do not automatically transfer to characteristic \(0\)</h2>
+<p>Over finite fields, the analogue of the theorem is easy: take a large subfield or even the whole field.  If \(A=\mathbb F_q\), then</p>
+<div class="math-block">\[
+A+A=A,
+\qquad
+AA=A.
+\]</div>
+<p>But this phenomenon is tied to positive characteristic.</p>
+<p>A direct transfer to characteristic \(0\) fails for the simplest possible reason.</p>
+<hr>
+<h3>Lemma 7: A finite field’s additive table cannot be realized in characteristic \(0\)</h3>
+<p>Let \(p\) be prime.  Suppose \(F\) is a field of characteristic \(0\), and suppose there are elements</p>
+<div class="math-block">\[
+x_a\in F
+\qquad
+(a\in\mathbb F_p)
+\]</div>
+<p>such that</p>
+<div class="math-block">\[
+x_a+x_b=x_{a+b}
+\]</div>
+<p>for all \(a,b\in\mathbb F_p\).  Then all \(x_a=0\).</p>
+<h3>Proof</h3>
+<p>Let \(1\in\mathbb F_p\).  The relation gives</p>
+<div class="math-block">\[
+x_n=n x_1
+\]</div>
+<p>for all \(n=0,1,\dots,p-1\).  Since \(p\cdot 1=0\) in \(\mathbb F_p\),</p>
+<div class="math-block">\[
+x_0=x_{p\cdot 1}=p x_1.
+\]</div>
+<p>But also</p>
+<div class="math-block">\[
+x_0+x_0=x_0,
+\]</div>
+<p>so \(x_0=0\).  Hence</p>
+<div class="math-block">\[
+p x_1=0.
+\]</div>
+<p>Because \(F\) has characteristic \(0\), this implies</p>
+<div class="math-block">\[
+x_1=0.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+x_a=0
+\]</div>
+<p>for all \(a\). \(\square\)</p>
+<p>Thus finite-field closure cannot simply be modeled inside \(\mathbb R\).  Any transfer argument would need to avoid encoding enough of the finite-field addition and multiplication tables to force torsion.</p>
+<hr>
+<h1>6. What a genuine completion would need</h1>
+<p>The reduction in Proposition 4 is clean.  A full proof along this line would need a new theorem of the following kind.</p>
+<hr>
+<h2>Necessary new arithmetic construction</h2>
+<p>One needs to construct infinitely many totally real fields \(K_i\), \(d_i\to\infty\), for which:</p>
+<ol>
+<li><p>The unit logarithmic lattice has exponentially many points in a fixed box:</p>
+<div class="math-block">\[
+|\Lambda_{K_i}\cap C_R|
+\ge
+\exp((\lambda-o(1))d_i)
+\]</div>
+<p>with</p>
+<div class="math-block">\[
+\lambda&gt;\log 5.
+\]</div></li>
+<li><p>The Minkowski lattice of algebraic integers is sparse enough in a fixed archimedean box:</p>
+<div class="math-block">\[
+|\Sigma_{K_i}(\mathcal O_{K_i})\cap[-2e^R,2e^R]^{d_i}|
+\le
+\exp((\mu+o(1))d_i)
+\]</div>
+<p>with</p>
+<div class="math-block">\[
+\mu&lt;2\lambda.
+\]</div></li>
+</ol>
+<p>The first condition asks for many bounded units.  The second asks for relatively few bounded algebraic integers.  These requirements pull in different directions.</p>
+<p>Small regulator helps with the first condition, but does not by itself give the second.  Large root discriminant heuristically helps with the second, but does not by itself control lattice shape and may coexist with many small-dimensional sublattices unless one proves strong irreducibility or randomness properties of the Minkowski lattice.</p>
+<hr>
+<h1>7. Why I cannot honestly present a complete proof here</h1>
+<p>A complete proof of the stated theorem would need to supply either:</p>
+<ol>
+<li>the arithmetic construction above, or</li>
+<li>a different construction of finite real sets avoiding this number-field framework.</li>
+</ol>
+<p>The previous approach does not contain such a construction.  The missing step is not a cosmetic estimate; it is the point where the Erdős–Szemerédi obstruction is supposed to be overcome.</p>
+<p>So the rigorous status of the work above is:</p>
+<ul>
+<li>The number-field reduction is complete and correct.</li>
+<li>The product-set estimate for bounded units is complete and correct.</li>
+<li>The sumset estimate reduces correctly to bounding \(B_K(2e^R)\).</li>
+<li>The proof is complete <strong>conditional</strong> on the arithmetic input (AI1) and (AI2).</li>
+<li>I do not have a valid proof of that arithmetic input.</li>
+<li>Several tempting ways to close it fail for precise reasons, including:</li>
+<li>determinant/root-discriminant alone does not bound lattice points in boxes;</li>
+<li>tensoring constant-factor savings cannot be embedded in a field of characteristic \(0\);</li>
+<li>finite-field examples cannot be transferred naively to \(\mathbb R\).</li>
+</ul>
+<p>Thus I should not pretend to have a complete proof.</p>
+<p>If you have access to the recently accepted proof, the key object to look for is likely one of the following:</p>
+<ol>
+<li>a construction of totally real fields with many uniformly bounded units and sparse bounded algebraic integers;</li>
+<li>a replacement for the unit construction using \(S\)-units or adelic boxes with unexpectedly good additive control;</li>
+<li>a genuinely new way to tensor finite configurations inside \(\mathbb R\) without forcing impossible coordinatewise collision identities;</li>
+<li>a model-theoretic or specialization argument that realizes finite-field-like pair-sum and pair-product collision patterns in characteristic \(0\) without encoding enough torsion to collapse the configuration.</li>
+</ol>
+<p>But without such a new ingredient, the proof cannot be completed rigorously from the material developed so far.</p>
+<hr>
+<h1>Round 3</h1>
+<h2>User</h2>
+<blockquote><p>Critically examine the proof you constructed to identify and resolve any errors or logical gaps. Then, present a complete, rigorous, step-by-step proof. Clearly justify each step with sufficient detail so that an expert can verify your reasoning without needing to fill in any gaps.</p></blockquote>
+<h2>Assistant</h2>
+<p>I rechecked the earlier argument carefully. The reduction to number fields is rigorous, but it does <strong>not</strong> constitute a proof of the theorem. The unresolved “arithmetic input” is not a minor technical lemma; it is essentially the whole difficulty. Some natural attempts to prove it are false.</p>
+<p>So the correct rigorous outcome is:</p>
+<ul>
+<li>the conditional reduction is valid;</li>
+<li>the product-set part is valid;</li>
+<li>the claimed existence of suitable number fields is unproved in the previous argument;</li>
+<li>therefore a complete proof of the theorem cannot honestly be obtained from that argument without an additional major theorem.</li>
+</ul>
+<p>Below is the cleaned-up rigorous result and the precise gap.</p>
+<hr>
+<h1>1. Valid part: number-field reduction</h1>
+<p>Let \(K/\mathbb Q\) be totally real of degree \(d\), with embeddings</p>
+<div class="math-block">\[
+\sigma_1,\dots,\sigma_d:K\hookrightarrow \mathbb R.
+\]</div>
+<p>For \(R&gt;0\), define</p>
+<div class="math-block">\[
+U_K(R)=
+\left\{
+u\in\mathcal O_K^\times:
+e^{-R}\le |\sigma_j(u)|\le e^R
+\ \forall j
+\right\}.
+\]</div>
+<p>Also define</p>
+<div class="math-block">\[
+B_K(M)=
+\left\{
+x\in\mathcal O_K:
+|\sigma_j(x)|\le M
+\ \forall j
+\right\}.
+\]</div>
+<p>Choose one embedding \(\sigma_1\) and set</p>
+<div class="math-block">\[
+A_K(R)=\sigma_1(U_K(R))\subset\mathbb R.
+\]</div>
+<p>Since \(\sigma_1\) is injective,</p>
+<div class="math-block">\[
+|A_K(R)|=|U_K(R)|.
+\]</div>
+<hr>
+<h2>Lemma 1</h2>
+<p>For \(A=A_K(R)\),</p>
+<div class="math-block">\[
+A+A\subseteq \sigma_1(B_K(2e^R)),
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+AA\subseteq \sigma_1(U_K(2R)).
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+|A+A|\le |B_K(2e^R)|,
+\qquad
+|AA|\le |U_K(2R)|.
+\]</div>
+<h3>Proof</h3>
+<p>If \(u,v\in U_K(R)\), then for every embedding \(\sigma_j\),</p>
+<div class="math-block">\[
+|\sigma_j(u+v)|
+\le |\sigma_j(u)|+|\sigma_j(v)|
+\le 2e^R.
+\]</div>
+<p>Since \(u+v\in\mathcal O_K\), we have \(u+v\in B_K(2e^R)\). Thus</p>
+<div class="math-block">\[
+\sigma_1(u)+\sigma_1(v)=\sigma_1(u+v)\in \sigma_1(B_K(2e^R)).
+\]</div>
+<p>Similarly,</p>
+<div class="math-block">\[
+e^{-2R}\le |\sigma_j(uv)|\le e^{2R}
+\]</div>
+<p>for every \(j\), so \(uv\in U_K(2R)\). Therefore</p>
+<div class="math-block">\[
+\sigma_1(u)\sigma_1(v)=\sigma_1(uv)\in \sigma_1(U_K(2R)).
+\]</div>
+<p>The cardinality bounds follow. \(\square\)</p>
+<hr>
+<h1>2. Valid product-set estimate</h1>
+<p>Let</p>
+<div class="math-block">\[
+H_d=\left\{(x_1,\dots,x_d)\in\mathbb R^d:\sum_j x_j=0\right\},
+\]</div>
+<p>and let</p>
+<div class="math-block">\[
+\ell:\mathcal O_K^\times\to H_d
+\]</div>
+<p>be the logarithmic embedding</p>
+<div class="math-block">\[
+\ell(u)=
+(\log|\sigma_1(u)|,\dots,\log|\sigma_d(u)|).
+\]</div>
+<p>The image</p>
+<div class="math-block">\[
+\Lambda_K=\ell(\mathcal O_K^\times)
+\]</div>
+<p>is a lattice of rank \(d-1\), and</p>
+<div class="math-block">\[
+\ker \ell=\{\pm1\}.
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+C_R=H_d\cap[-R,R]^d.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+|U_K(R)|=2|\Lambda_K\cap C_R|.
+\]</div>
+<hr>
+<h2>Lemma 2</h2>
+<p>Let \(\Lambda\) be a rank \(r\) lattice in a real vector space, and let \(C\) be centrally symmetric and convex. Then</p>
+<div class="math-block">\[
+|\Lambda\cap 2C|\le 5^r|\Lambda\cap C|.
+\]</div>
+<h3>Proof</h3>
+<p>Let</p>
+<div class="math-block">\[
+S=\Lambda\cap 2C.
+\]</div>
+<p>Choose a maximal subset \(Y\subseteq S\) such that for distinct \(y,y'\in Y\),</p>
+<div class="math-block">\[
+y-y&#x27;\notin C.
+\]</div>
+<p>Then the translates \(y+\frac12 C\), \(y\in Y\), are disjoint. They all lie in \(\frac52C\). Therefore</p>
+<div class="math-block">\[
+|Y|\operatorname{vol}\left(\frac12C\right)
+\le
+\operatorname{vol}\left(\frac52C\right),
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+|Y|\le 5^r.
+\]</div>
+<p>By maximality of \(Y\), every \(s\in S\) satisfies \(s-y\in C\) for some \(y\in Y\). Hence</p>
+<div class="math-block">\[
+S\subseteq Y+(\Lambda\cap C).
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|\Lambda\cap 2C|
+\le |Y|\,|\Lambda\cap C|
+\le 5^r|\Lambda\cap C|.
+\]</div>
+<p>\(\square\)</p>
+<hr>
+<h2>Corollary 3</h2>
+<p>For every totally real \(K\) of degree \(d\),</p>
+<div class="math-block">\[
+|U_K(2R)|\le 5^{d-1}|U_K(R)|.
+\]</div>
+<h3>Proof</h3>
+<p>Since \(C_{2R}=2C_R\),</p>
+<div class="math-block">\[
+|U_K(2R)|
+=
+2|\Lambda_K\cap C_{2R}|
+=
+2|\Lambda_K\cap 2C_R|.
+\]</div>
+<p>By Lemma 2,</p>
+<div class="math-block">\[
+|\Lambda_K\cap 2C_R|
+\le 5^{d-1}|\Lambda_K\cap C_R|.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|U_K(2R)|
+\le
+5^{d-1}|U_K(R)|.
+\]</div>
+<p>\(\square\)</p>
+<hr>
+<h1>3. Correct conditional theorem</h1>
+<p>The previous argument proves the following conditional statement.</p>
+<h2>Proposition</h2>
+<p>Suppose there exist constants</p>
+<div class="math-block">\[
+R&gt;0,\qquad \lambda&gt;\log 5,\qquad \mu&lt;2\lambda,
+\]</div>
+<p>and totally real fields \(K_i\) with \(d_i=[K_i:\mathbb Q]\to\infty\), such that</p>
+<div class="math-block">\[
+|U_{K_i}(R)|\ge \exp((\lambda-o(1))d_i),
+\tag{1}
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|B_{K_i}(2e^R)|\le \exp((\mu+o(1))d_i).
+\tag{2}
+\]</div>
+<p>Then there are finite sets \(A_i\subset\mathbb R\), \(|A_i|\to\infty\), and some \(\delta&gt;0\), such that</p>
+<div class="math-block">\[
+\max(|A_i+A_i|,|A_iA_i|)
+\le |A_i|^{2-\delta}.
+\]</div>
+<h3>Proof</h3>
+<p>Let</p>
+<div class="math-block">\[
+A_i=\sigma_i(U_{K_i}(R)).
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+|A_i|=|U_{K_i}(R)|
+\ge \exp((\lambda-o(1))d_i),
+\]</div>
+<p>so \(|A_i|\to\infty\).</p>
+<p>For the sumset, Lemma 1 gives</p>
+<div class="math-block">\[
+|A_i+A_i|
+\le |B_{K_i}(2e^R)|
+\le \exp((\mu+o(1))d_i).
+\]</div>
+<p>Since</p>
+<div class="math-block">\[
+|A_i|\ge \exp((\lambda-o(1))d_i),
+\]</div>
+<p>we get</p>
+<div class="math-block">\[
+|A_i+A_i|
+\le |A_i|^{\mu/\lambda+o(1)}.
+\]</div>
+<p>Because \(\mu&lt;2\lambda\), any</p>
+<div class="math-block">\[
+\delta_1&lt;2-\frac{\mu}{\lambda}
+\]</div>
+<p>works for the sumset.</p>
+<p>For the product set, Lemma 1 and Corollary 3 imply</p>
+<div class="math-block">\[
+|A_iA_i|
+\le |U_{K_i}(2R)|
+\le 5^{d_i-1}|U_{K_i}(R)|
+=
+5^{d_i-1}|A_i|.
+\]</div>
+<p>Using \(|A_i|\ge \exp((\lambda-o(1))d_i)\),</p>
+<div class="math-block">\[
+5^{d_i}
+\le |A_i|^{\log 5/\lambda+o(1)}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|A_iA_i|
+\le |A_i|^{1+\log 5/\lambda+o(1)}.
+\]</div>
+<p>Since \(\lambda&gt;\log 5\), any</p>
+<div class="math-block">\[
+\delta_2&lt;1-\frac{\log 5}{\lambda}
+\]</div>
+<p>works for the product set.</p>
+<p>Choose</p>
+<div class="math-block">\[
+0&lt;\delta&lt;
+\min\left\{
+2-\frac{\mu}{\lambda},
+1-\frac{\log 5}{\lambda}
+\right\}.
+\]</div>
+<p>Then for all sufficiently large \(i\),</p>
+<div class="math-block">\[
+\max(|A_i+A_i|,|A_iA_i|)
+\le |A_i|^{2-\delta}.
+\]</div>
+<p>\(\square\)</p>
+<hr>
+<h1>4. The fatal missing step</h1>
+<p>To turn this into a proof of the stated theorem, one must prove the following strong arithmetic construction.</p>
+<h2>Missing Arithmetic Theorem</h2>
+<p>There exist constants</p>
+<div class="math-block">\[
+R&gt;0,\qquad \lambda&gt;\log 5,\qquad \mu&lt;2\lambda,
+\]</div>
+<p>and infinitely many totally real fields \(K_i\), \(d_i\to\infty\), such that</p>
+<div class="math-block">\[
+|U_{K_i}(R)|\ge \exp((\lambda-o(1))d_i),
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|B_{K_i}(2e^R)|\le \exp((\mu+o(1))d_i).
+\]</div>
+<p>The previous proof did not establish this.</p>
+<p>This is not a minor omission. It requires constructing totally real fields with simultaneously:</p>
+<ol>
+<li>exponentially many uniformly bounded units; and</li>
+<li>few uniformly bounded algebraic integers.</li>
+</ol>
+<p>Those two conditions pull in opposite directions and cannot be obtained from regulator/discriminant estimates alone.</p>
+<hr>
+<h1>5. Why the previous heuristics are insufficient</h1>
+<h2>5.1. Large discriminant alone does not control \(B_K(M)\)</h2>
+<p>The Minkowski lattice</p>
+<div class="math-block">\[
+\Sigma_K(\mathcal O_K)
+=
+\{(\sigma_1(x),\dots,\sigma_d(x)):x\in\mathcal O_K\}
+\]</div>
+<p>has covolume \(\sqrt{D_K}\). A naive estimate would be</p>
+<div class="math-block">\[
+|B_K(M)|
+\approx \frac{(2M)^d}{\sqrt{D_K}}.
+\]</div>
+<p>But determinant alone does not control lattice points in boxes. For example,</p>
+<div class="math-block">\[
+L_T=\mathbb Z^{d-1}\oplus T\mathbb Z
+\]</div>
+<p>has determinant \(T\), but for fixed \(M\ge1\) and \(T&gt;M\),</p>
+<div class="math-block">\[
+|L_T\cap[-M,M]^d|
+=
+(2\lfloor M\rfloor+1)^{d-1},
+\]</div>
+<p>independent of \(T\).</p>
+<p>So a discriminant lower bound is useless without shape control.</p>
+<hr>
+<h2>5.2. There is a universal packing bound, but it is too weak</h2>
+<p>One can prove the following.</p>
+<h3>Lemma</h3>
+<p>For every totally real field \(K\) and every \(M&gt;0\),</p>
+<div class="math-block">\[
+|B_K(M)|\le (\lfloor 2M\rfloor+1)^d.
+\]</div>
+<h3>Proof</h3>
+<p>Partition \([-M,M]^d\) into half-open cubes of side length \(&lt;1\). If two distinct algebraic integers \(x,y\in B_K(M)\) lie in the same cube, then for every \(j\),</p>
+<div class="math-block">\[
+|\sigma_j(x-y)|&lt;1.
+\]</div>
+<p>But \(x-y\in\mathcal O_K\setminus\{0\}\), so</p>
+<div class="math-block">\[
+0\ne N_{K/\mathbb Q}(x-y)\in\mathbb Z.
+\]</div>
+<p>On the other hand,</p>
+<div class="math-block">\[
+|N_{K/\mathbb Q}(x-y)|
+=
+\prod_{j=1}^d |\sigma_j(x-y)|
+&lt;1,
+\]</div>
+<p>impossible. Hence each cube contains at most one point. The number of cubes is at most \((\lfloor2M\rfloor+1)^d\). \(\square\)</p>
+<p>For \(M=2e^R\), this gives roughly</p>
+<div class="math-block">\[
+|B_K(2e^R)|
+\le \exp((R+O(1))d).
+\]</div>
+<p>This is far too weak for the reduction, because even an optimally dense unit lattice would give at most roughly</p>
+<div class="math-block">\[
+|U_K(R)|\approx \exp((\log R+O(1))d),
+\]</div>
+<p>and \(R\) dominates \(\log R\).</p>
+<p>Thus the proof genuinely needs discriminant and shape information, not just packing.</p>
+<hr>
+<h2>5.3. Exact tensor-product constructions cannot live in a field</h2>
+<p>Another tempting idea is to imitate the coordinatewise cube \(\{0,1\}^d\), whose coordinatewise sumset has size \(3^d\) and coordinatewise product set has size \(2^d\). But this cannot be embedded exactly into a field.</p>
+<p>Already a \(2\)-coordinate, \(2\)-digit obstruction appears.</p>
+<p>Suppose four field elements \(x_{00},x_{01},x_{10},x_{11}\) satisfied the coordinatewise relations</p>
+<div class="math-block">\[
+x_{00}+x_{11}=x_{01}+x_{10}
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+x_{00}x_{11}=x_{01}x_{10}.
+\]</div>
+<p>Then the unordered pairs \(\{x_{00},x_{11}\}\) and \(\{x_{01},x_{10}\}\) have the same sum and product. Hence they are the same pair of roots of the same quadratic polynomial. Thus</p>
+<div class="math-block">\[
+\{x_{00},x_{11}\}=\{x_{01},x_{10}\},
+\]</div>
+<p>contradicting injectivity.</p>
+<p>So the most obvious tensoring mechanism is algebraically impossible in an integral domain.</p>
+<hr>
+<h1>6. Conclusion</h1>
+<p>The earlier argument proves only the conditional proposition above. It does <strong>not</strong> prove the stated theorem.</p>
+<p>To obtain a complete proof, one must supply a new arithmetic construction proving the Missing Arithmetic Theorem: infinitely many totally real fields with exponentially many bounded units and sufficiently few bounded algebraic integers.</p>
+<p>Without that construction, the proof cannot be completed. Any purported complete proof must explicitly establish that arithmetic input or replace the number-field-unit strategy with a different construction that gives the same two estimates.</p>
+<hr>
+</main>
+</body>
+</html>

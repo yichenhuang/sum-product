@@ -1,0 +1,2897 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Transcript</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <style>
+    body {
+      margin: 0;
+      background: #f7f7f4;
+      color: #1f2328;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.62;
+    }
+    main {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 40px 28px 80px;
+      background: #fff;
+      min-height: 100vh;
+      box-shadow: 0 0 0 1px #e4e4df;
+    }
+    h1, h2, h3 { line-height: 1.25; margin-top: 1.7em; }
+    h1 { font-size: 30px; }
+    h2 { font-size: 24px; border-bottom: 1px solid #e5e5e0; padding-bottom: 4px; }
+    h3 { font-size: 19px; }
+    p { margin: 0 0 1em; }
+    blockquote {
+      border-left: 4px solid #b8c4d6;
+      margin: 1.2em 0;
+      padding: 0.2em 1em;
+      background: #f7f9fc;
+    }
+    pre {
+      overflow-x: auto;
+      background: #f2f2ee;
+      padding: 12px;
+      border-radius: 6px;
+    }
+    code {
+      background: #f2f2ee;
+      padding: 1px 4px;
+      border-radius: 4px;
+    }
+    pre code {
+      background: none;
+      padding: 0;
+    }
+    .math-block {
+      overflow-x: auto;
+      margin: 1.1em 0;
+      padding: 0.2em 0;
+    }
+    mjx-container {
+      overflow-x: auto;
+      overflow-y: hidden;
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Transcript</h1>
+<h2>System prompt</h2>
+<blockquote><p>The provided theorem was recently proved, and the result is now accepted by the mathematical community. Your task is to independently construct a proof.</p></blockquote>
+<hr>
+<h1>Round 1</h1>
+<h2>User</h2>
+<blockquote><p><strong>Theorem.</strong> There exist an absolute constant $\delta &gt; 0$ and an infinite sequence $\{A_i\}$ of finite subsets of $\mathbb{R}$ such that $|A_i| \to \infty$ and $\max(|A_i+A_i|, |A_iA_i|) \le |A_i|^{2-\delta}$ for all $i$, where $A_i+A_i = \{ a+b : a,b \in A_i \}$ and $A_iA_i = \{ ab : a,b \in A_i \}$ are the sumset and product set of $A_i$, respectively.</p>
+<p><strong>Remark.</strong> This result disproves the Erdős–Szemerédi Sum-Product Conjecture over $\mathbb{R}$.</p>
+<hr>
+<p>As a first step toward a complete proof, identify the most promising approach and develop it as far as possible. Present a step-by-step proof plan. Prove any intermediate claims you can. For each remaining gap, state it precisely and assess whether it can plausibly be closed within the approach or poses a serious obstruction. Include enough detail for the next round to continue from where you leave off.</p></blockquote>
+<h2>Assistant</h2>
+<p>Below is a proof strategy that I think is by far the most promising.  It uses high-degree totally real number fields.  The guiding idea is:</p>
+<ul>
+<li><strong>Small sumset</strong> comes from putting the set inside an archimedean box: if all conjugates of all elements are bounded by a fixed constant, then the sumset also lies in a comparable box, whose number of algebraic integers is only exponential in the degree.</li>
+<li><strong>Small product set</strong> comes from saturating the set by many small units.  Many elements of the set then generate the same principal ideal, so products have many forced multiplicative collisions.</li>
+</ul>
+<p>I will develop the approach in detail.  The combinatorial/geometry-of-numbers part can be made essentially complete.  The one deep arithmetic input is the existence of an infinite tower of totally real fields with bounded root discriminant and regulator at most exponential in the degree; this is a standard consequence of totally real class field towers plus analytic class number bounds, but if one wants a fully self-contained proof, this is the main remaining arithmetic gap to fill.</p>
+<hr>
+<h2>1. The main arithmetic template</h2>
+<p>Let \(K/\mathbb Q\) be a totally real number field of degree \(d\), with real embeddings</p>
+<div class="math-block">\[
+\sigma_1,\dots,\sigma_d:K\hookrightarrow \mathbb R.
+\]</div>
+<p>Write \(\mathcal O_K\) for its ring of integers, \(\Delta_K\) for its discriminant, and \(R_K\) for its regulator.</p>
+<p>For \(Z\ge 1\), define the archimedean box</p>
+<div class="math-block">\[
+B_K(Z)
+:=
+\left\{\alpha\in \mathcal O_K:
+|\sigma_j(\alpha)|\le Z \text{ for all } j=1,\dots,d
+\right\}.
+\]</div>
+<p>For \(s\ge 0\), define the small-unit box</p>
+<div class="math-block">\[
+U_K(s)
+:=
+\left\{u\in \mathcal O_K^\times:
+|\log |\sigma_j(u)||\le s \text{ for all } j=1,\dots,d
+\right\}.
+\]</div>
+<p>The eventual construction will be of the following form.</p>
+<p>Choose fixed large constants \(L&gt;T&gt;0\), independent of \(K\).  Set</p>
+<div class="math-block">\[
+Y:=\frac{e^{L-T}}{4},
+\qquad
+M:=\lceil 2Y\rceil.
+\]</div>
+<p>Define a “core” set</p>
+<div class="math-block">\[
+C_K
+:=
+\left\{
+M+\beta:
+\beta\in B_K(Y)
+\right\}.
+\]</div>
+<p>Then every \(c\in C_K\) satisfies</p>
+<div class="math-block">\[
+Y\le |\sigma_j(c)|\le 4Y
+\qquad\text{for every } j.
+\]</div>
+<p>Now saturate \(C_K\) by the small units:</p>
+<div class="math-block">\[
+\widetilde A_K
+:=
+U_K(T)\,C_K
+=
+\{uc:u\in U_K(T),\,c\in C_K\}
+\subset \mathcal O_K.
+\]</div>
+<p>Finally, choose one real embedding, say \(\sigma_1\), and set</p>
+<div class="math-block">\[
+A_K:=\sigma_1(\widetilde A_K)\subset \mathbb R.
+\]</div>
+<p>Because \(\sigma_1\) is injective on \(K\), cardinalities of sumsets and product sets are preserved:</p>
+<div class="math-block">\[
+|A_K+A_K|=|\widetilde A_K+\widetilde A_K|,
+\qquad
+|A_KA_K|=|\widetilde A_K\widetilde A_K|.
+\]</div>
+<p>So it suffices to work inside \(K\).</p>
+<hr>
+<h2>2. Why this construction should work</h2>
+<p>Let \(X:=e^L\).  By construction,</p>
+<div class="math-block">\[
+4Ye^T=e^L=X.
+\]</div>
+<p>Thus every \(a\in \widetilde A_K\) satisfies</p>
+<div class="math-block">\[
+|\sigma_j(a)|\le X
+\qquad\text{for all }j.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+\widetilde A_K+\widetilde A_K\subset B_K(2X).
+\]</div>
+<p>So \(|A_K+A_K|\) is bounded above by the number of algebraic integers in a box of radius \(2X\).  If \(K\) has bounded root discriminant and \(X\) is fixed, this is only exponential in \(d\).</p>
+<p>For products, the crucial point is that \(\widetilde A_K\) is saturated by \(U_K(T)\).  If \(a=uc\in \widetilde A_K\), then for every \(v\in U_K(T)\), the element \(vc\) also lies in \(\widetilde A_K\), and all these elements generate the same principal ideal.  Therefore each principal ideal represented by \(\widetilde A_K\) has at least \(|U_K(T)|\) representatives in \(\widetilde A_K\).</p>
+<p>Consequently, the number of principal ideals represented by \(\widetilde A_K\) is at most</p>
+<div class="math-block">\[
+\frac{|\widetilde A_K|}{|U_K(T)|}.
+\]</div>
+<p>Thus the number of principal ideals represented by products \(ab\), with \(a,b\in \widetilde A_K\), is at most</p>
+<div class="math-block">\[
+\left(\frac{|\widetilde A_K|}{|U_K(T)|}\right)^2.
+\]</div>
+<p>For a fixed principal ideal, the number of generators that can actually occur as products \(ab\) is controlled by a slightly larger unit box.  This gives</p>
+<div class="math-block">\[
+|\widetilde A_K\widetilde A_K|
+\lesssim
+|\widetilde A_K|^2
+\cdot
+\frac{|U_K(O(T))|}{|U_K(T)|^2}.
+\]</div>
+<p>A lattice-doubling estimate for the logarithmic unit lattice gives</p>
+<div class="math-block">\[
+|U_K(O(T))|\le q^d |U_K(T)|
+\]</div>
+<p>for an absolute \(q=q(L,T)\).  Hence</p>
+<div class="math-block">\[
+|\widetilde A_K\widetilde A_K|
+\le
+|\widetilde A_K|^2
+\cdot
+\frac{q^d}{|U_K(T)|}.
+\]</div>
+<p>If \(|U_K(T)|\ge e^{\eta d}\) for some \(\eta&gt;\log q\), then this gives a fixed exponential saving in \(d\).  Since \(|\widetilde A_K|\le e^{O(d)}\), this becomes a fixed power saving in \(|\widetilde A_K|\).</p>
+<hr>
+<h2>3. Arithmetic input needed</h2>
+<p>The construction needs an infinite sequence of totally real fields \(K_i\) of degrees \(d_i\to\infty\) satisfying two uniform bounds.</p>
+<h3>Arithmetic Input</h3>
+<p>There exist constants \(D,E&gt;1\) and infinitely many totally real number fields \(K_i\) with \(d_i=[K_i:\mathbb Q]\to\infty\) such that</p>
+<div class="math-block">\[
+|\Delta_{K_i}|^{1/d_i}\le D
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+R_{K_i}\le E^{d_i}.
+\]</div>
+<p>This is the main deep arithmetic ingredient.</p>
+<h3>Why this input is plausible / standard</h3>
+<p>A standard source is a totally real narrow Hilbert class field tower.  Martinet’s construction gives a totally real field with an infinite totally real class field tower.  Along an unramified tower, the root discriminant remains constant, giving the first bound.</p>
+<p>The regulator bound follows from the analytic class number formula plus a standard Landau/Stark upper bound for the residue of \(\zeta_K(s)\) at \(s=1\).  Namely, for a totally real field,</p>
+<div class="math-block">\[
+\operatorname*{Res}_{s=1}\zeta_K(s)
+=
+\frac{2^{d-1}h_KR_K}{\sqrt{|\Delta_K|}},
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+R_K
+\le
+h_KR_K
+=
+2^{1-d}\sqrt{|\Delta_K|}
+\operatorname*{Res}_{s=1}\zeta_K(s).
+\]</div>
+<p>If the root discriminant is bounded, standard residue bounds give</p>
+<div class="math-block">\[
+\operatorname*{Res}_{s=1}\zeta_K(s)\le C(D)^d,
+\]</div>
+<p>hence</p>
+<div class="math-block">\[
+R_K\le E^d
+\]</div>
+<p>for some \(E=E(D)\).</p>
+<p>Thus, for this proof plan, the arithmetic input is not a conceptual obstruction; it is a known but deep number-theoretic package.</p>
+<hr>
+<h2>4. Geometry-of-numbers lemmas</h2>
+<p>I now prove the elementary counting estimates needed for the construction.</p>
+<hr>
+<h3>Lemma 1: Additive box upper and lower bounds</h3>
+<p>Let \(K\) be totally real of degree \(d\).  For \(Z\ge 1\),</p>
+<div class="math-block">\[
+B_K(Z)
+=
+\{\alpha\in\mathcal O_K:|\sigma_j(\alpha)|\le Z\ \forall j\}.
+\]</div>
+<p>Then:</p>
+<ol>
+<li>Upper bound:</li>
+</ol>
+<div class="math-block">\[
+|B_K(Z)|\le (2Z+1)^d.
+\]</div>
+<ol>
+<li>Lower bound:</li>
+</ol>
+<div class="math-block">\[
+|B_K(Z)|\ge \frac{Z^d}{\sqrt{|\Delta_K|}}-1.
+\]</div>
+<h4>Proof of the upper bound</h4>
+<p>If \(\alpha,\beta\in\mathcal O_K\) are distinct, then \(\gamma:=\alpha-\beta\) is a nonzero algebraic integer.  Therefore</p>
+<div class="math-block">\[
+|N_{K/\mathbb Q}(\gamma)|
+=
+\prod_{j=1}^d |\sigma_j(\gamma)|
+\]</div>
+<p>is a positive integer, hence at least \(1\).  Thus</p>
+<div class="math-block">\[
+\max_j |\sigma_j(\gamma)|\ge 1.
+\]</div>
+<p>So the embedded lattice \(\sigma(\mathcal O_K)\subset\mathbb R^d\) is \(1\)-separated in the sup norm.</p>
+<p>The points of \(B_K(Z)\) lie in \([-Z,Z]^d\).  Around each such point put an open sup-norm cube of side length \(1\).  These cubes are disjoint and lie inside \([-Z-\tfrac12,Z+\tfrac12]^d\).  Therefore</p>
+<div class="math-block">\[
+|B_K(Z)|\le (2Z+1)^d.
+\]</div>
+<h4>Proof of the lower bound</h4>
+<p>The Minkowski embedding \(\sigma(\mathcal O_K)\subset \mathbb R^d\) is a lattice of covolume \(\sqrt{|\Delta_K|}\).</p>
+<p>Let</p>
+<div class="math-block">\[
+S=[-Z/2,Z/2]^d.
+\]</div>
+<p>By Blichfeldt’s principle, some translate of \(S\) contains at least</p>
+<div class="math-block">\[
+\frac{\operatorname{vol}(S)}{\sqrt{|\Delta_K|}}
+=
+\frac{Z^d}{\sqrt{|\Delta_K|}}
+\]</div>
+<p>lattice points, up to an additive \(O(1)\) error.  Taking differences from one fixed point in that translate gives distinct lattice points in</p>
+<div class="math-block">\[
+S-S=[-Z,Z]^d.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|B_K(Z)|\ge \frac{Z^d}{\sqrt{|\Delta_K|}}-1.
+\]</div>
+<p>This proves the lemma. \(\square\)</p>
+<hr>
+<h3>Lemma 2: Many small units from a regulator bound</h3>
+<p>Let</p>
+<div class="math-block">\[
+U_K(s)
+=
+\left\{u\in\mathcal O_K^\times:
+|\log|\sigma_j(u)||\le s\ \forall j
+\right\}.
+\]</div>
+<p>There is an absolute constant \(c_U&gt;0\) such that</p>
+<div class="math-block">\[
+|U_K(s)|
+\ge
+\frac{(c_Us)^{d-1}}{R_K}-1.
+\]</div>
+<p>In particular, if \(R_K\le E^d\) and \(s\) is a sufficiently large fixed constant, then for all sufficiently large \(d\),</p>
+<div class="math-block">\[
+|U_K(s)|\ge \left(\frac{c_Us}{E}\right)^d.
+\]</div>
+<h4>Proof</h4>
+<p>Consider the logarithmic embedding of the unit group:</p>
+<div class="math-block">\[
+\lambda:\mathcal O_K^\times\to H_d,
+\qquad
+u\mapsto (\log|\sigma_1(u)|,\dots,\log|\sigma_d(u)|),
+\]</div>
+<p>where</p>
+<div class="math-block">\[
+H_d=\{x\in\mathbb R^d:x_1+\cdots+x_d=0\}.
+\]</div>
+<p>Modulo the finite kernel \(\{\pm 1\}\), the image is a full lattice \(\Lambda_K\subset H_d\) of covolume \(R_K\).</p>
+<p>Let</p>
+<div class="math-block">\[
+Q_s:=H_d\cap[-s,s]^d.
+\]</div>
+<p>The \((d-1)\)-dimensional volume of \(Q_s\) is at least \(c_0^{d}s^{d-1}\) for some absolute \(c_0&gt;0\).  Indeed, central sections of cubes have volume comparable to the coordinate hyperplane section; one may take a very small absolute \(c_0\) without optimizing.</p>
+<p>Apply Blichfeldt’s principle in \(H_d\) to \(\frac12 Q_s\).  Some translate contains at least</p>
+<div class="math-block">\[
+\frac{\operatorname{vol}_{H_d}(\frac12Q_s)}{R_K}
+\]</div>
+<p>points of \(\Lambda_K\).  Taking differences from one of them gives distinct lattice points in \(Q_s\).  Hence</p>
+<div class="math-block">\[
+|\Lambda_K\cap Q_s|
+\ge
+\frac{\operatorname{vol}_{H_d}(\frac12Q_s)}{R_K}-1
+\ge
+\frac{(c_Us)^{d-1}}{R_K}-1
+\]</div>
+<p>for an absolute \(c_U&gt;0\).</p>
+<p>Lifting back to units only changes constants by the kernel \(\{\pm1\}\).  This proves the lemma. \(\square\)</p>
+<hr>
+<h3>Lemma 3: A unit-box dilation bound</h3>
+<p>Let \(s'\ge s&gt;0\).  Put</p>
+<div class="math-block">\[
+m:=\frac{s&#x27;}{s}.
+\]</div>
+<p>There is an integer</p>
+<div class="math-block">\[
+q\le 2m+3
+\]</div>
+<p>such that</p>
+<div class="math-block">\[
+|U_K(s&#x27;)|\le q^d |U_K(s)|.
+\]</div>
+<h4>Proof</h4>
+<p>Work in the logarithmic unit lattice \(\Lambda_K\subset H_d\).  Let</p>
+<div class="math-block">\[
+Q_s=H_d\cap[-s,s]^d.
+\]</div>
+<p>Choose an integer \(q&gt;2m\).  Partition \(\Lambda_K\cap Q_{s'}\) into residue classes modulo \(q\Lambda_K\).  There are \(q^{d-1}\le q^d\) such classes.</p>
+<p>If \(x,y\in \Lambda_K\cap Q_{s'}\) lie in the same class modulo \(q\Lambda_K\), then</p>
+<div class="math-block">\[
+x-y=qz
+\]</div>
+<p>for some \(z\in\Lambda_K\).  Since \(x,y\in Q_{s'}=mQ_s\),</p>
+<div class="math-block">\[
+z=\frac{x-y}{q}\in \frac{2m}{q}Q_s\subset Q_s.
+\]</div>
+<p>Thus, inside each residue class, the number of points is at most \(|\Lambda_K\cap Q_s|\).  Therefore</p>
+<div class="math-block">\[
+|\Lambda_K\cap Q_{s&#x27;}|
+\le
+q^d|\Lambda_K\cap Q_s|.
+\]</div>
+<p>Passing from logarithmic lattice points to units changes only the harmless \(\{\pm1\}\)-kernel, so</p>
+<div class="math-block">\[
+|U_K(s&#x27;)|\le q^d|U_K(s)|.
+\]</div>
+<p>This proves the lemma. \(\square\)</p>
+<hr>
+<h2>5. Conditional construction in one field</h2>
+<p>Fix a totally real field \(K\) satisfying</p>
+<div class="math-block">\[
+|\Delta_K|^{1/d}\le D,
+\qquad
+R_K\le E^d.
+\]</div>
+<p>Choose constants \(L&gt;T&gt;0\), to be specified later, and set</p>
+<div class="math-block">\[
+Y:=\frac{e^{L-T}}4,
+\qquad
+M:=\lceil 2Y\rceil,
+\qquad
+X:=e^L.
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+C_K=\{M+\beta:\beta\in B_K(Y)\}
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\widetilde A_K=U_K(T)C_K.
+\]</div>
+<p>Finally put</p>
+<div class="math-block">\[
+A_K=\sigma_1(\widetilde A_K)\subset\mathbb R.
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+n_K:=|A_K|=|\widetilde A_K|.
+\]</div>
+<p>We now estimate \(n_K\), \(|A_K+A_K|\), and \(|A_KA_K|\).</p>
+<hr>
+<h2>6. Size of \(A_K\)</h2>
+<p>Because \(1\in U_K(T)\), we have \(C_K\subset \widetilde A_K\).  Also \(|C_K|=|B_K(Y)|\).  By Lemma 1,</p>
+<div class="math-block">\[
+n_K\ge |C_K|
+=
+|B_K(Y)|
+\ge
+\frac{Y^d}{\sqrt{|\Delta_K|}}-1.
+\]</div>
+<p>Using \(|\Delta_K|^{1/d}\le D\), for all sufficiently large \(d\),</p>
+<div class="math-block">\[
+n_K\ge
+\left(\frac{Y}{2D^{1/2}}\right)^d.
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+\alpha:=\log\left(\frac{Y}{2D^{1/2}}\right).
+\]</div>
+<p>We will choose \(L,T\) so that \(\alpha&gt;0\).  Then</p>
+<div class="math-block">\[
+n_K\ge e^{\alpha d}
+\]</div>
+<p>for all large \(d\).</p>
+<p>On the other hand, every \(a\in \widetilde A_K\) satisfies \(|\sigma_j(a)|\le X=e^L\).  Indeed, if \(a=uc\), with \(u\in U_K(T)\) and \(c=M+\beta\in C_K\), then</p>
+<div class="math-block">\[
+|\sigma_j(c)|
+\le
+M+|\sigma_j(\beta)|
+\le
+3Y+Y
+=
+4Y,
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+|\sigma_j(a)|
+\le
+e^T\cdot 4Y
+=
+e^T\cdot e^{L-T}
+=
+e^L=X.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+\widetilde A_K\subset B_K(X).
+\]</div>
+<p>By Lemma 1,</p>
+<div class="math-block">\[
+n_K\le |B_K(X)|\le (2X+1)^d.
+\]</div>
+<p>For \(X\ge1\), this gives</p>
+<div class="math-block">\[
+n_K\le (3e^L)^d.
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+\beta:=\log(3e^L)=L+\log 3.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+n_K\le e^{\beta d}.
+\]</div>
+<p>Thus we have the important size bounds</p>
+<div class="math-block">\[
+e^{\alpha d}\le n_K\le e^{\beta d},
+\]</div>
+<p>for all sufficiently large \(d\).</p>
+<hr>
+<h2>7. Sumset estimate</h2>
+<p>Since every \(a\in \widetilde A_K\) satisfies \(|\sigma_j(a)|\le X\), every sum \(a+b\) satisfies</p>
+<div class="math-block">\[
+|\sigma_j(a+b)|\le 2X.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+\widetilde A_K+\widetilde A_K\subset B_K(2X).
+\]</div>
+<p>By Lemma 1,</p>
+<div class="math-block">\[
+|A_K+A_K|
+=
+|\widetilde A_K+\widetilde A_K|
+\le
+|B_K(2X)|
+\le
+(4X+1)^d
+\le
+(5e^L)^d.
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+\beta_+:=\log(5e^L)=L+\log 5.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+|A_K+A_K|\le e^{\beta_+ d}.
+\]</div>
+<p>Using \(n_K\ge e^{\alpha d}\), we get</p>
+<div class="math-block">\[
+|A_K+A_K|
+\le
+n_K^{\beta_+/\alpha}.
+\]</div>
+<p>Thus the sumset will be bounded by \(n_K^{2-\delta}\) as soon as</p>
+<div class="math-block">\[
+\frac{\beta_+}{\alpha}&lt;2.
+\]</div>
+<p>Because</p>
+<div class="math-block">\[
+Y=\frac{e^{L-T}}4,
+\]</div>
+<p>we have</p>
+<div class="math-block">\[
+\alpha
+=
+\log\left(\frac{e^{L-T}}{8D^{1/2}}\right)
+=
+L-T-\log(8D^{1/2}).
+\]</div>
+<p>If we choose, say,</p>
+<div class="math-block">\[
+T=\frac L4
+\]</div>
+<p>and then take \(L\) sufficiently large depending only on \(D\), then</p>
+<div class="math-block">\[
+\alpha\sim \frac{3L}{4},
+\qquad
+\beta_+\sim L,
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+\frac{\beta_+}{\alpha}\to \frac43&lt;2.
+\]</div>
+<p>Therefore there is a positive constant</p>
+<div class="math-block">\[
+\delta_{\mathrm{sum}}&gt;0
+\]</div>
+<p>such that</p>
+<div class="math-block">\[
+|A_K+A_K|\le n_K^{2-\delta_{\mathrm{sum}}}
+\]</div>
+<p>for all sufficiently large \(d\).</p>
+<hr>
+<h2>8. Product set estimate</h2>
+<p>This is the heart of the method.</p>
+<p>Let</p>
+<div class="math-block">\[
+U:=U_K(T).
+\]</div>
+<p>Let \(\mathcal P\) be the set of principal ideals of \(\mathcal O_K\) represented by elements of \(\widetilde A_K\):</p>
+<div class="math-block">\[
+\mathcal P
+:=
+\{(a):a\in \widetilde A_K\}.
+\]</div>
+<h3>8.1. Each represented ideal has many representatives in \(\widetilde A_K\)</h3>
+<p>Suppose \(a\in \widetilde A_K\).  Then \(a=uc\) for some \(u\in U\), \(c\in C_K\).  For every \(v\in U\), the element \(vc\) also lies in \(\widetilde A_K\), and</p>
+<div class="math-block">\[
+(vc)=(c)=(uc)=(a).
+\]</div>
+<p>Moreover the elements \(vc\) are distinct as \(v\) varies, because \(c\neq0\).</p>
+<p>Therefore each ideal in \(\mathcal P\) has at least \(|U|\) representatives in \(\widetilde A_K\).  Hence</p>
+<div class="math-block">\[
+|\mathcal P|\le \frac{n_K}{|U|}.
+\]</div>
+<h3>8.2. Possible product ideals</h3>
+<p>If \(z=ab\in \widetilde A_K\widetilde A_K\), then</p>
+<div class="math-block">\[
+(z)=(a)(b)
+\]</div>
+<p>with \((a),(b)\in\mathcal P\).  Therefore the number of possible principal ideals \((z)\) arising from products is at most</p>
+<div class="math-block">\[
+|\mathcal P|^2
+\le
+\left(\frac{n_K}{|U|}\right)^2.
+\]</div>
+<h3>8.3. Number of generators per product ideal</h3>
+<p>We need to bound how many actual elements \(z\in \widetilde A_K\widetilde A_K\) can generate a fixed principal ideal.</p>
+<p>First observe that every \(a\in \widetilde A_K\) satisfies both upper and lower bounds at every embedding.  We already proved the upper bound</p>
+<div class="math-block">\[
+|\sigma_j(a)|\le X=e^L.
+\]</div>
+<p>For the lower bound, if \(a=uc\), with \(u\in U_K(T)\) and \(c=M+\beta\in C_K\), then</p>
+<div class="math-block">\[
+|\sigma_j(c)|\ge M-|\sigma_j(\beta)|\ge 2Y-Y=Y,
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|\sigma_j(u)|\ge e^{-T}.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|\sigma_j(a)|\ge Ye^{-T}.
+\]</div>
+<p>Set</p>
+<div class="math-block">\[
+\ell:=Ye^{-T}.
+\]</div>
+<p>So for every \(a\in \widetilde A_K\),</p>
+<div class="math-block">\[
+\ell\le |\sigma_j(a)|\le X.
+\]</div>
+<p>Therefore every product \(z=ab\) satisfies</p>
+<div class="math-block">\[
+\ell^2\le |\sigma_j(z)|\le X^2.
+\]</div>
+<p>Now fix one product \(z_0\in \widetilde A_K\widetilde A_K\).  Any other product \(z\in \widetilde A_K\widetilde A_K\) generating the same principal ideal satisfies</p>
+<div class="math-block">\[
+z=\varepsilon z_0
+\]</div>
+<p>for some unit \(\varepsilon\in\mathcal O_K^\times\).  For each embedding,</p>
+<div class="math-block">\[
+|\sigma_j(\varepsilon)|
+=
+\frac{|\sigma_j(z)|}{|\sigma_j(z_0)|}
+\le
+\frac{X^2}{\ell^2}
+=
+\left(\frac X\ell\right)^2.
+\]</div>
+<p>Similarly,</p>
+<div class="math-block">\[
+|\sigma_j(\varepsilon)|\ge
+\left(\frac \ell X\right)^2.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|\log|\sigma_j(\varepsilon)||\le 2\log(X/\ell).
+\]</div>
+<p>Compute</p>
+<div class="math-block">\[
+\ell=Ye^{-T}
+=
+\frac{e^{L-T}}4 e^{-T}
+=
+\frac{e^{L-2T}}4.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+\frac X\ell
+=
+\frac{e^L}{e^{L-2T}/4}
+=
+4e^{2T}.
+\]</div>
+<p>So</p>
+<div class="math-block">\[
+2\log(X/\ell)
+=
+2\log(4e^{2T})
+=
+4T+\log 16.
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+S:=4T+\log 16.
+\]</div>
+<p>Then all quotient units \(\varepsilon\) lie in \(U_K(S)\).  Hence each fixed product ideal contributes at most \(|U_K(S)|\) elements to the product set.</p>
+<p>Combining this with the ideal count gives</p>
+<div class="math-block">\[
+|\widetilde A_K\widetilde A_K|
+\le
+\left(\frac{n_K}{|U_K(T)|}\right)^2
+|U_K(S)|.
+\]</div>
+<p>By Lemma 3, since \(S/T\) is bounded absolutely once \(T\ge1\), there is an absolute constant \(q_0\) such that</p>
+<div class="math-block">\[
+|U_K(S)|\le q_0^d |U_K(T)|.
+\]</div>
+<p>For example, taking \(T\) large enough, one may use some fixed \(q_0\), say \(q_0=20\).</p>
+<p>Thus</p>
+<div class="math-block">\[
+|\widetilde A_K\widetilde A_K|
+\le
+n_K^2
+\frac{q_0^d}{|U_K(T)|}.
+\]</div>
+<h3>8.4. Lower bound for \(|U_K(T)|\)</h3>
+<p>By Lemma 2 and \(R_K\le E^d\), for fixed sufficiently large \(T\),</p>
+<div class="math-block">\[
+|U_K(T)|
+\ge
+\left(\frac{c_UT}{E}\right)^d
+\]</div>
+<p>for all sufficiently large \(d\).</p>
+<p>Choose \(T\) so large that</p>
+<div class="math-block">\[
+\frac{c_UT}{E}&gt;q_0.
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+\eta:=
+\log\left(\frac{c_UT}{Eq_0}\right)&gt;0.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+\frac{q_0^d}{|U_K(T)|}
+\le
+e^{-\eta d}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|\widetilde A_K\widetilde A_K|
+\le
+n_K^2 e^{-\eta d}.
+\]</div>
+<p>Since \(n_K\le e^{\beta d}\), we have</p>
+<div class="math-block">\[
+d\ge \frac{\log n_K}{\beta}.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+e^{-\eta d}
+\le
+n_K^{-\eta/\beta}.
+\]</div>
+<p>So</p>
+<div class="math-block">\[
+|A_KA_K|
+=
+|\widetilde A_K\widetilde A_K|
+\le
+n_K^{2-\eta/\beta}.
+\]</div>
+<p>Thus the product set satisfies</p>
+<div class="math-block">\[
+|A_KA_K|\le n_K^{2-\delta_{\mathrm{prod}}},
+\]</div>
+<p>where</p>
+<div class="math-block">\[
+\delta_{\mathrm{prod}}:=\frac{\eta}{\beta}&gt;0.
+\]</div>
+<hr>
+<h2>9. Choosing parameters</h2>
+<p>Take</p>
+<div class="math-block">\[
+T=\frac L4.
+\]</div>
+<p>We need \(L\) large enough so that:</p>
+<ol>
+<li><p>\(Y=e^{L-T}/4=e^{3L/4}/4\) is large compared to \(D^{1/2}\), so that</p>
+<div class="math-block">\[
+\alpha
+=
+\log\left(\frac{Y}{2D^{1/2}}\right)&gt;0.
+\]</div></li>
+<li><p>The sumset exponent is \(&lt;2\), i.e.</p>
+<div class="math-block">\[
+\frac{\beta_+}{\alpha}&lt;2.
+\]</div>
+<p>Since \(\beta_+\sim L\) and \(\alpha\sim 3L/4\), this holds for large \(L\).</p></li>
+<li><p>The unit saving beats the dilation loss:</p>
+<div class="math-block">\[
+\frac{c_UT}{E}&gt;q_0.
+\]</div>
+<p>Since \(T=L/4\), this also holds for large \(L\).</p></li>
+</ol>
+<p>After choosing such an \(L\), define</p>
+<div class="math-block">\[
+\delta
+:=
+\frac12
+\min\left\{
+2-\frac{\beta_+}{\alpha},
+\frac{\eta}{\beta}
+\right\}
+&gt;0.
+\]</div>
+<p>The factor \(1/2\) is only to absorb the harmless floor and \(O(1)\) errors from the lattice-counting estimates.</p>
+<p>Then, for every sufficiently large degree \(d\) in our arithmetic family,</p>
+<div class="math-block">\[
+|A_K+A_K|\le |A_K|^{2-\delta}
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|A_KA_K|\le |A_K|^{2-\delta}.
+\]</div>
+<hr>
+<h2>10. Producing the infinite sequence</h2>
+<p>Let \(K_i\) be the totally real fields from the arithmetic input, with \(d_i\to\infty\).  For each \(K_i\), construct \(A_i:=A_{K_i}\subset\mathbb R\) as above.</p>
+<p>Because</p>
+<div class="math-block">\[
+|A_i|\ge e^{\alpha d_i},
+\]</div>
+<p>we have \(|A_i|\to\infty\).  After discarding finitely many initial fields to remove small-degree edge effects, we obtain</p>
+<div class="math-block">\[
+\max(|A_i+A_i|,|A_iA_i|)
+\le
+|A_i|^{2-\delta}
+\]</div>
+<p>for every \(i\), with one absolute \(\delta&gt;0\).</p>
+<p>This completes the conditional construction.</p>
+<hr>
+<h1>11. Precise remaining gaps and their status</h1>
+<p>The main body of the argument above reduces the theorem to a concrete arithmetic supply statement.  Here are the gaps, precisely stated.</p>
+<hr>
+<h2>Gap 1: Good totally real field tower</h2>
+<h3>Needed statement</h3>
+<p>There exist absolute constants \(D,E&gt;1\) and infinitely many totally real fields \(K_i\) with \(d_i=[K_i:\mathbb Q]\to\infty\) such that</p>
+<div class="math-block">\[
+|\Delta_{K_i}|^{1/d_i}\le D
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+R_{K_i}\le E^{d_i}.
+\]</div>
+<h3>Status</h3>
+<p>This should be closable using standard algebraic number theory.</p>
+<ul>
+<li>Bounded root discriminant comes from an infinite totally real narrow Hilbert class field tower.</li>
+<li>The regulator bound follows from the analytic class number formula plus standard residue estimates for Dedekind zeta-functions.</li>
+</ul>
+<p>This is a deep input, but not a conceptual obstruction to the approach.</p>
+<h3>Seriousness</h3>
+<p>Moderate but standard.  If one insists on a self-contained proof, this is the largest arithmetic component to fill in.  If one is allowed to invoke known class field tower results, the gap is essentially closed.</p>
+<hr>
+<h2>Gap 2: Normalization of regulator and unit lattice volume</h2>
+<h3>Needed statement</h3>
+<p>For the logarithmic unit lattice</p>
+<div class="math-block">\[
+\Lambda_K=\lambda(\mathcal O_K^\times)\subset H_d,
+\]</div>
+<p>one needs the lower bound</p>
+<div class="math-block">\[
+|\Lambda_K\cap[-T,T]^d|
+\ge
+\frac{(cT)^{d-1}}{R_K}-1.
+\]</div>
+<h3>Status</h3>
+<p>This follows from Blichfeldt’s principle and the elementary fact that the central section</p>
+<div class="math-block">\[
+H_d\cap[-T,T]^d
+\]</div>
+<p>has \((d-1)\)-volume at least \(c^dT^{d-1}\).  The proof was given above up to harmless normalization constants.</p>
+<h3>Seriousness</h3>
+<p>Low.  This is routine geometry of numbers.</p>
+<hr>
+<h2>Gap 3: Additive box lower bound</h2>
+<h3>Needed statement</h3>
+<p>For</p>
+<div class="math-block">\[
+B_K(Z)=\{\alpha\in\mathcal O_K:|\sigma_j(\alpha)|\le Z\ \forall j\},
+\]</div>
+<p>one needs</p>
+<div class="math-block">\[
+|B_K(Z)|\ge \frac{Z^d}{\sqrt{|\Delta_K|}}-1.
+\]</div>
+<h3>Status</h3>
+<p>This follows directly from Blichfeldt’s principle in the Minkowski lattice \(\sigma(\mathcal O_K)\).  The proof was given above.</p>
+<h3>Seriousness</h3>
+<p>Low.</p>
+<hr>
+<h2>Gap 4: Product-ideal counting</h2>
+<h3>Needed statement</h3>
+<p>For</p>
+<div class="math-block">\[
+\widetilde A_K=U_K(T)C_K,
+\]</div>
+<p>one needs</p>
+<div class="math-block">\[
+|\widetilde A_K\widetilde A_K|
+\le
+|\widetilde A_K|^2
+\frac{q_0^d}{|U_K(T)|}.
+\]</div>
+<h3>Status</h3>
+<p>This was proved above.  The key ingredients are:</p>
+<ol>
+<li>each represented principal ideal has at least \(|U_K(T)|\) representatives in \(\widetilde A_K\);</li>
+<li>each product ideal contributes at most \(|U_K(S)|\) generators;</li>
+<li>\(|U_K(S)|\le q_0^d|U_K(T)|\).</li>
+</ol>
+<h3>Seriousness</h3>
+<p>Low to moderate, but the proof is conceptually clean and should be robust.</p>
+<hr>
+<h1>12. Why this approach is more promising than other natural attempts</h1>
+<p>It is worth emphasizing why the number-field/unit strategy is preferable to more naive constructions.</p>
+<h3>Smooth integers</h3>
+<p>Taking \(A\) to be smooth numbers or multiplication-table sets inside \([1,X]\) gives small sumset because \(A\subset[1,X]\), and somewhat small product set because smooth numbers are multiplicatively structured.  But known Dickman-type estimates only give savings of order</p>
+<div class="math-block">\[
+|A|^2 / |A|^{o(1)},
+\]</div>
+<p>not a fixed power saving.  This is too weak.</p>
+<h3>Boolean cubes / finite rings</h3>
+<p>A Boolean cube in a direct product ring would give extremely small sumset and product set.  But \(\mathbb R\) has no zero divisors, so one cannot literally embed such a product ring into \(\mathbb R\).  The number-field construction imitates part of this effect through the many archimedean coordinates and unit symmetries, while staying inside a field.</p>
+<h3>Finite-field templates</h3>
+<p>Finite fields have sets with sumset and product set of size \(O(|A|)\), but characteristic obstructions prevent directly lifting their full additive and multiplicative tables to characteristic zero.  The number-field construction avoids characteristic issues entirely.</p>
+<hr>
+<h1>13. Summary of the proof plan</h1>
+<p>The plan can be summarized in five steps.</p>
+<h3>Step 1: Choose good totally real fields</h3>
+<p>Take \(K_i\) totally real with</p>
+<div class="math-block">\[
+d_i\to\infty,
+\qquad
+|\Delta_{K_i}|^{1/d_i}\le D,
+\qquad
+R_{K_i}\le E^{d_i}.
+\]</div>
+<h3>Step 2: Choose fixed archimedean parameters</h3>
+<p>Fix large constants \(L&gt;T&gt;0\), with \(T=L/4\), chosen so that the later inequalities hold.</p>
+<p>Set</p>
+<div class="math-block">\[
+Y=\frac{e^{L-T}}4,
+\qquad
+M=\lceil 2Y\rceil.
+\]</div>
+<h3>Step 3: Build a shifted core</h3>
+<p>Define</p>
+<div class="math-block">\[
+C_i
+=
+\{M+\beta:\beta\in\mathcal O_{K_i},
+|\sigma_j(\beta)|\le Y\ \forall j\}.
+\]</div>
+<p>The shift by \(M\) ensures every conjugate of every element of \(C_i\) is bounded both above and below.</p>
+<h3>Step 4: Saturate by small units</h3>
+<p>Define</p>
+<div class="math-block">\[
+\widetilde A_i
+=
+U_{K_i}(T)C_i.
+\]</div>
+<p>Then set</p>
+<div class="math-block">\[
+A_i=\sigma_1(\widetilde A_i)\subset\mathbb R.
+\]</div>
+<h3>Step 5: Count</h3>
+<ul>
+<li>Size:</li>
+</ul>
+<div class="math-block">  \[
+  |A_i|\asymp \exp(\Theta(d_i)).
+  \]</div>
+<ul>
+<li>Sumset:</li>
+</ul>
+<div class="math-block">  \[
+  A_i+A_i
+  \]</div>
+<p>  lies in an archimedean box of fixed radius, so</p>
+<div class="math-block">  \[
+  |A_i+A_i|\le \exp(\beta_+d_i)
+  \le |A_i|^{2-\delta}.
+  \]</div>
+<ul>
+<li>Product set:</li>
+</ul>
+<p>  The unit saturation gives many representatives of the same principal ideals, forcing multiplicative collisions:</p>
+<div class="math-block">  \[
+  |A_iA_i|
+  \le
+  |A_i|^2\exp(-\eta d_i)
+  \le
+  |A_i|^{2-\delta}.
+  \]</div>
+<p>Thus the construction yields an infinite sequence of finite subsets of \(\mathbb R\) with</p>
+<div class="math-block">\[
+\max(|A_i+A_i|,|A_iA_i|)
+\le
+|A_i|^{2-\delta}.
+\]</div>
+<p>The key remaining task for a fully polished proof is to write out the standard arithmetic input carefully, especially the construction of the totally real bounded-root-discriminant tower and the regulator bound.</p>
+<hr>
+<h1>Round 2</h1>
+<h2>User</h2>
+<blockquote><p>Construct a complete and rigorous proof, adapting your approach as needed.</p></blockquote>
+<h2>Assistant</h2>
+<p>We prove the theorem by making the number-field/unit strategy from the previous round fully quantitative.</p>
+<p>The proof uses two standard arithmetic inputs:</p>
+<ol>
+<li><strong>Martinet’s theorem</strong>: there are infinite totally real class-field towers, hence infinitely many totally real fields of unbounded degree and bounded root discriminant.</li>
+<li><strong>Landau–Stark residue bound</strong> for Dedekind zeta functions, which implies that along any bounded-root-discriminant family, the regulator is at most exponential in the degree.</li>
+</ol>
+<p>Everything else is elementary geometry of numbers and ideal-counting.</p>
+<p>Throughout, all logarithms are natural.</p>
+<hr>
+<h1>1. Arithmetic supply theorem</h1>
+<p>For a number field \(K\), write</p>
+<div class="math-block">\[
+d_K=[K:\mathbb Q],\qquad 
+\Delta_K=\text{absolute discriminant of }K,
+\qquad
+\operatorname{rd}(K)=|\Delta_K|^{1/d_K}.
+\]</div>
+<p>We need the following standard consequence of Martinet’s class-field tower construction.</p>
+<hr>
+<h2>Proposition 1.1: Totally real fields with bounded root discriminant and exponential regulator</h2>
+<p>There exist absolute constants \(D,E&gt;1\) and an infinite sequence of totally real fields \(K_i\) such that, with \(d_i=[K_i:\mathbb Q]\),</p>
+<div class="math-block">\[
+d_i\to\infty,
+\]</div>
+<p>and for every \(i\),</p>
+<div class="math-block">\[
+|\Delta_{K_i}|^{1/d_i}\le D,
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+R_{K_i}\le E^{d_i},
+\]</div>
+<p>where \(R_{K_i}\) denotes the regulator.</p>
+<h3>Proof</h3>
+<p>Martinet proved that there exists a totally real number field \(K_0\) with an infinite narrow Hilbert class-field tower. Let</p>
+<div class="math-block">\[
+K_0\subset K_1\subset K_2\subset\cdots
+\]</div>
+<p>be such a tower. Since the tower is narrow, all infinite places split completely at every step, so every \(K_i\) is totally real. Since each extension \(K_{i+1}/K_i\) is unramified at all finite primes, the relative discriminant is trivial. Therefore</p>
+<div class="math-block">\[
+|\Delta_{K_i}|
+=
+|\Delta_{K_0}|^{[K_i:K_0]}.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+|\Delta_{K_i}|^{1/[K_i:\mathbb Q]}
+=
+|\Delta_{K_0}|^{1/[K_0:\mathbb Q]}
+=:D.
+\]</div>
+<p>The tower is infinite, so \(d_i=[K_i:\mathbb Q]\to\infty\).</p>
+<p>It remains to record the regulator bound. We use the following weak form of the Landau–Stark residue estimate: there is an absolute constant \(C_{\mathrm{LS}}&gt;0\) such that for every number field \(F\) of degree \(d_F\ge2\),</p>
+<div class="math-block">\[
+\operatorname*{Res}_{s=1}\zeta_F(s)
+\le
+\left(
+C_{\mathrm{LS}}
+\max\left\{1,\frac{\log|\Delta_F|}{d_F}\right\}
+\right)^{d_F}.
+\]</div>
+<p>This follows, for example, from Landau’s classical bound</p>
+<div class="math-block">\[
+\operatorname*{Res}_{s=1}\zeta_F(s)
+\le
+\left(
+\frac{e\log|\Delta_F|}{2(d_F-1)}
+\right)^{d_F-1}
+\]</div>
+<p>after adjusting constants for small degrees.</p>
+<p>For a totally real field \(F\) of degree \(d_F\), the analytic class number formula gives</p>
+<div class="math-block">\[
+\operatorname*{Res}_{s=1}\zeta_F(s)
+=
+\frac{2^{d_F-1}h_FR_F}{\sqrt{|\Delta_F|}},
+\]</div>
+<p>because the only roots of unity in \(F\) are \(\pm1\). Thus</p>
+<div class="math-block">\[
+R_F
+\le
+h_FR_F
+=
+2^{1-d_F}\sqrt{|\Delta_F|}
+\operatorname*{Res}_{s=1}\zeta_F(s).
+\]</div>
+<p>For the fields \(K_i\), we have</p>
+<div class="math-block">\[
+\frac{\log|\Delta_{K_i}|}{d_i}
+=
+\log \operatorname{rd}(K_i)
+\le
+\log D.
+\]</div>
+<p>Therefore, for a constant \(C_D\) depending only on \(D\),</p>
+<div class="math-block">\[
+\operatorname*{Res}_{s=1}\zeta_{K_i}(s)
+\le
+C_D^{d_i}.
+\]</div>
+<p>Also</p>
+<div class="math-block">\[
+\sqrt{|\Delta_{K_i}|}
+\le
+D^{d_i/2}.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+R_{K_i}
+\le
+2^{1-d_i}D^{d_i/2}C_D^{d_i}
+\le
+E^{d_i}
+\]</div>
+<p>for some absolute constant \(E&gt;1\), depending only on the fixed Martinet tower.</p>
+<p>This proves the proposition. \(\square\)</p>
+<hr>
+<h1>2. Elementary counting lemmas</h1>
+<p>Let \(K/\mathbb Q\) be totally real of degree \(d\), with embeddings</p>
+<div class="math-block">\[
+\sigma_1,\dots,\sigma_d:K\hookrightarrow \mathbb R.
+\]</div>
+<p>For \(Z&gt;0\), define</p>
+<div class="math-block">\[
+B_K(Z)
+:=
+\left\{
+\alpha\in\mathcal O_K:
+|\sigma_j(\alpha)|\le Z
+\text{ for all }j=1,\dots,d
+\right\}.
+\]</div>
+<p>For \(t&gt;0\), define the small-unit box</p>
+<div class="math-block">\[
+U_K(t)
+:=
+\left\{
+u\in\mathcal O_K^\times:
+|\log|\sigma_j(u)||\le t
+\text{ for all }j=1,\dots,d
+\right\}.
+\]</div>
+<hr>
+<h2>Lemma 2.1: Algebraic-integer boxes</h2>
+<p>For every \(Z&gt;0\),</p>
+<div class="math-block">\[
+|B_K(Z)|\le (2Z+1)^d.
+\]</div>
+<p>Also,</p>
+<div class="math-block">\[
+|B_K(Z)|
+\ge
+\frac{Z^d}{\sqrt{|\Delta_K|}}-1.
+\]</div>
+<h3>Proof</h3>
+<p>Embed \(\mathcal O_K\) into \(\mathbb R^d\) by</p>
+<div class="math-block">\[
+\alpha\mapsto
+(\sigma_1(\alpha),\dots,\sigma_d(\alpha)).
+\]</div>
+<p>This is a lattice of covolume \(\sqrt{|\Delta_K|}\).</p>
+<p>For the upper bound, if \(\alpha\neq\beta\in\mathcal O_K\), then \(\gamma=\alpha-\beta\neq0\) is an algebraic integer, so</p>
+<div class="math-block">\[
+|N_{K/\mathbb Q}(\gamma)|
+=
+\prod_{j=1}^d |\sigma_j(\gamma)|
+\]</div>
+<p>is a positive integer. Hence</p>
+<div class="math-block">\[
+\prod_{j=1}^d|\sigma_j(\gamma)|\ge1,
+\]</div>
+<p>so at least one embedding satisfies</p>
+<div class="math-block">\[
+|\sigma_j(\gamma)|\ge1.
+\]</div>
+<p>Thus the embedded lattice is \(1\)-separated in the sup norm. The points of \(B_K(Z)\) lie in the cube \([-Z,Z]^d\). Around each such point put an open sup-norm cube of side length \(1\). These cubes are disjoint and lie inside \([-Z-\frac12,Z+\frac12]^d\). Therefore</p>
+<div class="math-block">\[
+|B_K(Z)|\le (2Z+1)^d.
+\]</div>
+<p>For the lower bound, apply Blichfeldt’s principle to the cube</p>
+<div class="math-block">\[
+[-Z/2,Z/2]^d.
+\]</div>
+<p>Some translate of this cube contains at least</p>
+<div class="math-block">\[
+\frac{Z^d}{\sqrt{|\Delta_K|}}-1
+\]</div>
+<p>lattice points. Taking differences from one fixed lattice point in that translate gives distinct lattice points in</p>
+<div class="math-block">\[
+[-Z,Z]^d.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|B_K(Z)|
+\ge
+\frac{Z^d}{\sqrt{|\Delta_K|}}-1.
+\]</div>
+<p>\(\square\)</p>
+<hr>
+<h2>Lemma 2.2: Many small units from a regulator bound</h2>
+<p>For every totally real field \(K\) of degree \(d\ge2\) and every \(t&gt;0\),</p>
+<div class="math-block">\[
+|U_K(t)|
+\ge
+\frac{(t/2)^{d-1}}{R_K}-1.
+\]</div>
+<h3>Proof</h3>
+<p>Consider the logarithmic embedding</p>
+<div class="math-block">\[
+\lambda:\mathcal O_K^\times\to H_d,
+\]</div>
+<p>where</p>
+<div class="math-block">\[
+H_d=\left\{
+x=(x_1,\dots,x_d)\in\mathbb R^d:
+x_1+\cdots+x_d=0
+\right\},
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\lambda(u)
+=
+(\log|\sigma_1(u)|,\dots,\log|\sigma_d(u)|).
+\]</div>
+<p>The image</p>
+<div class="math-block">\[
+\Lambda_K:=\lambda(\mathcal O_K^\times)
+\]</div>
+<p>is a lattice in \(H_d\) of rank \(d-1\). With the standard regulator normalization, the Euclidean covolume of \(\Lambda_K\) in \(H_d\) is</p>
+<div class="math-block">\[
+\sqrt d\,R_K.
+\]</div>
+<p>For \(r&gt;0\), put</p>
+<div class="math-block">\[
+Q_r:=H_d\cap[-r,r]^d.
+\]</div>
+<p>We first lower-bound the \((d-1)\)-dimensional volume of \(Q_r\). Let \(m=d-1\). Parametrize \(H_d\) by</p>
+<div class="math-block">\[
+(y_1,\dots,y_m)
+\mapsto
+(y_1,\dots,y_m,-y_1-\cdots-y_m).
+\]</div>
+<p>The Jacobian of this map is \(\sqrt d\). Therefore</p>
+<div class="math-block">\[
+\operatorname{vol}_{H_d}(Q_r)
+=
+\sqrt d\cdot
+\operatorname{meas}
+\left\{
+y\in[-r,r]^m:
+|y_1+\cdots+y_m|\le r
+\right\}.
+\]</div>
+<p>The distribution of \(y_1+\cdots+y_m\), with \(y_i\) uniformly distributed on \([-r,r]\), has an even unimodal density. Therefore among all intervals of length \(2r\), the interval \([-r,r]\) captures maximal mass. Since the support is contained in \([-mr,mr]\), which can be covered by \(m\) intervals of length \(2r\), the central interval captures at least a \(1/m\)-fraction of the total mass. Hence</p>
+<div class="math-block">\[
+\operatorname{meas}
+\left\{
+y\in[-r,r]^m:
+|y_1+\cdots+y_m|\le r
+\right\}
+\ge
+\frac{(2r)^m}{m}.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+\operatorname{vol}_{H_d}(Q_r)
+\ge
+\sqrt d\,\frac{(2r)^{d-1}}{d-1}.
+\]</div>
+<p>Apply this with \(r=t/2\). Then</p>
+<div class="math-block">\[
+\operatorname{vol}_{H_d}(Q_{t/2})
+\ge
+\sqrt d\,\frac{t^{d-1}}{d-1}.
+\]</div>
+<p>By Blichfeldt’s principle, some translate of \(Q_{t/2}\) contains at least</p>
+<div class="math-block">\[
+\frac{\operatorname{vol}_{H_d}(Q_{t/2})}{\sqrt d\,R_K}-1
+\ge
+\frac{t^{d-1}}{(d-1)R_K}-1
+\]</div>
+<p>points of \(\Lambda_K\). Taking differences from one fixed point gives distinct lattice points in</p>
+<div class="math-block">\[
+Q_{t/2}-Q_{t/2}=Q_t.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|\Lambda_K\cap Q_t|
+\ge
+\frac{t^{d-1}}{(d-1)R_K}-1.
+\]</div>
+<p>Since \(d-1\le 2^{d-1}\), we get</p>
+<div class="math-block">\[
+|\Lambda_K\cap Q_t|
+\ge
+\frac{(t/2)^{d-1}}{R_K}-1.
+\]</div>
+<p>Finally, \(U_K(t)\) is precisely the inverse image of \(\Lambda_K\cap Q_t\) under \(\lambda\), and the kernel of \(\lambda\) is \(\{\pm1\}\). In particular,</p>
+<div class="math-block">\[
+|U_K(t)|\ge |\Lambda_K\cap Q_t|.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|U_K(t)|
+\ge
+\frac{(t/2)^{d-1}}{R_K}-1.
+\]</div>
+<p>\(\square\)</p>
+<hr>
+<h2>Lemma 2.3: Unit-box dilation</h2>
+<p>Let \(0&lt;t\le t'\). Let \(q\) be an integer satisfying</p>
+<div class="math-block">\[
+q&gt;\frac{2t&#x27;}{t}.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+|U_K(t&#x27;)|
+\le
+q^{d-1}|U_K(t)|
+\le
+q^d|U_K(t)|.
+\]</div>
+<h3>Proof</h3>
+<p>Work in the logarithmic lattice \(\Lambda_K\subset H_d\). As above, put</p>
+<div class="math-block">\[
+Q_s:=H_d\cap[-s,s]^d.
+\]</div>
+<p>Partition \(\Lambda_K\cap Q_{t'}\) into residue classes modulo \(q\Lambda_K\). There are exactly \(q^{d-1}\) residue classes.</p>
+<p>Fix one residue class and choose \(x_0\in\Lambda_K\cap Q_{t'}\) in that class. If \(x\) is another point in the same class, then</p>
+<div class="math-block">\[
+x-x_0=qy
+\]</div>
+<p>for some \(y\in\Lambda_K\). Since \(x,x_0\in Q_{t'}\),</p>
+<div class="math-block">\[
+x-x_0\in Q_{2t&#x27;}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+y=\frac{x-x_0}{q}\in Q_{2t&#x27;/q}.
+\]</div>
+<p>Because \(q&gt;2t'/t\), we have \(2t'/q&lt;t\), so</p>
+<div class="math-block">\[
+y\in Q_t.
+\]</div>
+<p>Thus the map</p>
+<div class="math-block">\[
+x\mapsto \frac{x-x_0}{q}
+\]</div>
+<p>injects the chosen residue class into \(\Lambda_K\cap Q_t\). Hence each residue class contributes at most \(|\Lambda_K\cap Q_t|\) points. Therefore</p>
+<div class="math-block">\[
+|\Lambda_K\cap Q_{t&#x27;}|
+\le
+q^{d-1}|\Lambda_K\cap Q_t|.
+\]</div>
+<p>Passing back to units only multiplies both sides by the same kernel size \(|\{\pm1\}|=2\). Hence</p>
+<div class="math-block">\[
+|U_K(t&#x27;)|\le q^{d-1}|U_K(t)|.
+\]</div>
+<p>\(\square\)</p>
+<hr>
+<h1>3. Choice of global parameters</h1>
+<p>Let \(D,E&gt;1\) be the constants from Proposition 1.1.</p>
+<p>Set</p>
+<div class="math-block">\[
+q_0:=20.
+\]</div>
+<p>Choose a real number \(T\ge1\) so large that</p>
+<div class="math-block">\[
+T&gt;80E
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+4T+\log 5
+&lt;
+2\bigl(3T-\log(8\sqrt D)\bigr).
+\]</div>
+<p>This is possible because the left-hand side is asymptotic to \(4T\), while the right-hand side is asymptotic to \(6T\).</p>
+<p>Now define</p>
+<div class="math-block">\[
+L:=4T,
+\]</div>
+<div class="math-block">\[
+X:=e^L=e^{4T},
+\]</div>
+<div class="math-block">\[
+Y:=\frac{e^{L-T}}4=\frac{e^{3T}}4,
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+M:=\lceil 2Y\rceil.
+\]</div>
+<p>We also define the constants</p>
+<div class="math-block">\[
+\alpha
+:=
+\log\left(\frac{Y}{2\sqrt D}\right)
+=
+3T-\log(8\sqrt D),
+\]</div>
+<div class="math-block">\[
+\beta
+:=
+\log(3X)
+=
+4T+\log 3,
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\beta_+
+:=
+\log(5X)
+=
+4T+\log 5.
+\]</div>
+<p>By the choice of \(T\),</p>
+<div class="math-block">\[
+\alpha&gt;0
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\frac{\beta_+}{\alpha}&lt;2.
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+\delta_{\mathrm{sum}}
+:=
+2-\frac{\beta_+}{\alpha}
+&gt;0.
+\]</div>
+<p>Also set</p>
+<div class="math-block">\[
+\rho:=\frac{T}{4E}.
+\]</div>
+<p>Since \(T&gt;80E\),</p>
+<div class="math-block">\[
+\rho&gt;20=q_0.
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+\eta:=\log\left(\frac{\rho}{q_0}\right)&gt;0
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\delta_{\mathrm{prod}}
+:=
+\frac{\eta}{\beta}&gt;0.
+\]</div>
+<p>Finally put</p>
+<div class="math-block">\[
+\delta
+:=
+\frac12\min\{\delta_{\mathrm{sum}},\delta_{\mathrm{prod}}\}.
+\]</div>
+<p>This is a positive absolute constant.</p>
+<hr>
+<h1>4. Construction inside one totally real field</h1>
+<p>Let \(K\) be one of the fields from Proposition 1.1, of degree \(d\), and assume \(d\) is sufficiently large. Let</p>
+<div class="math-block">\[
+\sigma_1,\dots,\sigma_d:K\hookrightarrow\mathbb R
+\]</div>
+<p>be its real embeddings.</p>
+<p>Define</p>
+<div class="math-block">\[
+C_K
+:=
+\left\{
+M+\beta:
+\beta\in B_K(Y)
+\right\}.
+\]</div>
+<p>Then define</p>
+<div class="math-block">\[
+\widetilde A_K
+:=
+U_K(T)C_K
+=
+\{uc:u\in U_K(T),\ c\in C_K\}
+\subset \mathcal O_K.
+\]</div>
+<p>Finally, choose the first embedding and set</p>
+<div class="math-block">\[
+A_K:=\sigma_1(\widetilde A_K)\subset\mathbb R.
+\]</div>
+<p>Since \(\sigma_1\) is injective on \(K\), we have</p>
+<div class="math-block">\[
+|A_K|=|\widetilde A_K|,
+\]</div>
+<div class="math-block">\[
+|A_K+A_K|
+=
+|\widetilde A_K+\widetilde A_K|,
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|A_KA_K|
+=
+|\widetilde A_K\widetilde A_K|.
+\]</div>
+<p>So it suffices to estimate the corresponding sets inside \(K\).</p>
+<p>Write</p>
+<div class="math-block">\[
+n:=|\widetilde A_K|=|A_K|.
+\]</div>
+<hr>
+<h1>5. Archimedean bounds for the elements of \(\widetilde A_K\)</h1>
+<p>Let \(c\in C_K\). Then</p>
+<div class="math-block">\[
+c=M+\beta
+\]</div>
+<p>with \(\beta\in B_K(Y)\). Hence for every embedding \(\sigma_j\),</p>
+<div class="math-block">\[
+|\sigma_j(\beta)|\le Y.
+\]</div>
+<p>Since \(M\ge 2Y\),</p>
+<div class="math-block">\[
+\sigma_j(c)
+=
+M+\sigma_j(\beta)
+\ge
+M-Y
+\ge
+Y.
+\]</div>
+<p>Also, since \(Y\ge1\) and \(M=\lceil2Y\rceil\le2Y+1\le3Y\),</p>
+<div class="math-block">\[
+|\sigma_j(c)|
+\le
+M+|\sigma_j(\beta)|
+\le
+3Y+Y
+=
+4Y.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+Y\le |\sigma_j(c)|\le 4Y
+\]</div>
+<p>for every \(j\).</p>
+<p>If \(a\in\widetilde A_K\), then \(a=uc\) with \(u\in U_K(T)\) and \(c\in C_K\). Since</p>
+<div class="math-block">\[
+e^{-T}\le |\sigma_j(u)|\le e^T,
+\]</div>
+<p>we obtain</p>
+<div class="math-block">\[
+Ye^{-T}
+\le
+|\sigma_j(a)|
+\le
+4Ye^T.
+\]</div>
+<p>By the definition of \(Y\),</p>
+<div class="math-block">\[
+4Ye^T
+=
+4\cdot\frac{e^{L-T}}4\cdot e^T
+=
+e^L
+=
+X.
+\]</div>
+<p>Therefore every \(a\in\widetilde A_K\) satisfies</p>
+<div class="math-block">\[
+|\sigma_j(a)|\le X
+\qquad\text{for every }j.
+\]</div>
+<p>We shall also use the lower bound</p>
+<div class="math-block">\[
+|\sigma_j(a)|\ge \ell,
+\]</div>
+<p>where</p>
+<div class="math-block">\[
+\ell:=Ye^{-T}.
+\]</div>
+<p>Since \(Y=e^{3T}/4\), we have</p>
+<div class="math-block">\[
+\ell=\frac{e^{2T}}4.
+\]</div>
+<hr>
+<h1>6. Size of \(A_K\)</h1>
+<p>Because \(1\in U_K(T)\), we have</p>
+<div class="math-block">\[
+C_K\subset \widetilde A_K.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+n
+\ge
+|C_K|
+=
+|B_K(Y)|.
+\]</div>
+<p>By Lemma 2.1,</p>
+<div class="math-block">\[
+|B_K(Y)|
+\ge
+\frac{Y^d}{\sqrt{|\Delta_K|}}-1.
+\]</div>
+<p>Since</p>
+<div class="math-block">\[
+|\Delta_K|^{1/d}\le D,
+\]</div>
+<p>we have</p>
+<div class="math-block">\[
+\sqrt{|\Delta_K|}
+\le
+D^{d/2}.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|B_K(Y)|
+\ge
+\left(\frac{Y}{\sqrt D}\right)^d-1.
+\]</div>
+<p>Because \(\alpha&gt;0\), we have \(Y/(2\sqrt D)&gt;1\). Hence, for all sufficiently large \(d\),</p>
+<div class="math-block">\[
+\left(\frac{Y}{\sqrt D}\right)^d-1
+\ge
+\left(\frac{Y}{2\sqrt D}\right)^d
+=
+e^{\alpha d}.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+n\ge e^{\alpha d}.
+\tag{6.1}
+\]</div>
+<p>On the other hand, we have already shown that</p>
+<div class="math-block">\[
+\widetilde A_K\subset B_K(X).
+\]</div>
+<p>By Lemma 2.1,</p>
+<div class="math-block">\[
+n
+\le
+|B_K(X)|
+\le
+(2X+1)^d.
+\]</div>
+<p>Since \(X\ge1\),</p>
+<div class="math-block">\[
+2X+1\le3X.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+n\le (3X)^d=e^{\beta d}.
+\tag{6.2}
+\]</div>
+<hr>
+<h1>7. Sumset estimate</h1>
+<p>For \(a,b\in\widetilde A_K\), and for each embedding \(\sigma_j\),</p>
+<div class="math-block">\[
+|\sigma_j(a+b)|
+\le
+|\sigma_j(a)|+|\sigma_j(b)|
+\le
+2X.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+\widetilde A_K+\widetilde A_K\subset B_K(2X).
+\]</div>
+<p>By Lemma 2.1,</p>
+<div class="math-block">\[
+|\widetilde A_K+\widetilde A_K|
+\le
+|B_K(2X)|
+\le
+(4X+1)^d.
+\]</div>
+<p>Since \(X\ge1\),</p>
+<div class="math-block">\[
+4X+1\le5X.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|A_K+A_K|
+=
+|\widetilde A_K+\widetilde A_K|
+\le
+(5X)^d
+=
+e^{\beta_+d}.
+\]</div>
+<p>Using \(n\ge e^{\alpha d}\), we get</p>
+<div class="math-block">\[
+e^{\beta_+d}
+\le
+n^{\beta_+/\alpha}.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+|A_K+A_K|
+\le
+n^{\beta_+/\alpha}
+=
+n^{2-\delta_{\mathrm{sum}}}.
+\]</div>
+<p>Since \(\delta\le\delta_{\mathrm{sum}}\),</p>
+<div class="math-block">\[
+|A_K+A_K|
+\le
+n^{2-\delta}.
+\tag{7.1}
+\]</div>
+<hr>
+<h1>8. Product set estimate</h1>
+<p>This is the main collision argument.</p>
+<p>Let</p>
+<div class="math-block">\[
+U:=U_K(T).
+\]</div>
+<p>Let \(\mathcal P\) denote the set of principal ideals represented by elements of \(\widetilde A_K\):</p>
+<div class="math-block">\[
+\mathcal P
+:=
+\{(a):a\in\widetilde A_K\}.
+\]</div>
+<hr>
+<h2>8.1. Each represented ideal has many representatives</h2>
+<p>Take any ideal \(I\in\mathcal P\). By definition, there is some</p>
+<div class="math-block">\[
+a\in\widetilde A_K
+\]</div>
+<p>with</p>
+<div class="math-block">\[
+I=(a).
+\]</div>
+<p>Write</p>
+<div class="math-block">\[
+a=uc,
+\qquad
+u\in U,\ c\in C_K.
+\]</div>
+<p>Since \(u\) is a unit,</p>
+<div class="math-block">\[
+(a)=(c).
+\]</div>
+<p>For every \(v\in U\), we have</p>
+<div class="math-block">\[
+vc\in U C_K=\widetilde A_K,
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+(vc)=(c)=I.
+\]</div>
+<p>Moreover, the elements \(vc\) are distinct as \(v\) varies, because \(c\neq0\). Indeed, every embedding of \(c\) has absolute value at least \(Y&gt;0\).</p>
+<p>Thus each ideal in \(\mathcal P\) has at least \(|U|\) representatives in \(\widetilde A_K\). Therefore</p>
+<div class="math-block">\[
+|\mathcal P|
+\le
+\frac{n}{|U|}.
+\tag{8.1}
+\]</div>
+<hr>
+<h2>8.2. Number of possible product ideals</h2>
+<p>If</p>
+<div class="math-block">\[
+z=ab\in\widetilde A_K\widetilde A_K,
+\]</div>
+<p>then</p>
+<div class="math-block">\[
+(z)=(a)(b),
+\]</div>
+<p>with \((a),(b)\in\mathcal P\). Hence the number of principal ideals represented by products is at most</p>
+<div class="math-block">\[
+|\mathcal P|^2.
+\]</div>
+<p>By (8.1), this is at most</p>
+<div class="math-block">\[
+\left(\frac{n}{|U|}\right)^2.
+\tag{8.2}
+\]</div>
+<hr>
+<h2>8.3. Number of generators per product ideal</h2>
+<p>Recall that every \(a\in\widetilde A_K\) satisfies</p>
+<div class="math-block">\[
+\ell\le |\sigma_j(a)|\le X
+\]</div>
+<p>for every \(j\), where</p>
+<div class="math-block">\[
+\ell=Ye^{-T}.
+\]</div>
+<p>Therefore every product \(z=ab\) satisfies</p>
+<div class="math-block">\[
+\ell^2
+\le
+|\sigma_j(z)|
+\le
+X^2
+\]</div>
+<p>for every \(j\).</p>
+<p>Fix a product ideal \(J\) represented by some product</p>
+<div class="math-block">\[
+z_0\in\widetilde A_K\widetilde A_K.
+\]</div>
+<p>If another product \(z\in\widetilde A_K\widetilde A_K\) generates the same ideal \(J\), then</p>
+<div class="math-block">\[
+(z)=(z_0),
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+z=\varepsilon z_0
+\]</div>
+<p>for some unit \(\varepsilon\in\mathcal O_K^\times\).</p>
+<p>For each embedding \(\sigma_j\),</p>
+<div class="math-block">\[
+|\sigma_j(\varepsilon)|
+=
+\frac{|\sigma_j(z)|}{|\sigma_j(z_0)|}.
+\]</div>
+<p>Since both \(z\) and \(z_0\) have all conjugates between \(\ell^2\) and \(X^2\), we get</p>
+<div class="math-block">\[
+\frac{\ell^2}{X^2}
+\le
+|\sigma_j(\varepsilon)|
+\le
+\frac{X^2}{\ell^2}.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|\log|\sigma_j(\varepsilon)||\le 2\log(X/\ell).
+\]</div>
+<p>Now</p>
+<div class="math-block">\[
+X=4Ye^T,
+\qquad
+\ell=Ye^{-T}.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+\frac{X}{\ell}
+=
+4e^{2T}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+2\log(X/\ell)
+=
+2\log(4e^{2T})
+=
+4T+\log16.
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+S:=4T+\log16.
+\]</div>
+<p>Then every such quotient unit \(\varepsilon\) lies in</p>
+<div class="math-block">\[
+U_K(S).
+\]</div>
+<p>Hence each product ideal contributes at most \(|U_K(S)|\) elements to the product set. Combining this with (8.2),</p>
+<div class="math-block">\[
+|\widetilde A_K\widetilde A_K|
+\le
+\left(\frac{n}{|U_K(T)|}\right)^2
+|U_K(S)|.
+\tag{8.3}
+\]</div>
+<hr>
+<h2>8.4. Comparing \(U_K(S)\) and \(U_K(T)\)</h2>
+<p>Since</p>
+<div class="math-block">\[
+S=4T+\log16,
+\]</div>
+<p>and \(T\ge1\), we have</p>
+<div class="math-block">\[
+\frac{S}{T}
+=
+4+\frac{\log16}{T}
+&lt;
+7.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+20&gt;\frac{2S}{T}.
+\]</div>
+<p>By Lemma 2.3 with \(q=20\),</p>
+<div class="math-block">\[
+|U_K(S)|
+\le
+20^d |U_K(T)|.
+\]</div>
+<p>Substituting into (8.3),</p>
+<div class="math-block">\[
+|\widetilde A_K\widetilde A_K|
+\le
+n^2\frac{20^d}{|U_K(T)|}.
+\tag{8.4}
+\]</div>
+<hr>
+<h2>8.5. Lower bound for \(|U_K(T)|\)</h2>
+<p>By Lemma 2.2,</p>
+<div class="math-block">\[
+|U_K(T)|
+\ge
+\frac{(T/2)^{d-1}}{R_K}-1.
+\]</div>
+<p>By Proposition 1.1,</p>
+<div class="math-block">\[
+R_K\le E^d.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|U_K(T)|
+\ge
+\frac{(T/2)^{d-1}}{E^d}-1.
+\]</div>
+<p>Recall that</p>
+<div class="math-block">\[
+\rho=\frac{T}{4E}.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+\frac{(T/2)^{d-1}}{E^d}
+=
+\frac{(2\rho)^{d-1}}{E}.
+\]</div>
+<p>Since \(\rho&gt;1\), the ratio</p>
+<div class="math-block">\[
+\frac{(2\rho)^{d-1}/E}{\rho^d}
+=
+\frac{2^{d-1}}{E\rho}
+\]</div>
+<p>tends to infinity as \(d\to\infty\). Hence, for all sufficiently large \(d\),</p>
+<div class="math-block">\[
+|U_K(T)|\ge \rho^d.
+\tag{8.5}
+\]</div>
+<p>Combining (8.4) and (8.5),</p>
+<div class="math-block">\[
+|\widetilde A_K\widetilde A_K|
+\le
+n^2\left(\frac{20}{\rho}\right)^d.
+\]</div>
+<p>Since \(20=q_0\) and</p>
+<div class="math-block">\[
+\eta=\log\left(\frac{\rho}{20}\right)&gt;0,
+\]</div>
+<p>this becomes</p>
+<div class="math-block">\[
+|\widetilde A_K\widetilde A_K|
+\le
+n^2 e^{-\eta d}.
+\tag{8.6}
+\]</div>
+<p>Using the upper size bound \(n\le e^{\beta d}\), we have</p>
+<div class="math-block">\[
+d\ge \frac{\log n}{\beta}.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+e^{-\eta d}
+\le
+e^{-(\eta/\beta)\log n}
+=
+n^{-\eta/\beta}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|A_KA_K|
+=
+|\widetilde A_K\widetilde A_K|
+\le
+n^{2-\eta/\beta}
+=
+n^{2-\delta_{\mathrm{prod}}}.
+\]</div>
+<p>Since \(\delta\le\delta_{\mathrm{prod}}\),</p>
+<div class="math-block">\[
+|A_KA_K|
+\le
+n^{2-\delta}.
+\tag{8.7}
+\]</div>
+<hr>
+<h1>9. Completion of the construction</h1>
+<p>Let \(K_i\) be the sequence of totally real fields from Proposition 1.1. For every sufficiently large \(i\), construct</p>
+<div class="math-block">\[
+A_i:=A_{K_i}\subset\mathbb R
+\]</div>
+<p>as above.</p>
+<p>The degree \(d_i=[K_i:\mathbb Q]\) tends to infinity, and by (6.1),</p>
+<div class="math-block">\[
+|A_i|
+\ge
+e^{\alpha d_i}.
+\]</div>
+<p>Since \(\alpha&gt;0\), this implies</p>
+<div class="math-block">\[
+|A_i|\to\infty.
+\]</div>
+<p>After discarding finitely many initial fields and reindexing, estimates (7.1) and (8.7) hold for every \(i\). Therefore, for every \(i\),</p>
+<div class="math-block">\[
+|A_i+A_i|\le |A_i|^{2-\delta},
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|A_iA_i|\le |A_i|^{2-\delta}.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+\max\bigl(|A_i+A_i|,\ |A_iA_i|\bigr)
+\le
+|A_i|^{2-\delta}
+\]</div>
+<p>for all \(i\), with one absolute constant \(\delta&gt;0\), and with \(|A_i|\to\infty\).</p>
+<p>This proves the theorem. \(\square\)</p>
+<hr>
+<h1>Round 3</h1>
+<h2>User</h2>
+<blockquote><p>Critically examine the proof you constructed to identify and resolve any errors or logical gaps. Then, present a complete, rigorous, step-by-step proof. Clearly justify each step with sufficient detail so that an expert can verify your reasoning without needing to fill in any gaps.</p></blockquote>
+<h2>Assistant</h2>
+<h2>0. Audit of the previous proof</h2>
+<p>The strategy is sound, but the previous version had a few points that needed tightening:</p>
+<ol>
+<li>The existence of totally real fields with bounded root discriminant and exponentially bounded regulator was left as an informal arithmetic input. Below it is stated precisely and derived from Martinet’s totally real class-field tower theorem plus Landau’s residue bound and the analytic class number formula.</li>
+<li>The logarithmic unit lattice does not have covolume exactly \(R_K\) in the Euclidean metric on the hyperplane; it has covolume \(\sqrt d\,R_K\). This factor is accounted for.</li>
+<li>The lower bound for the number of small units needs a uniform lower bound for the volume of a central cube section. This is proved explicitly.</li>
+<li>The product-set argument must carefully count principal ideals and then generators per ideal. This is done below with all constants fixed.</li>
+</ol>
+<p>We now give the complete proof.</p>
+<hr>
+<h1>1. Arithmetic input</h1>
+<p>We use two standard theorems.</p>
+<h3>Theorem A: Martinet</h3>
+<p>There exists an absolute constant \(D&gt;1\) and an infinite sequence of totally real number fields \(K_i\) with</p>
+<div class="math-block">\[
+d_i=[K_i:\mathbb Q]\to\infty
+\]</div>
+<p>such that</p>
+<div class="math-block">\[
+|\Delta_{K_i}|^{1/d_i}\le D
+\]</div>
+<p>for every \(i\).</p>
+<p>This follows from Martinet’s construction of an infinite totally real class-field tower.</p>
+<h3>Theorem B: Landau residue bound</h3>
+<p>There is an absolute constant \(C_L&gt;0\) such that for every number field \(K\) of degree \(d\ge2\),</p>
+<div class="math-block">\[
+\operatorname*{Res}_{s=1}\zeta_K(s)
+\le
+\left(C_L\left(1+\frac{\log|\Delta_K|}{d}\right)\right)^d.
+\]</div>
+<p>For fields with bounded root discriminant this gives an exponential-in-\(d\) bound for the residue.</p>
+<hr>
+<h2>Lemma 1.1: Exponential regulator bound</h2>
+<p>There are absolute constants \(D,E&gt;1\) and infinitely many totally real fields \(K_i\), with \(d_i=[K_i:\mathbb Q]\to\infty\), such that</p>
+<div class="math-block">\[
+|\Delta_{K_i}|^{1/d_i}\le D
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+R_{K_i}\le E^{d_i}.
+\]</div>
+<h3>Proof</h3>
+<p>Take \(K_i\) from Theorem A, so</p>
+<div class="math-block">\[
+|\Delta_{K_i}|^{1/d_i}\le D.
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+\kappa_{K_i}:=\operatorname*{Res}_{s=1}\zeta_{K_i}(s).
+\]</div>
+<p>By Theorem B,</p>
+<div class="math-block">\[
+\kappa_{K_i}
+\le
+\left(C_L(1+\log D)\right)^{d_i}
+=:C_D^{d_i}.
+\]</div>
+<p>For a totally real field \(K\) of degree \(d\), the analytic class number formula says</p>
+<div class="math-block">\[
+\kappa_K
+=
+\frac{2^{d-1}h_KR_K}{\sqrt{|\Delta_K|}}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+R_K
+\le
+h_KR_K
+=
+2^{1-d}\sqrt{|\Delta_K|}\,\kappa_K.
+\]</div>
+<p>For \(K=K_i\),</p>
+<div class="math-block">\[
+\sqrt{|\Delta_{K_i}|}\le D^{d_i/2},
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+R_{K_i}
+\le
+2^{1-d_i}D^{d_i/2}C_D^{d_i}
+\le
+E^{d_i}
+\]</div>
+<p>for some fixed \(E&gt;1\), for example</p>
+<div class="math-block">\[
+E:=D^{1/2}C_D+1.
+\]</div>
+<p>Thus the sequence satisfies both desired bounds. \(\square\)</p>
+<hr>
+<h1>2. Geometry-of-numbers estimates</h1>
+<p>Let \(K/\mathbb Q\) be totally real of degree \(d\). Let</p>
+<div class="math-block">\[
+\sigma_1,\dots,\sigma_d:K\hookrightarrow\mathbb R
+\]</div>
+<p>be its real embeddings.</p>
+<p>For \(Z&gt;0\), define</p>
+<div class="math-block">\[
+B_K(Z)
+:=
+\left\{
+\alpha\in\mathcal O_K:
+|\sigma_j(\alpha)|\le Z
+\text{ for all }j
+\right\}.
+\]</div>
+<p>For \(t&gt;0\), define</p>
+<div class="math-block">\[
+U_K(t)
+:=
+\left\{
+u\in\mathcal O_K^\times:
+|\log|\sigma_j(u)||\le t
+\text{ for all }j
+\right\}.
+\]</div>
+<hr>
+<h2>Lemma 2.1: Algebraic-integer box bounds</h2>
+<p>For every \(Z&gt;0\),</p>
+<div class="math-block">\[
+|B_K(Z)|\le (2Z+1)^d.
+\]</div>
+<p>Also,</p>
+<div class="math-block">\[
+|B_K(Z)|
+\ge
+\frac{Z^d}{\sqrt{|\Delta_K|}}-1.
+\]</div>
+<h3>Proof</h3>
+<p>Embed \(\mathcal O_K\) into \(\mathbb R^d\) by</p>
+<div class="math-block">\[
+\alpha\mapsto
+(\sigma_1(\alpha),\dots,\sigma_d(\alpha)).
+\]</div>
+<p>This is a lattice of covolume \(\sqrt{|\Delta_K|}\).</p>
+<p>For the upper bound, if \(\alpha\ne\beta\), then \(\gamma=\alpha-\beta\ne0\) is an algebraic integer, so</p>
+<div class="math-block">\[
+|N_{K/\mathbb Q}(\gamma)|
+=
+\prod_{j=1}^d |\sigma_j(\gamma)|
+\]</div>
+<p>is a positive integer. Hence at least one \(|\sigma_j(\gamma)|\ge1\). Thus the embedded lattice is \(1\)-separated in the sup norm.</p>
+<p>The points of \(B_K(Z)\) lie in \([-Z,Z]^d\). Open sup-norm cubes of side length \(1\) centered at these points are disjoint and lie inside \([-Z-\frac12,Z+\frac12]^d\). Therefore</p>
+<div class="math-block">\[
+|B_K(Z)|\le (2Z+1)^d.
+\]</div>
+<p>For the lower bound, apply Blichfeldt’s principle to</p>
+<div class="math-block">\[
+[-Z/2,Z/2]^d.
+\]</div>
+<p>Some translate contains at least</p>
+<div class="math-block">\[
+\frac{Z^d}{\sqrt{|\Delta_K|}}-1
+\]</div>
+<p>lattice points. Taking differences from one fixed point in that translate gives distinct lattice points in \([-Z,Z]^d\). Thus</p>
+<div class="math-block">\[
+|B_K(Z)|
+\ge
+\frac{Z^d}{\sqrt{|\Delta_K|}}-1.
+\]</div>
+<p>\(\square\)</p>
+<hr>
+<h2>Lemma 2.2: Many small units</h2>
+<p>For every totally real field \(K\) of degree \(d\ge2\) and every \(t&gt;0\),</p>
+<div class="math-block">\[
+|U_K(t)|
+\ge
+\frac{(t/2)^{d-1}}{R_K}-1.
+\]</div>
+<h3>Proof</h3>
+<p>Consider the logarithmic embedding</p>
+<div class="math-block">\[
+\lambda:\mathcal O_K^\times\to H_d,
+\qquad
+u\mapsto
+(\log|\sigma_1(u)|,\dots,\log|\sigma_d(u)|),
+\]</div>
+<p>where</p>
+<div class="math-block">\[
+H_d=
+\left\{
+x\in\mathbb R^d:
+x_1+\cdots+x_d=0
+\right\}.
+\]</div>
+<p>By Dirichlet’s unit theorem, the image \(\Lambda_K:=\lambda(\mathcal O_K^\times)\) is a lattice in \(H_d\) of rank \(d-1\). With the usual regulator normalization, its Euclidean covolume in \(H_d\) is</p>
+<div class="math-block">\[
+\sqrt d\,R_K.
+\]</div>
+<p>For \(r&gt;0\), set</p>
+<div class="math-block">\[
+Q_r:=H_d\cap[-r,r]^d.
+\]</div>
+<p>We need a lower bound for the \((d-1)\)-dimensional volume of \(Q_r\). Put \(m=d-1\), and parametrize \(H_d\) by</p>
+<div class="math-block">\[
+(y_1,\dots,y_m)
+\mapsto
+(y_1,\dots,y_m,-y_1-\cdots-y_m).
+\]</div>
+<p>The Jacobian is \(\sqrt d\). Hence</p>
+<div class="math-block">\[
+\operatorname{vol}_{H_d}(Q_r)
+=
+\sqrt d\,
+\operatorname{meas}
+\left\{
+y\in[-r,r]^m:
+|y_1+\cdots+y_m|\le r
+\right\}.
+\]</div>
+<p>Let \(Y_1,\dots,Y_m\) be independent uniform random variables on \([-r,r]\). The density of \(Y_1+\cdots+Y_m\) is even and unimodal. Therefore among intervals of length \(2r\), the interval \([-r,r]\) has maximal probability. The support is \([-mr,mr]\), which can be covered by \(m\) intervals of length \(2r\). Hence</p>
+<div class="math-block">\[
+\mathbb P(|Y_1+\cdots+Y_m|\le r)\ge \frac1m.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+\operatorname{vol}_{H_d}(Q_r)
+\ge
+\sqrt d\,\frac{(2r)^m}{m}
+=
+\sqrt d\,\frac{(2r)^{d-1}}{d-1}.
+\]</div>
+<p>Apply this with \(r=t/2\). Then</p>
+<div class="math-block">\[
+\operatorname{vol}_{H_d}(Q_{t/2})
+\ge
+\sqrt d\,\frac{t^{d-1}}{d-1}.
+\]</div>
+<p>By Blichfeldt’s principle in the lattice \(\Lambda_K\subset H_d\), some translate of \(Q_{t/2}\) contains at least</p>
+<div class="math-block">\[
+\frac{\operatorname{vol}_{H_d}(Q_{t/2})}{\sqrt d\,R_K}-1
+\]</div>
+<p>lattice points. Taking differences from one fixed point gives distinct lattice points in</p>
+<div class="math-block">\[
+Q_{t/2}-Q_{t/2}\subset Q_t.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|\Lambda_K\cap Q_t|
+\ge
+\frac{t^{d-1}}{(d-1)R_K}-1.
+\]</div>
+<p>Since \(d-1\le 2^{d-1}\),</p>
+<div class="math-block">\[
+|\Lambda_K\cap Q_t|
+\ge
+\frac{(t/2)^{d-1}}{R_K}-1.
+\]</div>
+<p>Finally, \(U_K(t)\) is the preimage of \(\Lambda_K\cap Q_t\) under \(\lambda\). The kernel consists of \(\{\pm1\}\), so in particular</p>
+<div class="math-block">\[
+|U_K(t)|\ge |\Lambda_K\cap Q_t|.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+|U_K(t)|
+\ge
+\frac{(t/2)^{d-1}}{R_K}-1.
+\]</div>
+<p>\(\square\)</p>
+<hr>
+<h2>Lemma 2.3: Dilation of unit boxes</h2>
+<p>Let \(0&lt;t\le t'\). If \(q\) is an integer satisfying</p>
+<div class="math-block">\[
+q&gt;\frac{2t&#x27;}{t},
+\]</div>
+<p>then</p>
+<div class="math-block">\[
+|U_K(t&#x27;)|\le q^{d-1}|U_K(t)|.
+\]</div>
+<h3>Proof</h3>
+<p>Work in the logarithmic lattice \(\Lambda_K\subset H_d\). As above, write</p>
+<div class="math-block">\[
+Q_s=H_d\cap[-s,s]^d.
+\]</div>
+<p>Partition \(\Lambda_K\cap Q_{t'}\) into residue classes modulo \(q\Lambda_K\). There are \(q^{d-1}\) such classes.</p>
+<p>Fix one nonempty class and choose \(x_0\) in it. For any other \(x\) in the same class,</p>
+<div class="math-block">\[
+x-x_0=qy
+\]</div>
+<p>for some \(y\in\Lambda_K\). Since \(x,x_0\in Q_{t'}\),</p>
+<div class="math-block">\[
+x-x_0\in Q_{2t&#x27;}.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+y\in Q_{2t&#x27;/q}\subset Q_t.
+\]</div>
+<p>So each residue class contributes at most \(|\Lambda_K\cap Q_t|\) points. Therefore</p>
+<div class="math-block">\[
+|\Lambda_K\cap Q_{t&#x27;}|
+\le
+q^{d-1}|\Lambda_K\cap Q_t|.
+\]</div>
+<p>Since the kernel of the logarithmic map is \(\{\pm1\}\), the same inequality holds for units:</p>
+<div class="math-block">\[
+|U_K(t&#x27;)|\le q^{d-1}|U_K(t)|.
+\]</div>
+<p>\(\square\)</p>
+<hr>
+<h1>3. Choice of constants</h1>
+<p>Let \(D,E\) be the constants from Lemma 1.1.</p>
+<p>Choose \(T\ge1\) so large that</p>
+<div class="math-block">\[
+T&gt;80E
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+4T+\log 5
+&lt;
+2\bigl(3T-\log(8\sqrt D)\bigr).
+\]</div>
+<p>This is possible because the left side is asymptotic to \(4T\), while the right side is asymptotic to \(6T\).</p>
+<p>Set</p>
+<div class="math-block">\[
+L:=4T,
+\qquad
+X:=e^L=e^{4T},
+\]</div>
+<div class="math-block">\[
+Y:=\frac{e^{L-T}}4=\frac{e^{3T}}4,
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+M:=\lceil 2Y\rceil.
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+\alpha
+:=
+\log\left(\frac{Y}{2\sqrt D}\right)
+=
+3T-\log(8\sqrt D),
+\]</div>
+<div class="math-block">\[
+\beta
+:=
+\log(3X)
+=
+4T+\log3,
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\beta_+
+:=
+\log(5X)
+=
+4T+\log5.
+\]</div>
+<p>By our choice of \(T\),</p>
+<div class="math-block">\[
+\alpha&gt;0
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\frac{\beta_+}{\alpha}&lt;2.
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+\delta_{\mathrm{sum}}
+:=
+2-\frac{\beta_+}{\alpha}
+&gt;0.
+\]</div>
+<p>Next set</p>
+<div class="math-block">\[
+\rho:=\frac{T}{4E}.
+\]</div>
+<p>Since \(T&gt;80E\),</p>
+<div class="math-block">\[
+\rho&gt;20.
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+\eta:=\log\left(\frac{\rho}{20}\right)&gt;0
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\delta_{\mathrm{prod}}
+:=
+\frac{\eta}{\beta}&gt;0.
+\]</div>
+<p>Finally, define</p>
+<div class="math-block">\[
+\delta
+:=
+\frac12\min\{\delta_{\mathrm{sum}},\delta_{\mathrm{prod}}\}.
+\]</div>
+<p>This is a positive absolute constant.</p>
+<hr>
+<h1>4. Construction in one field</h1>
+<p>Let \(K\) be one of the totally real fields from Lemma 1.1, of degree</p>
+<div class="math-block">\[
+d=[K:\mathbb Q].
+\]</div>
+<p>Assume \(d\) is sufficiently large; later we discard finitely many fields.</p>
+<p>Define</p>
+<div class="math-block">\[
+C_K
+:=
+\left\{
+M+\beta:
+\beta\in B_K(Y)
+\right\}.
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+\widetilde A_K
+:=
+U_K(T)C_K
+=
+\{uc:u\in U_K(T),\ c\in C_K\}
+\subset\mathcal O_K.
+\]</div>
+<p>Finally, fix the first real embedding and put</p>
+<div class="math-block">\[
+A_K:=\sigma_1(\widetilde A_K)\subset\mathbb R.
+\]</div>
+<p>Because \(\sigma_1\) is an injective ring homomorphism, it preserves all additive and multiplicative relations. Hence</p>
+<div class="math-block">\[
+|A_K|=|\widetilde A_K|,
+\]</div>
+<div class="math-block">\[
+|A_K+A_K|=|\widetilde A_K+\widetilde A_K|,
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|A_KA_K|=|\widetilde A_K\widetilde A_K|.
+\]</div>
+<p>Write</p>
+<div class="math-block">\[
+n:=|A_K|=|\widetilde A_K|.
+\]</div>
+<hr>
+<h1>5. Basic archimedean bounds</h1>
+<p>Let \(c\in C_K\). Then</p>
+<div class="math-block">\[
+c=M+\beta
+\]</div>
+<p>for some \(\beta\in B_K(Y)\). Thus for every embedding \(\sigma_j\),</p>
+<div class="math-block">\[
+|\sigma_j(\beta)|\le Y.
+\]</div>
+<p>Since \(M\ge2Y\),</p>
+<div class="math-block">\[
+\sigma_j(c)
+=
+M+\sigma_j(\beta)
+\ge
+M-Y
+\ge
+Y.
+\]</div>
+<p>Also \(Y\ge1\), so</p>
+<div class="math-block">\[
+M=\lceil2Y\rceil\le2Y+1\le3Y.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+|\sigma_j(c)|
+\le
+M+|\sigma_j(\beta)|
+\le
+3Y+Y
+=
+4Y.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+Y\le |\sigma_j(c)|\le 4Y
+\]</div>
+<p>for every \(j\).</p>
+<p>Now take \(a\in\widetilde A_K\). Write</p>
+<div class="math-block">\[
+a=uc
+\]</div>
+<p>with \(u\in U_K(T)\) and \(c\in C_K\). Since</p>
+<div class="math-block">\[
+e^{-T}\le |\sigma_j(u)|\le e^T,
+\]</div>
+<p>we get</p>
+<div class="math-block">\[
+Ye^{-T}
+\le
+|\sigma_j(a)|
+\le
+4Ye^T.
+\]</div>
+<p>But</p>
+<div class="math-block">\[
+4Ye^T
+=
+4\cdot\frac{e^{L-T}}4\cdot e^T
+=
+e^L
+=
+X.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|\sigma_j(a)|\le X
+\]</div>
+<p>for every \(a\in\widetilde A_K\) and every \(j\).</p>
+<p>We will also use the lower bound</p>
+<div class="math-block">\[
+|\sigma_j(a)|\ge \ell,
+\qquad
+\ell:=Ye^{-T}.
+\]</div>
+<p>Since \(Y=e^{3T}/4\),</p>
+<div class="math-block">\[
+\ell=\frac{e^{2T}}4.
+\]</div>
+<hr>
+<h1>6. Size of \(A_K\)</h1>
+<p>Because \(1\in U_K(T)\),</p>
+<div class="math-block">\[
+C_K\subset\widetilde A_K.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+n\ge |C_K|=|B_K(Y)|.
+\]</div>
+<p>By Lemma 2.1,</p>
+<div class="math-block">\[
+|B_K(Y)|
+\ge
+\frac{Y^d}{\sqrt{|\Delta_K|}}-1.
+\]</div>
+<p>Since \(|\Delta_K|^{1/d}\le D\),</p>
+<div class="math-block">\[
+\sqrt{|\Delta_K|}\le D^{d/2}.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+n
+\ge
+\left(\frac{Y}{\sqrt D}\right)^d-1.
+\]</div>
+<p>By definition of \(\alpha\),</p>
+<div class="math-block">\[
+\frac{Y}{\sqrt D}
+=
+2e^\alpha.
+\]</div>
+<p>Since \(\alpha&gt;0\),</p>
+<div class="math-block">\[
+(2e^\alpha)^d-1\ge e^{\alpha d}
+\]</div>
+<p>for every \(d\ge1\). Hence</p>
+<div class="math-block">\[
+n\ge e^{\alpha d}.
+\tag{6.1}
+\]</div>
+<p>On the other hand, we proved that</p>
+<div class="math-block">\[
+\widetilde A_K\subset B_K(X).
+\]</div>
+<p>Therefore, by Lemma 2.1,</p>
+<div class="math-block">\[
+n
+\le
+|B_K(X)|
+\le
+(2X+1)^d.
+\]</div>
+<p>Since \(X\ge1\),</p>
+<div class="math-block">\[
+2X+1\le3X.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+n\le (3X)^d=e^{\beta d}.
+\tag{6.2}
+\]</div>
+<hr>
+<h1>7. Sumset estimate</h1>
+<p>For \(a,b\in\widetilde A_K\),</p>
+<div class="math-block">\[
+|\sigma_j(a+b)|
+\le
+|\sigma_j(a)|+|\sigma_j(b)|
+\le
+2X.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+\widetilde A_K+\widetilde A_K\subset B_K(2X).
+\]</div>
+<p>By Lemma 2.1,</p>
+<div class="math-block">\[
+|\widetilde A_K+\widetilde A_K|
+\le
+|B_K(2X)|
+\le
+(4X+1)^d.
+\]</div>
+<p>Since \(X\ge1\),</p>
+<div class="math-block">\[
+4X+1\le5X.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|A_K+A_K|
+=
+|\widetilde A_K+\widetilde A_K|
+\le
+(5X)^d
+=
+e^{\beta_+d}.
+\]</div>
+<p>Using \(n\ge e^{\alpha d}\), we get</p>
+<div class="math-block">\[
+e^{\beta_+d}
+\le
+n^{\beta_+/\alpha}.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+|A_K+A_K|
+\le
+n^{\beta_+/\alpha}
+=
+n^{2-\delta_{\mathrm{sum}}}.
+\]</div>
+<p>Since \(\delta\le\delta_{\mathrm{sum}}\),</p>
+<div class="math-block">\[
+|A_K+A_K|\le n^{2-\delta}.
+\tag{7.1}
+\]</div>
+<hr>
+<h1>8. Product set estimate</h1>
+<p>Let</p>
+<div class="math-block">\[
+U:=U_K(T).
+\]</div>
+<p>Let \(\mathcal P\) be the set of principal ideals represented by elements of \(\widetilde A_K\):</p>
+<div class="math-block">\[
+\mathcal P
+:=
+\{(a):a\in\widetilde A_K\}.
+\]</div>
+<hr>
+<h2>8.1. Each represented ideal has many representatives</h2>
+<p>Fix \(I\in\mathcal P\). Choose \(a\in\widetilde A_K\) with</p>
+<div class="math-block">\[
+I=(a).
+\]</div>
+<p>Write</p>
+<div class="math-block">\[
+a=uc
+\]</div>
+<p>with \(u\in U\) and \(c\in C_K\). Since \(u\) is a unit,</p>
+<div class="math-block">\[
+(a)=(c).
+\]</div>
+<p>For every \(v\in U\),</p>
+<div class="math-block">\[
+vc\in U C_K=\widetilde A_K
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+(vc)=(c)=I.
+\]</div>
+<p>The elements \(vc\) are distinct as \(v\) varies because \(c\ne0\). Therefore every ideal in \(\mathcal P\) has at least \(|U|\) representatives in \(\widetilde A_K\). Hence</p>
+<div class="math-block">\[
+|\mathcal P|
+\le
+\frac{n}{|U|}.
+\tag{8.1}
+\]</div>
+<hr>
+<h2>8.2. Product ideals</h2>
+<p>If</p>
+<div class="math-block">\[
+z=ab\in\widetilde A_K\widetilde A_K,
+\]</div>
+<p>then</p>
+<div class="math-block">\[
+(z)=(a)(b)
+\]</div>
+<p>with \((a),(b)\in\mathcal P\). Thus the number of possible principal ideals generated by products is at most</p>
+<div class="math-block">\[
+|\mathcal P|^2
+\le
+\left(\frac{n}{|U|}\right)^2.
+\tag{8.2}
+\]</div>
+<hr>
+<h2>8.3. Generators per product ideal</h2>
+<p>Every \(a\in\widetilde A_K\) satisfies</p>
+<div class="math-block">\[
+\ell\le|\sigma_j(a)|\le X
+\]</div>
+<p>for every \(j\). Therefore every product \(z=ab\) satisfies</p>
+<div class="math-block">\[
+\ell^2\le|\sigma_j(z)|\le X^2.
+\]</div>
+<p>Fix a product \(z_0\in\widetilde A_K\widetilde A_K\). If another product \(z\) generates the same principal ideal, then</p>
+<div class="math-block">\[
+(z)=(z_0),
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+z=\varepsilon z_0
+\]</div>
+<p>for some unit \(\varepsilon\in\mathcal O_K^\times\).</p>
+<p>For each embedding,</p>
+<div class="math-block">\[
+|\sigma_j(\varepsilon)|
+=
+\frac{|\sigma_j(z)|}{|\sigma_j(z_0)|}.
+\]</div>
+<p>Since both \(z\) and \(z_0\) have all conjugates between \(\ell^2\) and \(X^2\),</p>
+<div class="math-block">\[
+\frac{\ell^2}{X^2}
+\le
+|\sigma_j(\varepsilon)|
+\le
+\frac{X^2}{\ell^2}.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+|\log|\sigma_j(\varepsilon)||\le 2\log(X/\ell).
+\]</div>
+<p>Now</p>
+<div class="math-block">\[
+X=e^{4T},
+\qquad
+\ell=\frac{e^{2T}}4,
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+\frac{X}{\ell}=4e^{2T}.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+2\log(X/\ell)=4T+\log16.
+\]</div>
+<p>Set</p>
+<div class="math-block">\[
+S:=4T+\log16.
+\]</div>
+<p>Then every quotient unit \(\varepsilon\) arising above lies in \(U_K(S)\). Therefore each product ideal contributes at most \(|U_K(S)|\) elements to the product set.</p>
+<p>Combining with (8.2),</p>
+<div class="math-block">\[
+|\widetilde A_K\widetilde A_K|
+\le
+\left(\frac{n}{|U_K(T)|}\right)^2
+|U_K(S)|.
+\tag{8.3}
+\]</div>
+<hr>
+<h2>8.4. Comparing \(U_K(S)\) to \(U_K(T)\)</h2>
+<p>Since \(T\ge1\),</p>
+<div class="math-block">\[
+\frac{S}{T}
+=
+4+\frac{\log16}{T}
+&lt;
+7.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+20&gt;\frac{2S}{T}.
+\]</div>
+<p>By Lemma 2.3 with \(q=20\),</p>
+<div class="math-block">\[
+|U_K(S)|\le20^{d-1}|U_K(T)|\le20^d|U_K(T)|.
+\]</div>
+<p>Substitute into (8.3):</p>
+<div class="math-block">\[
+|\widetilde A_K\widetilde A_K|
+\le
+n^2\frac{20^d}{|U_K(T)|}.
+\tag{8.4}
+\]</div>
+<hr>
+<h2>8.5. Lower bound for \(|U_K(T)|\)</h2>
+<p>By Lemma 2.2,</p>
+<div class="math-block">\[
+|U_K(T)|
+\ge
+\frac{(T/2)^{d-1}}{R_K}-1.
+\]</div>
+<p>Since \(R_K\le E^d\),</p>
+<div class="math-block">\[
+|U_K(T)|
+\ge
+\frac{(T/2)^{d-1}}{E^d}-1.
+\]</div>
+<p>Recall</p>
+<div class="math-block">\[
+\rho=\frac{T}{4E}.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+\frac{(T/2)^{d-1}}{E^d}
+=
+\rho^d\frac{2^{d+1}}{T}.
+\]</div>
+<p>Since \(d\to\infty\), for all sufficiently large \(d\),</p>
+<div class="math-block">\[
+\frac{2^{d+1}}{T}\ge2.
+\]</div>
+<p>Because \(\rho&gt;20&gt;1\), we then have</p>
+<div class="math-block">\[
+\frac{(T/2)^{d-1}}{E^d}-1
+\ge
+2\rho^d-1
+\ge
+\rho^d.
+\]</div>
+<p>Thus, after discarding finitely many fields,</p>
+<div class="math-block">\[
+|U_K(T)|\ge\rho^d.
+\tag{8.5}
+\]</div>
+<p>Combining (8.4) and (8.5),</p>
+<div class="math-block">\[
+|\widetilde A_K\widetilde A_K|
+\le
+n^2\left(\frac{20}{\rho}\right)^d.
+\]</div>
+<p>Since</p>
+<div class="math-block">\[
+\eta=\log\left(\frac{\rho}{20}\right)&gt;0,
+\]</div>
+<p>this is</p>
+<div class="math-block">\[
+|\widetilde A_K\widetilde A_K|
+\le
+n^2e^{-\eta d}.
+\]</div>
+<p>Using the upper size bound \(n\le e^{\beta d}\), we have</p>
+<div class="math-block">\[
+d\ge\frac{\log n}{\beta}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+e^{-\eta d}
+\le
+n^{-\eta/\beta}.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+|A_KA_K|
+=
+|\widetilde A_K\widetilde A_K|
+\le
+n^{2-\eta/\beta}
+=
+n^{2-\delta_{\mathrm{prod}}}.
+\]</div>
+<p>Since \(\delta\le\delta_{\mathrm{prod}}\),</p>
+<div class="math-block">\[
+|A_KA_K|\le n^{2-\delta}.
+\tag{8.6}
+\]</div>
+<hr>
+<h1>9. Completion</h1>
+<p>Let \(K_i\) be the infinite sequence from Lemma 1.1. Discard finitely many initial fields so that the large-degree assumption used in (8.5) holds for every remaining \(K_i\). For each remaining \(K_i\), construct</p>
+<div class="math-block">\[
+A_i:=A_{K_i}\subset\mathbb R
+\]</div>
+<p>as above.</p>
+<p>By (6.1),</p>
+<div class="math-block">\[
+|A_i|\ge e^{\alpha d_i}.
+\]</div>
+<p>Since \(d_i\to\infty\) and \(\alpha&gt;0\),</p>
+<div class="math-block">\[
+|A_i|\to\infty.
+\]</div>
+<p>By (7.1) and (8.6),</p>
+<div class="math-block">\[
+|A_i+A_i|\le |A_i|^{2-\delta}
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|A_iA_i|\le |A_i|^{2-\delta}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+\max(|A_i+A_i|,\ |A_iA_i|)
+\le
+|A_i|^{2-\delta}
+\]</div>
+<p>for all \(i\), with one fixed absolute constant \(\delta&gt;0\).</p>
+<p>This proves the theorem. \(\square\)</p>
+<hr>
+</main>
+</body>
+</html>

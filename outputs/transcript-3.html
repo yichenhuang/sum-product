@@ -1,0 +1,2962 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Transcript</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <style>
+    body {
+      margin: 0;
+      background: #f7f7f4;
+      color: #1f2328;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.62;
+    }
+    main {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 40px 28px 80px;
+      background: #fff;
+      min-height: 100vh;
+      box-shadow: 0 0 0 1px #e4e4df;
+    }
+    h1, h2, h3 { line-height: 1.25; margin-top: 1.7em; }
+    h1 { font-size: 30px; }
+    h2 { font-size: 24px; border-bottom: 1px solid #e5e5e0; padding-bottom: 4px; }
+    h3 { font-size: 19px; }
+    p { margin: 0 0 1em; }
+    blockquote {
+      border-left: 4px solid #b8c4d6;
+      margin: 1.2em 0;
+      padding: 0.2em 1em;
+      background: #f7f9fc;
+    }
+    pre {
+      overflow-x: auto;
+      background: #f2f2ee;
+      padding: 12px;
+      border-radius: 6px;
+    }
+    code {
+      background: #f2f2ee;
+      padding: 1px 4px;
+      border-radius: 4px;
+    }
+    pre code {
+      background: none;
+      padding: 0;
+    }
+    .math-block {
+      overflow-x: auto;
+      margin: 1.1em 0;
+      padding: 0.2em 0;
+    }
+    mjx-container {
+      overflow-x: auto;
+      overflow-y: hidden;
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Transcript</h1>
+<h2>System prompt</h2>
+<blockquote><p>The provided theorem was recently proved, and the result is now accepted by the mathematical community. Your task is to independently construct a proof.</p></blockquote>
+<hr>
+<h1>Round 1</h1>
+<h2>User</h2>
+<blockquote><p><strong>Theorem.</strong> There exist an absolute constant $\delta &gt; 0$ and an infinite sequence $\{A_i\}$ of finite subsets of $\mathbb{R}$ such that $|A_i| \to \infty$ and $\max(|A_i+A_i|, |A_iA_i|) \le |A_i|^{2-\delta}$ for all $i$, where $A_i+A_i = \{ a+b : a,b \in A_i \}$ and $A_iA_i = \{ ab : a,b \in A_i \}$ are the sumset and product set of $A_i$, respectively.</p>
+<p><strong>Remark.</strong> This result disproves the Erdős–Szemerédi Sum-Product Conjecture over $\mathbb{R}$.</p>
+<hr>
+<p>As a first step toward a complete proof, identify the most promising approach and develop it as far as possible. Present a step-by-step proof plan. Prove any intermediate claims you can. For each remaining gap, state it precisely and assess whether it can plausibly be closed within the approach or poses a serious obstruction. Include enough detail for the next round to continue from where you leave off.</p></blockquote>
+<h2>Assistant</h2>
+<h2>1. Most promising approach</h2>
+<p>The most promising route is to build \(A\) inside a high-degree totally real number field \(K\), then embed \(K\hookrightarrow \mathbb R\). The key idea is:</p>
+<ul>
+<li>Use many <strong>small-height units</strong> \(u\in \mathcal O_K^\times\).</li>
+</ul>
+<p>  Units give multiplicative structure: if \(U\) is a set of units with small multiplicative doubling, then \(UU\) is small.</p>
+<ul>
+<li>Multiply those units by a large “additive reservoir” \(B\subset \mathcal O_K\) consisting of many algebraic integers whose conjugates are bounded.</li>
+</ul>
+<p>  The set</p>
+<div class="math-block">  \[
+  A_K := U B=\{ub:u\in U,\ b\in B\}\subset K
+  \]</div>
+<p>  can have size close to \(|U||B|\), while</p>
+<div class="math-block">  \[
+  A_K+A_K\subset \{x\in\mathcal O_K:\text{ all conjugates of }x\text{ are bounded}\},
+  \]</div>
+<p>  and</p>
+<div class="math-block">  \[
+  A_KA_K\subset (UU)(BB).
+  \]</div>
+<p>The hoped-for entropy bookkeeping is as follows. Let \(n=[K:\mathbb Q]\). Suppose:</p>
+<ul>
+<li>\(|U|\approx e^{sn}\),</li>
+<li>\(U\) has height \(\le e^T\),</li>
+<li>\(|UU|\le e^{\kappa n}|U|\),</li>
+<li>\(B\) has \(|B|\approx e^{(r-q)n}\), where \(q=\frac1{2n}\log |\Delta_K|\), and all conjugates of \(B\) have size \(\le e^r\).</li>
+</ul>
+<p>Then one expects</p>
+<div class="math-block">\[
+|A|\approx e^{(s+r-q)n},
+\]</div>
+<p>while</p>
+<div class="math-block">\[
+|A+A|\lesssim e^{(r+T+O(1))n},
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|AA|\lesssim e^{(2r+s+\kappa+O(1))n}.
+\]</div>
+<p>Thus we want constants satisfying</p>
+<div class="math-block">\[
+r+T+O(1)\le (2-\delta)(s+r-q),
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+2r+s+\kappa+O(1)\le (2-\delta)(s+r-q).
+\]</div>
+<p>The second inequality is the main one: at \(\delta=0\), it asks roughly</p>
+<div class="math-block">\[
+s \gtrsim \kappa+2q.
+\]</div>
+<p>So we need a set \(U\) of units whose exponential entropy \(s\) beats both the root-discriminant cost \(2q\) and the multiplicative-doubling cost \(\kappa\).</p>
+<p>The rest of this answer develops this approach rigorously up to one precise remaining arithmetic/geometric input about the logarithmic unit lattice.</p>
+<hr>
+<h2>2. Number-field setup</h2>
+<p>Let \(K\) be a totally real number field of degree \(n\), with embeddings</p>
+<div class="math-block">\[
+\sigma_1,\dots,\sigma_n:K\hookrightarrow \mathbb R.
+\]</div>
+<p>For \(x\in K\), write</p>
+<div class="math-block">\[
+\|x\|_\infty:=\max_{1\le j\le n}|\sigma_j(x)|.
+\]</div>
+<p>For a unit \(u\in\mathcal O_K^\times\), define its logarithmic embedding</p>
+<div class="math-block">\[
+\lambda(u):=(\log|\sigma_1(u)|,\dots,\log|\sigma_n(u)|)\in H_n,
+\]</div>
+<p>where</p>
+<div class="math-block">\[
+H_n:=\{(x_1,\dots,x_n)\in\mathbb R^n:x_1+\cdots+x_n=0\}.
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+\Delta_K:=|\operatorname{disc}(K)|,\qquad q_K:=\frac1{2n}\log \Delta_K.
+\]</div>
+<p>Thus \(\Delta_K^{1/2}=e^{q_K n}\).</p>
+<p>Eventually we want a sequence \(K_i\) with \(q_{K_i}\le q\) for an absolute constant \(q\). This is supplied by totally real class-field towers, as discussed later.</p>
+<hr>
+<h2>3. Basic lattice-counting lemmas</h2>
+<p>We need three elementary but important counting estimates.</p>
+<h3>Lemma 1: Algebraic integers in boxes are separated</h3>
+<p>Let \(K\) be totally real of degree \(n\). For \(X_1,\dots,X_n\ge 1\), define</p>
+<div class="math-block">\[
+\operatorname{Box}_K(X_1,\dots,X_n)
+:=
+\{a\in\mathcal O_K:|\sigma_j(a)|\le X_j\text{ for all }j\}.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+|\operatorname{Box}_K(X_1,\dots,X_n)|
+\le \prod_{j=1}^n (4X_j).
+\]</div>
+<p>In particular, if \(X\ge 1\), then</p>
+<div class="math-block">\[
+|\{a\in\mathcal O_K:\|a\|_\infty\le X\}|
+\le (4X)^n.
+\]</div>
+<h4>Proof</h4>
+<p>Partition each interval \([-X_j,X_j]\) into at most \(4X_j\) half-open intervals of length \(&lt;1\). This partitions the box \(\prod_j[-X_j,X_j]\) into at most \(\prod_j4X_j\) small boxes, each of side length \(&lt;1\).</p>
+<p>Suppose two distinct algebraic integers \(a,b\in\mathcal O_K\) lie in the same small box. Then for every \(j\),</p>
+<div class="math-block">\[
+|\sigma_j(a-b)|&lt;1.
+\]</div>
+<p>Since \(a-b\neq 0\) is an algebraic integer,</p>
+<div class="math-block">\[
+N_{K/\mathbb Q}(a-b)=\prod_{j=1}^n\sigma_j(a-b)
+\]</div>
+<p>is a nonzero integer. But</p>
+<div class="math-block">\[
+|N_{K/\mathbb Q}(a-b)|
+=
+\prod_{j=1}^n|\sigma_j(a-b)|&lt;1,
+\]</div>
+<p>impossible. Hence each small box contains at most one algebraic integer. ∎</p>
+<hr>
+<h3>Lemma 2: A large bounded additive reservoir</h3>
+<p>Let \(K\) be totally real of degree \(n\), and let \(R\ge 1\). Then there exists a finite set</p>
+<div class="math-block">\[
+B\subset \mathcal O_K
+\]</div>
+<p>such that</p>
+<ol>
+<li>\(\|b\|_\infty\le R\) for every \(b\in B\);</li>
+<li><div class="math-block">\[
+|B|\ge R^n\Delta_K^{-1/2}=e^{(r-q_K)n},
+\]</div>
+<p>where \(r:=\log R\).</p></li>
+</ol>
+<h4>Proof</h4>
+<p>Let \(\Lambda:=\sigma(\mathcal O_K)\subset\mathbb R^n\) be the Minkowski lattice. Its covolume is \(\Delta_K^{1/2}\).</p>
+<p>Let</p>
+<div class="math-block">\[
+Q:=[0,R)^n.
+\]</div>
+<p>By Blichfeldt’s averaging principle, there is a translate \(x+Q\) containing at least</p>
+<div class="math-block">\[
+\frac{\operatorname{vol}(Q)}{\operatorname{covol}(\Lambda)}
+=
+\frac{R^n}{\Delta_K^{1/2}}
+\]</div>
+<p>points of \(\Lambda\).</p>
+<p>Let those lattice points be \(\lambda_1,\dots,\lambda_m\), with</p>
+<div class="math-block">\[
+m\ge R^n\Delta_K^{-1/2}.
+\]</div>
+<p>Choose one of them, say \(\lambda_1\), and define</p>
+<div class="math-block">\[
+B:=\{\sigma^{-1}(\lambda_i-\lambda_1):1\le i\le m\}\subset \mathcal O_K.
+\]</div>
+<p>Then \(|B|=m\), and since \(\lambda_i,\lambda_1\in x+Q\), we have</p>
+<div class="math-block">\[
+\lambda_i-\lambda_1\in Q-Q\subset [-R,R]^n.
+\]</div>
+<p>Therefore \(\|b\|_\infty\le R\) for every \(b\in B\). ∎</p>
+<hr>
+<h3>Lemma 3: Intersections of unit-dilates of \(B\)</h3>
+<p>Let \(B\subset\mathcal O_K\) satisfy \(\|b\|_\infty\le R\). Let \(u,v\in\mathcal O_K^\times\) be units with</p>
+<div class="math-block">\[
+|\log|\sigma_j(u)||\le T,\qquad |\log|\sigma_j(v)||\le T
+\]</div>
+<p>for all \(j\). Assume also</p>
+<div class="math-block">\[
+R e^{-T}\ge 1.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+|uB\cap vB|
+\le
+(4R)^n
+\exp\left(-\frac12\|\lambda(u)-\lambda(v)\|_1\right).
+\]</div>
+<h4>Proof</h4>
+<p>If \(x\in uB\cap vB\), then</p>
+<div class="math-block">\[
+x=ub_1=vb_2
+\]</div>
+<p>for some \(b_1,b_2\in B\). Thus for every embedding \(j\),</p>
+<div class="math-block">\[
+|\sigma_j(x)|
+\le
+R\min(|\sigma_j(u)|,|\sigma_j(v)|).
+\]</div>
+<p>Since \(R e^{-T}\ge 1\), all radii</p>
+<div class="math-block">\[
+R\min(|\sigma_j(u)|,|\sigma_j(v)|)
+\]</div>
+<p>are at least \(1\). By Lemma 1,</p>
+<div class="math-block">\[
+|uB\cap vB|
+\le
+\prod_{j=1}^n
+4R\min(|\sigma_j(u)|,|\sigma_j(v)|).
+\]</div>
+<p>Now put</p>
+<div class="math-block">\[
+a_j:=\log|\sigma_j(u)|,\qquad b_j:=\log|\sigma_j(v)|.
+\]</div>
+<p>Since \(u,v\) are units,</p>
+<div class="math-block">\[
+\sum_j a_j=\sum_j b_j=0.
+\]</div>
+<p>Also,</p>
+<div class="math-block">\[
+\log\min(e^{a_j},e^{b_j})
+=
+\frac{a_j+b_j-|a_j-b_j|}{2}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+\sum_{j=1}^n\log\min(|\sigma_j(u)|,|\sigma_j(v)|)
+=
+-\frac12\sum_{j=1}^n|a_j-b_j|
+=
+-\frac12\|\lambda(u)-\lambda(v)\|_1.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+\prod_{j=1}^n\min(|\sigma_j(u)|,|\sigma_j(v)|)
+=
+\exp\left(-\frac12\|\lambda(u)-\lambda(v)\|_1\right),
+\]</div>
+<p>and the claim follows. ∎</p>
+<hr>
+<h2>4. The key conditional construction</h2>
+<p>We now isolate the exact unit-set input needed.</p>
+<h3>Unit-set hypothesis \(\mathsf{U}(q,T,s_-,s_+,\kappa,\eta)\)</h3>
+<p>Fix constants</p>
+<div class="math-block">\[
+q,T,s_-,s_+,\kappa,\eta&gt;0.
+\]</div>
+<p>Suppose that for infinitely many totally real number fields \(K\) of degree \(n\to\infty\), with</p>
+<div class="math-block">\[
+q_K\le q,
+\]</div>
+<p>there exists a finite set of units</p>
+<div class="math-block">\[
+U\subset \mathcal O_K^\times
+\]</div>
+<p>such that:</p>
+<ol>
+<li><p>Size:</p>
+<div class="math-block">\[
+e^{s_- n}\le |U|\le e^{s_+ n}.
+\]</div></li>
+<li><p>Small multiplicative doubling:</p>
+<div class="math-block">\[
+|UU|\le e^{\kappa n}|U|.
+\]</div></li>
+<li><p>Bounded logarithmic height:</p>
+<div class="math-block">\[
+|\log|\sigma_j(u)||\le T
+\]</div>
+<p>for every \(u\in U\) and every embedding \(j\).</p></li>
+<li><p>Logarithmic separation: for all distinct \(u,v\in U\),</p>
+<div class="math-block">\[
+\|\lambda(u)-\lambda(v)\|_1\ge \eta n.
+\]</div></li>
+</ol>
+<p>The separation condition is stronger than morally necessary, but it is a clean sufficient condition guaranteeing that the sets \(uB\) have small overlap.</p>
+<hr>
+<h2>5. Conditional proposition: unit sets imply sum-product counterexamples</h2>
+<h3>Proposition</h3>
+<p>Assume the unit-set hypothesis above. Suppose in addition that there exist constants \(r&gt;0\), \(\delta&gt;0\), and a small margin \(\gamma&gt;0\), such that</p>
+<div class="math-block">\[
+r&gt;T,
+\tag{5.1}
+\]</div>
+<div class="math-block">\[
+\frac{\eta}{2}&gt;s_+ + q + \log 4+\gamma,
+\tag{5.2}
+\]</div>
+<div class="math-block">\[
+r+T+\log 8
+\le
+(2-\delta)(s_-+r-q)-\gamma,
+\tag{5.3}
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+2r+s_+ +\kappa+\log 4
+\le
+(2-\delta)(s_-+r-q)-\gamma.
+\tag{5.4}
+\]</div>
+<p>Then there exists an infinite sequence of finite sets \(A_i\subset\mathbb R\) with \(|A_i|\to\infty\) and</p>
+<div class="math-block">\[
+\max(|A_i+A_i|,|A_iA_i|)
+\le
+|A_i|^{2-\delta}.
+\]</div>
+<hr>
+<h3>Proof</h3>
+<p>Fix one of the fields \(K\), of degree \(n\), and choose \(U\) as above.</p>
+<p>Let</p>
+<div class="math-block">\[
+R:=e^r.
+\]</div>
+<p>By Lemma 2, choose \(B\subset\mathcal O_K\) such that</p>
+<div class="math-block">\[
+\|b\|_\infty\le R
+\]</div>
+<p>for all \(b\in B\), and</p>
+<div class="math-block">\[
+|B|\ge R^n\Delta_K^{-1/2}
+=
+e^{(r-q_K)n}
+\ge e^{(r-q)n}.
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+A_K:=UB=\{ub:u\in U,\ b\in B\}\subset K.
+\]</div>
+<p>Eventually we embed \(K\) into \(\mathbb R\) using \(\sigma_1\). Since \(\sigma_1\) is injective, cardinalities of sumsets and product sets are preserved.</p>
+<hr>
+<h3>Step 1: Lower bound for \(|A_K|\)</h3>
+<p>The sets \(uB\), \(u\in U\), may overlap. We prove that they do not overlap too much.</p>
+<p>For \(u=v\),</p>
+<div class="math-block">\[
+|uB\cap vB|=|B|.
+\]</div>
+<p>For \(u\neq v\), Lemma 3 gives</p>
+<div class="math-block">\[
+|uB\cap vB|
+\le
+(4R)^n e^{-\eta n/2}.
+\]</div>
+<p>Since \(|B|\ge e^{(r-q)n}=R^n e^{-qn}\), we obtain</p>
+<div class="math-block">\[
+|uB\cap vB|
+\le
+e^{(\log 4+q-\eta/2)n}|B|.
+\]</div>
+<p>Using condition (5.2),</p>
+<div class="math-block">\[
+|uB\cap vB|
+\le
+e^{-(s_++\gamma)n}|B|.
+\]</div>
+<p>Now let</p>
+<div class="math-block">\[
+m(x):=\#\{u\in U:x\in uB\}.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+\sum_x m(x)=|U||B|.
+\]</div>
+<p>Also,</p>
+<div class="math-block">\[
+\sum_x m(x)^2
+=
+\sum_{u,v\in U}|uB\cap vB|
+\le
+|U||B|+|U|^2 e^{-(s_++\gamma)n}|B|.
+\]</div>
+<p>Since \(|U|\le e^{s_+n}\),</p>
+<div class="math-block">\[
+|U|^2 e^{-(s_++\gamma)n}|B|
+\le
+e^{-\gamma n}|U||B|.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+\sum_x m(x)^2
+\le
+(1+e^{-\gamma n})|U||B|.
+\]</div>
+<p>By Cauchy–Schwarz,</p>
+<div class="math-block">\[
+|A_K|
+=
+|\operatorname{supp}m|
+\ge
+\frac{(\sum_x m(x))^2}{\sum_x m(x)^2}
+\ge
+(1-o(1))|U||B|.
+\]</div>
+<p>In particular, for all sufficiently large \(n\),</p>
+<div class="math-block">\[
+|A_K|
+\ge
+\frac12 |U||B|
+\ge
+\frac12 e^{(s_-+r-q)n}.
+\tag{5.5}
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+a:=s_-+r-q.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+|A_K|\ge \frac12 e^{an}.
+\]</div>
+<hr>
+<h3>Step 2: Sumset bound</h3>
+<p>For \(a=ub\in A_K\), we have</p>
+<div class="math-block">\[
+|\sigma_j(a)|
+=
+|\sigma_j(u)||\sigma_j(b)|
+\le
+e^T R
+=
+e^{T+r}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+A_K+A_K
+\subset
+\{x\in\mathcal O_K:\|x\|_\infty\le 2e^{T+r}\}.
+\]</div>
+<p>By Lemma 1,</p>
+<div class="math-block">\[
+|A_K+A_K|
+\le
+(8e^{T+r})^n
+=
+e^{(r+T+\log 8)n}.
+\]</div>
+<p>By condition (5.3),</p>
+<div class="math-block">\[
+|A_K+A_K|
+\le
+e^{((2-\delta)a-\gamma)n}.
+\]</div>
+<p>Using (5.5), for all sufficiently large \(n\),</p>
+<div class="math-block">\[
+|A_K+A_K|
+\le
+|A_K|^{2-\delta}.
+\]</div>
+<hr>
+<h3>Step 3: Product-set bound</h3>
+<p>We have</p>
+<div class="math-block">\[
+A_KA_K
+=
+(UB)(UB)
+\subset
+(UU)(BB).
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|A_KA_K|
+\le
+|UU|\cdot |BB|.
+\]</div>
+<p>Since \(B\subset\{x:\|x\|_\infty\le R\}\), we have</p>
+<div class="math-block">\[
+BB\subset
+\{x\in\mathcal O_K:\|x\|_\infty\le R^2\}.
+\]</div>
+<p>By Lemma 1,</p>
+<div class="math-block">\[
+|BB|\le (4R^2)^n=e^{(2r+\log 4)n}.
+\]</div>
+<p>Also,</p>
+<div class="math-block">\[
+|UU|\le e^{\kappa n}|U|\le e^{(\kappa+s_+)n}.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+|A_KA_K|
+\le
+e^{(2r+s_++\kappa+\log4)n}.
+\]</div>
+<p>By condition (5.4),</p>
+<div class="math-block">\[
+|A_KA_K|
+\le
+e^{((2-\delta)a-\gamma)n}.
+\]</div>
+<p>Again using (5.5), for all sufficiently large \(n\),</p>
+<div class="math-block">\[
+|A_KA_K|
+\le
+|A_K|^{2-\delta}.
+\]</div>
+<p>Finally, embed \(K\hookrightarrow\mathbb R\) via \(\sigma_1\). Let</p>
+<div class="math-block">\[
+A:=\sigma_1(A_K)\subset\mathbb R.
+\]</div>
+<p>Since \(\sigma_1\) is injective and respects addition and multiplication,</p>
+<div class="math-block">\[
+|A|=|A_K|,\qquad |A+A|=|A_K+A_K|,\qquad |AA|=|A_KA_K|.
+\]</div>
+<p>Thus \(A\) satisfies the desired bounds. Taking the infinitely many fields \(K\) gives an infinite sequence \(A_i\) with \(|A_i|\to\infty\). ∎</p>
+<hr>
+<h2>6. Parameter feasibility</h2>
+<p>The proposition is useful only if the inequalities can be satisfied. They can, provided the unit entropy \(s_-\) beats the doubling cost \(\kappa\) and the root-discriminant cost \(2q\).</p>
+<p>Let</p>
+<div class="math-block">\[
+c_\Sigma:=\log 8,\qquad c_\Pi:=\log 4.
+\]</div>
+<p>Suppose</p>
+<div class="math-block">\[
+M:=2s_- -s_+ -\kappa-c_\Pi-2q&gt;0.
+\tag{6.1}
+\]</div>
+<p>This is the product-set slack at \(\delta=0\).</p>
+<p>Choose, for example,</p>
+<div class="math-block">\[
+r:=2T+2q+c_\Sigma.
+\]</div>
+<p>Then \(r&gt;T\), and the sumset slack at \(\delta=0\) is</p>
+<div class="math-block">\[
+2(s_-+r-q)-(r+T+c_\Sigma)
+=
+r+2s_- -2q-T-c_\Sigma
+=
+T+2s_-&gt;0.
+\]</div>
+<p>The product-set slack at \(\delta=0\) is exactly \(M&gt;0\).</p>
+<p>Therefore we may choose</p>
+<div class="math-block">\[
+0&lt;\delta&lt;
+\frac12
+\min\left(
+\frac{T+2s_-}{s_-+r-q},
+\frac{M}{s_-+r-q}
+\right).
+\]</div>
+<p>This gives a positive absolute \(\delta\), depending only on the constants in the construction.</p>
+<p>Thus the whole approach reduces to proving the following kind of unit-selection statement:</p>
+<blockquote><p>Find totally real fields \(K\) of unbounded degree and bounded root discriminant, and inside each \(K\), find a set \(U\) of units of bounded logarithmic height, with small doubling, large size, and enough logarithmic separation, such that</p>
+<div class="math-block">\[
+2s_- -s_+ -\kappa -2q-O(1)&gt;0.
+\]</div></blockquote>
+<hr>
+<h2>7. Where should the unit sets come from?</h2>
+<p>The natural source is the logarithmic unit lattice.</p>
+<p>Let</p>
+<div class="math-block">\[
+\Lambda_K:=\lambda(\mathcal O_K^\times)\subset H_n.
+\]</div>
+<p>By Dirichlet’s unit theorem, \(\Lambda_K\) is a lattice of rank \(n-1\). Its covolume is essentially the regulator \(R_K\), up to a factor polynomial in \(n\). Passing to totally positive units or squares changes this by at most \(2^n\), which is harmless at the exponential-in-\(n\) scale.</p>
+<p>The plan is:</p>
+<ol>
+<li><p>Choose a sequence of totally real fields \(K_i\) with bounded root discriminant:</p>
+<div class="math-block">\[
+\Delta_{K_i}^{1/[K_i:\mathbb Q]}\le \rho
+\]</div>
+<p>for an absolute \(\rho\). Then</p>
+<div class="math-block">\[
+q_i=\frac1{2[K_i:\mathbb Q]}\log\Delta_{K_i}
+\le
+q:=\frac12\log\rho.
+\]</div></li>
+<li>Use an upper bound for the regulators \(R_{K_i}\) to show that the logarithmic unit lattices have covolume at most \(C^n\).</li>
+<li><p>Take a large cube in logarithmic space:</p>
+<div class="math-block">\[
+C_T:=\{x\in H_n:\|x\|_\infty\le T\}.
+\]</div>
+<p>Its \((n-1)\)-dimensional volume is \(\asymp_T T^{n-1}\), up to exponential constants.</p></li>
+<li><p>Since the unit lattice has covolume \(\le C^n\), one expects roughly</p>
+<div class="math-block">\[
+\left(\frac{T}{C}\right)^n
+\]</div>
+<p>units of height \(\le e^T\).</p></li>
+<li><p>Extract from those units a large subset \(U\) with:</p>
+<ul>
+<li>small multiplicative doubling,</li>
+<li>pairwise logarithmic separation \(\gg n\),</li>
+<li>size still \(\exp(sn)\), with</li>
+</ul>
+<div class="math-block">\[
+s\approx \log T-O(\log\log T)-O_\rho(1).
+\]</div></li>
+<li><p>The doubling cost should be</p>
+<div class="math-block">\[
+\kappa\approx O(\log\log T)+O_\rho(1).
+\]</div></li>
+</ol>
+<p>Then for \(T\) sufficiently large,</p>
+<div class="math-block">\[
+s-\kappa-2q-O(1)
+\approx
+\log T-O(\log\log T)-2q-O(1)&gt;0,
+\]</div>
+<p>so condition (6.1) holds.</p>
+<hr>
+<h2>8. Standard arithmetic inputs</h2>
+<p>Two standard arithmetic facts support the plan.</p>
+<h3>Fact 1: Totally real bounded-root-discriminant towers exist</h3>
+<p>There are infinite sequences of totally real number fields \(K_i\) with</p>
+<div class="math-block">\[
+[K_i:\mathbb Q]\to\infty
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\Delta_{K_i}^{1/[K_i:\mathbb Q]}\le \rho
+\]</div>
+<p>for an absolute constant \(\rho\).</p>
+<p>One way to obtain such a sequence is via Martinet’s construction of totally real fields with infinite class-field towers. In an unramified tower, the root discriminant stays constant, and if one uses the narrow Hilbert class field tower, total reality is preserved.</p>
+<p>This is a known input, not a new obstruction.</p>
+<hr>
+<h3>Fact 2: Bounded root discriminant gives exponential regulator bound</h3>
+<p>Let \(K\) be totally real of degree \(n\), with \(\Delta_K^{1/n}\le \rho\). Then</p>
+<div class="math-block">\[
+R_K\le C(\rho)^n.
+\]</div>
+<h4>Sketch proof</h4>
+<p>The analytic class-number formula for totally real \(K\) says</p>
+<div class="math-block">\[
+\operatorname*{Res}_{s=1}\zeta_K(s)
+=
+\frac{2^{n-1}h_KR_K}{\sqrt{\Delta_K}}.
+\]</div>
+<p>Since \(h_K\ge 1\),</p>
+<div class="math-block">\[
+R_K
+\le
+2^{1-n}\sqrt{\Delta_K}\operatorname*{Res}_{s=1}\zeta_K(s).
+\]</div>
+<p>Landau’s residue bound gives, for \(n\ge 2\),</p>
+<div class="math-block">\[
+\operatorname*{Res}_{s=1}\zeta_K(s)
+\le
+\left(\frac{e\log\Delta_K}{2(n-1)}\right)^{n-1}.
+\]</div>
+<p>If \(\Delta_K^{1/n}\le\rho\), then \(\log\Delta_K\le n\log\rho\), so</p>
+<div class="math-block">\[
+R_K
+\le
+2^{1-n}\rho^{n/2}
+\left(\frac{e n\log\rho}{2(n-1)}\right)^{n-1}
+\le
+C(\rho)^n.
+\]</div>
+<p>Thus the regulator has bounded exponential growth. ∎</p>
+<p>This means the logarithmic unit lattice has covolume \(\le C(\rho)^n\), which is exactly what the unit-selection step needs.</p>
+<hr>
+<h2>9. The main remaining gap: unit-selection lemma</h2>
+<p>The serious remaining gap is the following.</p>
+<h3>Desired unit-selection lemma</h3>
+<p>Let \(K_i\) be a totally real bounded-root-discriminant tower, \(n_i=[K_i:\mathbb Q]\to\infty\). Let</p>
+<div class="math-block">\[
+\Lambda_i:=\lambda(\mathcal O_{K_i}^{\times,+})\subset H_{n_i}
+\]</div>
+<p>be the logarithmic lattice of totally positive units. Fix a sufficiently large constant \(T\).</p>
+<p>Then there should exist constants \(s_-,s_+,\kappa,\eta&gt;0\), with</p>
+<div class="math-block">\[
+s_-\ge \log T-O(\log\log T)-O_\rho(1),
+\]</div>
+<div class="math-block">\[
+s_+\le s_-+O(1),
+\]</div>
+<div class="math-block">\[
+\kappa\le O(\log\log T)+O_\rho(1),
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\eta\asymp \log T,
+\]</div>
+<p>such that for infinitely many \(i\), there is a finite set</p>
+<div class="math-block">\[
+P_i\subset \Lambda_i\cap C_T
+\]</div>
+<p>satisfying:</p>
+<ol>
+<li><p>Size:</p>
+<div class="math-block">\[
+e^{s_- n_i}\le |P_i|\le e^{s_+ n_i}.
+\]</div></li>
+<li><p>Small additive doubling in the log lattice:</p>
+<div class="math-block">\[
+|P_i+P_i|\le e^{\kappa n_i}|P_i|.
+\]</div></li>
+<li><p>Pairwise separation:</p>
+<div class="math-block">\[
+\|p-p&#x27;\|_1\ge \eta n_i
+\]</div>
+<p>for all distinct \(p,p'\in P_i\).</p></li>
+</ol>
+<p>Then taking \(U_i\) to be the corresponding totally positive units gives the unit-set hypothesis.</p>
+<hr>
+<h2>10. Why the unit-selection lemma is plausible</h2>
+<p>Here is the heuristic and likely route.</p>
+<p>The body</p>
+<div class="math-block">\[
+C_T=\{x\in H_n:\|x\|_\infty\le T\}
+\]</div>
+<p>has volume</p>
+<div class="math-block">\[
+\operatorname{vol}_{H_n}(C_T)
+=
+\exp((\log T+O(1))n).
+\]</div>
+<p>The unit lattice has covolume \(\le C(\rho)^n\), so the expected number of lattice points in \(C_T\) is at least</p>
+<div class="math-block">\[
+\exp((\log T-O_\rho(1))n).
+\]</div>
+<p>If we demand \(\ell^1\)-separation \(\eta n\), where \(\eta\asymp\log T\), then the volume of an \(\ell^1\)-ball of radius \(\eta n\) in dimension \(n-1\) is roughly</p>
+<div class="math-block">\[
+\exp((\log\eta+O(1))n).
+\]</div>
+<p>So a packing argument should lose only</p>
+<div class="math-block">\[
+\exp((\log\eta+O(1))n)
+=
+\exp((\log\log T+O(1))n)
+\]</div>
+<p>points.</p>
+<p>Thus one expects a separated subset of size</p>
+<div class="math-block">\[
+\exp((\log T-O(\log\log T)-O_\rho(1))n).
+\]</div>
+<p>For small doubling, one can aim to choose \(P_i\) as a large chunk of a convex progression inside the lattice. Standard tools that may help here include:</p>
+<ul>
+<li>discrete John-type theorems for lattice points in convex bodies;</li>
+<li>geometry-of-numbers packing/covering estimates;</li>
+<li>selection of a proper generalized arithmetic progression inside \(C_T\cap\Lambda_i\);</li>
+<li>or a random thinning of \(C_T\cap\Lambda_i\), followed by a Balog–Szemerédi/Gowers-type extraction.</li>
+</ul>
+<p>The doubling cost should then be of order</p>
+<div class="math-block">\[
+\kappa=O(\log\eta)+O_\rho(1)=O(\log\log T)+O_\rho(1).
+\]</div>
+<p>Since \(q=\frac12\log\rho\) is fixed, taking \(T\) extremely large makes</p>
+<div class="math-block">\[
+s_- -\kappa-2q-O(1)&gt;0.
+\]</div>
+<p>This is precisely the positivity needed in condition (6.1).</p>
+<hr>
+<h2>11. Why the unit-selection lemma is also the serious obstruction</h2>
+<p>The construction depends crucially on having \(|UB|\approx |U||B|\). This fails if many units in \(U\) have very similar logarithmic embeddings, because then the dilates \(uB\) overlap heavily.</p>
+<p>The pairwise separation condition prevents this. Without it, a large cluster of near-identical units could cause</p>
+<div class="math-block">\[
+|UB|\ll |U||B|,
+\]</div>
+<p>destroying the entropy gain from \(U\).</p>
+<p>Thus the real difficulty is not the sumset or product-set counting after \(U\) is found; those parts are robust. The hard part is proving that the logarithmic unit lattice contains a large enough subset that is simultaneously:</p>
+<ol>
+<li>bounded in \(\ell^\infty\) norm by \(T\);</li>
+<li>exponentially large;</li>
+<li>small-doubling;</li>
+<li>separated at scale \(\eta n\) in \(\ell^1\).</li>
+</ol>
+<p>This is the main point for the next round.</p>
+<hr>
+<h2>12. A weaker alternative to separation: weighted energy</h2>
+<p>The separation condition can likely be weakened. In the proof of the union lower bound, what we actually used was that the weighted overlap sum is small. Define</p>
+<div class="math-block">\[
+E_{\mathrm{log}}(U)
+:=
+\sum_{\substack{u,v\in U\\u\neq v}}
+\exp\left(-\frac12\|\lambda(u)-\lambda(v)\|_1\right).
+\]</div>
+<p>The same argument works if instead of pairwise separation we can prove</p>
+<div class="math-block">\[
+E_{\mathrm{log}}(U)
+\le
+e^{-(q+\log4+\gamma)n}|U|.
+\tag{12.1}
+\]</div>
+<p>Indeed, Lemma 3 gives</p>
+<div class="math-block">\[
+\sum_{\substack{u,v\in U\\u\neq v}}|uB\cap vB|
+\le
+e^{(q+\log4)n}|B|E_{\mathrm{log}}(U),
+\]</div>
+<p>so (12.1) implies</p>
+<div class="math-block">\[
+\sum_{u,v}|uB\cap vB|
+\le
+(1+e^{-\gamma n})|U||B|.
+\]</div>
+<p>Then the same Cauchy–Schwarz argument yields</p>
+<div class="math-block">\[
+|UB|\ge (1-o(1))|U||B|.
+\]</div>
+<p>Thus an alternative target is:</p>
+<blockquote><p>Find \(U\) of bounded height and small doubling such that its weighted logarithmic energy \(E_{\mathrm{log}}(U)\) is small.</p></blockquote>
+<p>This may be easier than enforcing hard pairwise separation, because it allows some close pairs as long as they are sparse.</p>
+<hr>
+<h2>13. Summary of the proof plan</h2>
+<p>The plan is now reduced to the following sequence of tasks.</p>
+<h3>Step 1: Choose a bounded-root-discriminant totally real tower</h3>
+<p>Use a Martinet-type tower:</p>
+<div class="math-block">\[
+K_i,\qquad [K_i:\mathbb Q]=n_i\to\infty,
+\]</div>
+<p>with</p>
+<div class="math-block">\[
+\Delta_{K_i}^{1/n_i}\le \rho.
+\]</div>
+<p>Set</p>
+<div class="math-block">\[
+q:=\frac12\log\rho.
+\]</div>
+<p>This is standard.</p>
+<hr>
+<h3>Step 2: Control regulators</h3>
+<p>Use Landau’s residue bound and the analytic class-number formula to prove</p>
+<div class="math-block">\[
+R_{K_i}\le C(\rho)^{n_i}.
+\]</div>
+<p>This is essentially proved above.</p>
+<hr>
+<h3>Step 3: Prove the unit-selection lemma</h3>
+<p>For a sufficiently large fixed \(T\), prove that the logarithmic unit lattice contains \(P_i\subset C_T\) such that:</p>
+<div class="math-block">\[
+|P_i|\ge e^{s_-n_i},
+\]</div>
+<div class="math-block">\[
+|P_i+P_i|\le e^{\kappa n_i}|P_i|,
+\]</div>
+<div class="math-block">\[
+\|p-p&#x27;\|_1\ge \eta n_i,
+\]</div>
+<p>with</p>
+<div class="math-block">\[
+2s_- -s_+ -\kappa-2q-O(1)&gt;0.
+\]</div>
+<p>This is the main remaining gap.</p>
+<p>A plausible quantitative target is</p>
+<div class="math-block">\[
+s_-\ge \log T-C_1\log\log T-C_2(\rho),
+\]</div>
+<div class="math-block">\[
+\kappa\le C_1\log\log T+C_2(\rho),
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\eta\asymp \log T.
+\]</div>
+<p>Then choose \(T\) so large that</p>
+<div class="math-block">\[
+s_- -\kappa-2q-O(1)&gt;0.
+\]</div>
+<hr>
+<h3>Step 4: Build \(B_i\)</h3>
+<p>For each \(K_i\), choose</p>
+<div class="math-block">\[
+R=e^r,
+\]</div>
+<p>with</p>
+<div class="math-block">\[
+r=2T+2q+O(1).
+\]</div>
+<p>By Blichfeldt, choose</p>
+<div class="math-block">\[
+B_i\subset\mathcal O_{K_i}
+\]</div>
+<p>such that</p>
+<div class="math-block">\[
+\|b\|_\infty\le R
+\]</div>
+<p>for all \(b\in B_i\), and</p>
+<div class="math-block">\[
+|B_i|\ge e^{(r-q)n_i}.
+\]</div>
+<hr>
+<h3>Step 5: Define \(A_i\)</h3>
+<p>Let \(U_i\) be the units corresponding to \(P_i\), and define</p>
+<div class="math-block">\[
+A_{K_i}:=U_iB_i\subset K_i.
+\]</div>
+<p>Embed \(K_i\hookrightarrow\mathbb R\) via one real embedding \(\sigma_1\), and set</p>
+<div class="math-block">\[
+A_i:=\sigma_1(A_{K_i})\subset\mathbb R.
+\]</div>
+<hr>
+<h3>Step 6: Verify size, sumset, product set</h3>
+<p>Using the lemmas above:</p>
+<ul>
+<li>The overlap control gives</li>
+</ul>
+<div class="math-block">  \[
+  |A_i|\ge \frac12|U_i||B_i|
+  \ge
+  \frac12 e^{(s_-+r-q)n_i}.
+  \]</div>
+<ul>
+<li>Since \(U_i\) has height \(\le e^T\) and \(B_i\) has height \(\le e^r\),</li>
+</ul>
+<div class="math-block">  \[
+  |A_i+A_i|
+  \le
+  e^{(r+T+O(1))n_i}.
+  \]</div>
+<ul>
+<li>Since</li>
+</ul>
+<div class="math-block">  \[
+  A_iA_i\subset (U_iU_i)(B_iB_i),
+  \]</div>
+<p>  and</p>
+<div class="math-block">  \[
+  |U_iU_i|\le e^{\kappa n_i}|U_i|,
+  \]</div>
+<p>  while</p>
+<div class="math-block">  \[
+  |B_iB_i|\le e^{(2r+O(1))n_i},
+  \]</div>
+<p>  we get</p>
+<div class="math-block">  \[
+  |A_iA_i|
+  \le
+  e^{(2r+s_++\kappa+O(1))n_i}.
+  \]</div>
+<p>By the parameter inequalities, both bounds are</p>
+<div class="math-block">\[
+\le |A_i|^{2-\delta}
+\]</div>
+<p>for some absolute \(\delta&gt;0\).</p>
+<hr>
+<h2>14. Current status of the approach</h2>
+<p>Everything after the unit-selection lemma is essentially complete. The remaining tasks are sharply isolated:</p>
+<h3>Gap G1: Unit-selection lemma</h3>
+<p>Precisely prove that bounded-root-discriminant totally real fields contain sufficiently many bounded-height units with small doubling and enough logarithmic separation or small weighted logarithmic energy.</p>
+<p>This is the main nontrivial gap.</p>
+<h3>Gap G2: Choice of tower with good unit-lattice geometry</h3>
+<p>A generic bounded-root-discriminant tower gives bounded regulator growth, but the logarithmic unit lattices could in principle be highly skew. The unit-selection lemma may require either:</p>
+<ul>
+<li>a general geometry-of-numbers theorem strong enough to handle arbitrary such lattices, or</li>
+<li>choosing a tower whose unit lattices are sufficiently well-rounded.</li>
+</ul>
+<p>This is a serious but plausible arithmetic/geometric issue.</p>
+<h3>Gap G3: Constants and sign issues</h3>
+<p>To avoid the kernel \(\{\pm1\}\) of the logarithmic map, one should work with totally positive units or with squares of units. This changes \(T,s_\pm,\kappa\) only by absolute constants and should be harmless.</p>
+<hr>
+<h2>15. Recommended next step</h2>
+<p>The next round should focus entirely on proving the following standalone lemma.</p>
+<blockquote><p><strong>Target Lemma.</strong>   Let \(K_i\) be a totally real bounded-root-discriminant tower, \(n_i=[K_i:\mathbb Q]\to\infty\). For every sufficiently large fixed \(T\), there exist constants \(s_-,s_+,\kappa,\eta\) satisfying</p>
+<div class="math-block">\[
+2s_- -s_+ -\kappa-2q-O(1)&gt;0
+\]</div>
+<p>and finite subsets</p>
+<div class="math-block">\[
+P_i\subset \lambda(\mathcal O_{K_i}^{\times,+})\cap C_T
+\]</div>
+<p>such that</p>
+<div class="math-block">\[
+e^{s_-n_i}\le |P_i|\le e^{s_+n_i},
+\]</div>
+<div class="math-block">\[
+|P_i+P_i|\le e^{\kappa n_i}|P_i|,
+\]</div>
+<p>and either</p>
+<div class="math-block">\[
+\|p-p&#x27;\|_1\ge \eta n_i
+\]</div>
+<p>for all distinct \(p,p'\in P_i\), or more generally</p>
+<div class="math-block">\[
+\sum_{\substack{p,p&#x27;\in P_i\\p\neq p&#x27;}}
+e^{-\|p-p&#x27;\|_1/2}
+\le
+e^{-(q+O(1))n_i}|P_i|.
+\]</div></blockquote>
+<p>Once this lemma is proved, the construction above gives the desired sequence \(A_i\subset\mathbb R\) and an explicit positive \(\delta\), roughly of size</p>
+<div class="math-block">\[
+\delta\asymp \frac{\log T}{T}
+\]</div>
+<p>after \(T\) is fixed sufficiently large.</p>
+<hr>
+<h1>Round 2</h1>
+<h2>User</h2>
+<blockquote><p>Construct a complete and rigorous proof, adapting your approach as needed.</p></blockquote>
+<h2>Assistant</h2>
+<p>Below is a complete proof following the strategy from the first round, with the previously identified “unit-selection” gap closed.</p>
+<p>The key additional observation is the following:</p>
+<blockquote><p>In a totally real field, every nontrivial unit has logarithmic embedding separated from \(0\) by distance \(\gg n\) in \(\ell^1\).   This is a consequence of Schinzel’s height gap for totally real algebraic integers.</p></blockquote>
+<p>This turns the logarithmic unit lattice into a uniformly separated lattice at the natural \(\ell^1/n\)-scale. Combined with Blichfeldt’s theorem, bounded root discriminant, and a simple packing argument, this gives exponentially many bounded-height units with small multiplicative doubling and strong pairwise separation.</p>
+<p>Throughout, all logarithms are natural.</p>
+<hr>
+<h1>1. Standard arithmetic inputs</h1>
+<p>We shall use three standard theorems.</p>
+<h2>1.1. Totally real bounded-root-discriminant towers</h2>
+<p>There exists an absolute constant \(\rho&gt;1\) and an infinite sequence of totally real number fields</p>
+<div class="math-block">\[
+K_i/\mathbb Q
+\]</div>
+<p>with degrees</p>
+<div class="math-block">\[
+n_i=[K_i:\mathbb Q]\to\infty
+\]</div>
+<p>such that</p>
+<div class="math-block">\[
+|\Delta_{K_i}|^{1/n_i}\le \rho
+\]</div>
+<p>for all \(i\).</p>
+<p>This is a standard consequence of Martinet’s construction of totally real number fields with infinite class-field towers. Passing up an unramified totally real tower preserves the root discriminant.</p>
+<p>Fix such a tower once and for all, and put</p>
+<div class="math-block">\[
+q:=\frac12\log \rho.
+\]</div>
+<p>Thus for every field \(K=K_i\) in the tower,</p>
+<div class="math-block">\[
+\frac1{2n}\log |\Delta_K|\le q.
+\]</div>
+<hr>
+<h2>1.2. Regulator upper bound in bounded-root-discriminant towers</h2>
+<p>Let \(K\) be totally real of degree \(n\), and let \(R_K\) denote its regulator. Since</p>
+<div class="math-block">\[
+|\Delta_K|^{1/n}\le \rho,
+\]</div>
+<p>there is a constant \(C_{\mathrm{reg}}=C_{\mathrm{reg}}(\rho)&gt;0\) such that</p>
+<div class="math-block">\[
+R_K\le e^{C_{\mathrm{reg}}n}.
+\]</div>
+<p>Indeed, the analytic class-number formula gives</p>
+<div class="math-block">\[
+\operatorname*{Res}_{s=1}\zeta_K(s)
+=
+\frac{2^{n-1}h_KR_K}{|\Delta_K|^{1/2}}.
+\]</div>
+<p>Since \(h_K\ge 1\),</p>
+<div class="math-block">\[
+R_K
+\le
+2^{1-n}|\Delta_K|^{1/2}\operatorname*{Res}_{s=1}\zeta_K(s).
+\]</div>
+<p>By Landau’s residue bound,</p>
+<div class="math-block">\[
+\operatorname*{Res}_{s=1}\zeta_K(s)
+\le
+\left(
+\frac{e\log |\Delta_K|}{2(n-1)}
+\right)^{n-1}.
+\]</div>
+<p>Since \(\log |\Delta_K|\le n\log\rho\), this is \(\le C(\rho)^n\). Hence \(R_K\le e^{C_{\mathrm{reg}}n}\).</p>
+<p>Let</p>
+<div class="math-block">\[
+E_K^+:=\{u\in\mathcal O_K^\times:\sigma_j(u)&gt;0\text{ for every real embedding }\sigma_j\}
+\]</div>
+<p>be the group of totally positive units. Its logarithmic embedding is</p>
+<div class="math-block">\[
+\lambda:E_K^+\to H_n,
+\qquad
+\lambda(u):=(\log\sigma_1(u),\dots,\log\sigma_n(u)),
+\]</div>
+<p>where</p>
+<div class="math-block">\[
+H_n:=\left\{x\in\mathbb R^n:\sum_{j=1}^n x_j=0\right\}.
+\]</div>
+<p>The image</p>
+<div class="math-block">\[
+\Lambda_K^+:=\lambda(E_K^+)
+\]</div>
+<p>is a full lattice in \(H_n\) of rank \(n-1\). Since \(E_K^+\) has index at most \(2^n\) in \(\mathcal O_K^\times\), and since the Euclidean covolume of the full logarithmic unit lattice is \(\sqrt n\,R_K\), there is a constant \(C_\Lambda=C_\Lambda(\rho)&gt;0\) such that</p>
+<div class="math-block">\[
+\operatorname{covol}_{H_n}(\Lambda_K^+)\le e^{C_\Lambda n}
+\tag{1.1}
+\]</div>
+<p>for every field in the tower.</p>
+<hr>
+<h2>1.3. Schinzel’s height gap for totally real units</h2>
+<p>We shall use the following theorem of Schinzel.</p>
+<blockquote><p><strong>Schinzel height gap.</strong>   There exists an absolute constant \(c_{\mathrm{Sch}}&gt;0\) such that if \(\alpha\) is a totally real algebraic integer with \(\alpha\ne 0,\pm1\), then its absolute logarithmic Weil height satisfies</p>
+<div class="math-block">\[
+h(\alpha)\ge c_{\mathrm{Sch}}.
+\]</div></blockquote>
+<p>For a unit \(u\in E_K^+\), we have</p>
+<div class="math-block">\[
+h(u)
+=
+\frac1n\sum_{j=1}^n \log^+|\sigma_j(u)|.
+\]</div>
+<p>Also, because \(u\) is a unit,</p>
+<div class="math-block">\[
+\sum_{j=1}^n \log|\sigma_j(u)|=0.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+\|\lambda(u)\|_1
+=
+\sum_{j=1}^n |\log|\sigma_j(u)|| 
+=
+2\sum_{j=1}^n \log^+|\sigma_j(u)|
+=
+2nh(u).
+\]</div>
+<p>Thus, for every nontrivial \(u\in E_K^+\),</p>
+<div class="math-block">\[
+\|\lambda(u)\|_1\ge \mu n,
+\tag{1.2}
+\]</div>
+<p>where</p>
+<div class="math-block">\[
+\mu:=2c_{\mathrm{Sch}}&gt;0.
+\]</div>
+<p>Consequently, for distinct \(p,q\in \Lambda_K^+\),</p>
+<div class="math-block">\[
+\|p-q\|_1\ge \mu n.
+\tag{1.3}
+\]</div>
+<hr>
+<h1>2. Geometric lemmas for the logarithmic unit lattice</h1>
+<p>For \(L&gt;0\), define</p>
+<div class="math-block">\[
+C_L:=\{x\in H_n:\|x\|_\infty\le L\}.
+\]</div>
+<p>We need three elementary geometric facts.</p>
+<hr>
+<h2>Lemma 2.1: Volume of \(C_L\)</h2>
+<p>There is an absolute constant \(c_{\square}&gt;0\) such that for all \(n\ge2\) and \(L&gt;0\),</p>
+<div class="math-block">\[
+\operatorname{vol}_{H_n}(C_L)\ge (c_{\square}L)^{n-1}.
+\]</div>
+<p>More precisely,</p>
+<div class="math-block">\[
+\operatorname{vol}_{H_n}(C_L)\ge \frac{(2L)^{n-1}}{\sqrt n}.
+\]</div>
+<h3>Proof</h3>
+<p>Let</p>
+<div class="math-block">\[
+F_t:=\left\{x\in[-1,1]^n:\sum_{j=1}^n x_j=t\right\}.
+\]</div>
+<p>Write</p>
+<div class="math-block">\[
+f(t):=\operatorname{vol}_{n-1}(F_t).
+\]</div>
+<p>By the Brunn–Minkowski theorem, \(f(t)^{1/(n-1)}\) is concave on \([-n,n]\). Also \(f(t)=f(-t)\), so \(f(0)\) is maximal.</p>
+<p>By the coarea formula,</p>
+<div class="math-block">\[
+2^n
+=
+\operatorname{vol}_n([-1,1]^n)
+=
+\frac1{\sqrt n}\int_{-n}^n f(t)\,dt
+\le
+\frac{2n}{\sqrt n}f(0)
+=
+2\sqrt n\, f(0).
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+f(0)\ge \frac{2^{n-1}}{\sqrt n}.
+\]</div>
+<p>But \(C_1=F_0\). Hence</p>
+<div class="math-block">\[
+\operatorname{vol}_{H_n}(C_1)\ge \frac{2^{n-1}}{\sqrt n}.
+\]</div>
+<p>Scaling by \(L\) in dimension \(n-1\) gives</p>
+<div class="math-block">\[
+\operatorname{vol}_{H_n}(C_L)
+=
+L^{n-1}\operatorname{vol}_{H_n}(C_1)
+\ge
+\frac{(2L)^{n-1}}{\sqrt n}.
+\]</div>
+<p>∎</p>
+<hr>
+<h2>Lemma 2.2: Covering a dilate of a convex body</h2>
+<p>Let \(V\) be a real vector space of dimension \(d\), and let \(K\subset V\) be a centrally symmetric convex body. Then \(4K\) can be covered by at most \(9^d\) translates of \(K\).</p>
+<h3>Proof</h3>
+<p>Choose a maximal subset \(Y\subset 4K\) such that the translates</p>
+<div class="math-block">\[
+y+\frac12K,\qquad y\in Y,
+\]</div>
+<p>are pairwise disjoint. Then these disjoint translates are all contained in</p>
+<div class="math-block">\[
+4K+\frac12K=\frac92K.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|Y|\operatorname{vol}\left(\frac12K\right)
+\le
+\operatorname{vol}\left(\frac92K\right).
+\]</div>
+<p>Since \(\dim V=d\),</p>
+<div class="math-block">\[
+|Y|\le \left(\frac{9/2}{1/2}\right)^d=9^d.
+\]</div>
+<p>By maximality, \(4K\subset Y+K\). ∎</p>
+<hr>
+<h2>Lemma 2.3: Packing in the logarithmic unit lattice</h2>
+<p>Let \(K\) be one of the fields in the tower, of degree \(n\), and let</p>
+<div class="math-block">\[
+\Lambda:=\Lambda_K^+\subset H_n.
+\]</div>
+<p>Then every \(\ell^1\)-ball in \(H_n\) of radius \(\eta n\) contains at most</p>
+<div class="math-block">\[
+\left(1+\frac{2\eta}{\mu}\right)^{n-1}
+\]</div>
+<p>points of any coset of \(\Lambda\).</p>
+<h3>Proof</h3>
+<p>By (1.3), distinct points of a coset of \(\Lambda\) are separated by at least \(\mu n\) in \(\ell^1\). Therefore, if</p>
+<div class="math-block">\[
+z_1,\dots,z_m
+\]</div>
+<p>are points of a coset of \(\Lambda\) lying in an \(\ell^1\)-ball of radius \(\eta n\), then the balls</p>
+<div class="math-block">\[
+B_1\left(z_i,\frac{\mu n}{2}\right)
+\]</div>
+<p>are pairwise disjoint. They are all contained in an \(\ell^1\)-ball of radius</p>
+<div class="math-block">\[
+\left(\eta+\frac{\mu}{2}\right)n.
+\]</div>
+<p>Since \(\ell^1\)-balls in the \((n-1)\)-dimensional space \(H_n\) scale like radius to the power \(n-1\),</p>
+<div class="math-block">\[
+m\left(\frac{\mu n}{2}\right)^{n-1}
+\le
+\left(\left(\eta+\frac{\mu}{2}\right)n\right)^{n-1}.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+m
+\le
+\left(1+\frac{2\eta}{\mu}\right)^{n-1}.
+\]</div>
+<p>∎</p>
+<hr>
+<h1>3. The unit-selection lemma</h1>
+<p>This is the main point. It closes the gap from the previous proof plan.</p>
+<h2>Proposition 3.1: Many bounded-height units with small doubling and separation</h2>
+<p>There exist constants \(C_0,C_1&gt;0\), depending only on the fixed tower, such that the following holds.</p>
+<p>Let \(T\ge 2\) and \(\eta&gt;0\). For every sufficiently large field \(K\) in the tower, of degree \(n\), there exists a finite set</p>
+<div class="math-block">\[
+U\subset E_K^+
+\]</div>
+<p>such that:</p>
+<ol>
+<li><p><strong>Bounded logarithmic height:</strong></p>
+<div class="math-block">\[
+|\log\sigma_j(u)|\le T
+\]</div>
+<p>for every \(u\in U\) and every \(j=1,\dots,n\).</p></li>
+<li><p><strong>Size lower bound:</strong></p>
+<div class="math-block">\[
+|U|\ge
+\exp\left(
+\left(\log T-C_0-\log\left(1+\frac{2\eta}{\mu}\right)\right)n
+\right).
+\tag{3.1}
+\]</div></li>
+<li><p><strong>Size upper bound:</strong></p>
+<div class="math-block">\[
+|U|\le
+\exp\left(
+(\log T+C_1)n
+\right).
+\tag{3.2}
+\]</div></li>
+<li><p><strong>Small multiplicative doubling:</strong></p>
+<div class="math-block">\[
+|UU|
+\le
+\exp\left(
+\left(\log 9+\log\left(1+\frac{2\eta}{\mu}\right)\right)n
+\right)|U|.
+\tag{3.3}
+\]</div></li>
+<li><p><strong>Pairwise logarithmic separation:</strong> for all distinct \(u,v\in U\),</p>
+<div class="math-block">\[
+\|\lambda(u)-\lambda(v)\|_1\ge \eta n.
+\tag{3.4}
+\]</div></li>
+</ol>
+<h3>Proof</h3>
+<p>Let</p>
+<div class="math-block">\[
+\Lambda:=\Lambda_K^+\subset H_n.
+\]</div>
+<p>Set</p>
+<div class="math-block">\[
+d:=n-1.
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+M:=\max_{x\in H_n}|\Lambda\cap(x+C_{T/2})|.
+\]</div>
+<p>By Blichfeldt’s averaging principle,</p>
+<div class="math-block">\[
+M\ge
+\frac{\operatorname{vol}_{H_n}(C_{T/2})}{\operatorname{covol}(\Lambda)}.
+\]</div>
+<p>Using Lemma 2.1 and (1.1),</p>
+<div class="math-block">\[
+\operatorname{vol}_{H_n}(C_{T/2})
+\ge
+\frac{T^{n-1}}{\sqrt n},
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\operatorname{covol}(\Lambda)\le e^{C_\Lambda n}.
+\]</div>
+<p>Thus, after increasing \(C_0\) if necessary and discarding finitely many fields depending on \(T\),</p>
+<div class="math-block">\[
+M\ge \exp((\log T-C_0)n).
+\tag{3.5}
+\]</div>
+<p>Choose a translate \(x+C_{T/2}\) attaining \(M\), and write</p>
+<div class="math-block">\[
+S:=\Lambda\cap(x+C_{T/2}).
+\]</div>
+<p>Fix \(\lambda_0\in S\), and define</p>
+<div class="math-block">\[
+P_0:=S-\lambda_0
+=
+\{\lambda-\lambda_0:\lambda\in S\}.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+P_0\subset \Lambda\cap C_T,
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|P_0|=M.
+\]</div>
+<h3>Small doubling for \(P_0\)</h3>
+<p>Since \(P_0\subset C_T\),</p>
+<div class="math-block">\[
+P_0+P_0\subset \Lambda\cap C_{2T}.
+\]</div>
+<p>But</p>
+<div class="math-block">\[
+C_{2T}=4C_{T/2}.
+\]</div>
+<p>By Lemma 2.2, \(C_{2T}\) can be covered by at most \(9^d\) translates of \(C_{T/2}\). Each translate contains at most \(M\) points of \(\Lambda\), by the definition of \(M\). Therefore</p>
+<div class="math-block">\[
+|P_0+P_0|\le 9^dM.
+\tag{3.6}
+\]</div>
+<h3>Extracting a separated subset</h3>
+<p>Let \(P\subset P_0\) be a maximal subset with pairwise \(\ell^1\)-distances at least \(\eta n\). Then the \(\ell^1\)-balls of radius \(\eta n\) around points of \(P\) cover \(P_0\). By Lemma 2.3, each such ball contains at most</p>
+<div class="math-block">\[
+L_\eta:=
+\left(1+\frac{2\eta}{\mu}\right)^d
+\]</div>
+<p>points of \(P_0\). Hence</p>
+<div class="math-block">\[
+|P|\ge \frac{|P_0|}{L_\eta}
+=
+\frac{M}{L_\eta}.
+\]</div>
+<p>Using (3.5),</p>
+<div class="math-block">\[
+|P|
+\ge
+\exp((\log T-C_0)n)
+\cdot
+\exp\left(-\log\left(1+\frac{2\eta}{\mu}\right)d\right).
+\]</div>
+<p>Since \(d\le n\), this gives</p>
+<div class="math-block">\[
+|P|\ge
+\exp\left(
+\left(\log T-C_0-\log\left(1+\frac{2\eta}{\mu}\right)\right)n
+\right).
+\tag{3.7}
+\]</div>
+<p>For an upper bound, note that \(P\subset P_0\subset C_T\), so \(P_0\) is contained in the \(\ell^1\)-ball of radius \(Tn\) around \(0\). By Lemma 2.3,</p>
+<div class="math-block">\[
+|P|\le |P_0|\le \left(1+\frac{2T}{\mu}\right)^d.
+\]</div>
+<p>For \(T\ge2\), there is a constant \(C_1\), depending only on \(\mu\), such that</p>
+<div class="math-block">\[
+\left(1+\frac{2T}{\mu}\right)^d
+\le
+\exp((\log T+C_1)n).
+\tag{3.8}
+\]</div>
+<p>Finally, from (3.6),</p>
+<div class="math-block">\[
+|P+P|
+\le
+|P_0+P_0|
+\le
+9^dM
+\le
+9^dL_\eta |P|.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|P+P|
+\le
+\exp\left(
+\left(\log 9+\log\left(1+\frac{2\eta}{\mu}\right)\right)n
+\right)|P|.
+\tag{3.9}
+\]</div>
+<p>Because \(\lambda:E_K^+\to \Lambda_K^+\) is an isomorphism, let \(U\subset E_K^+\) be the unique set of totally positive units satisfying</p>
+<div class="math-block">\[
+\lambda(U)=P.
+\]</div>
+<p>Then (3.7), (3.8), and (3.9) give (3.1), (3.2), and (3.3). Also \(P\subset C_T\), so every \(u\in U\) satisfies</p>
+<div class="math-block">\[
+|\log\sigma_j(u)|\le T
+\]</div>
+<p>for all \(j\). Pairwise separation follows from the construction of \(P\). ∎</p>
+<hr>
+<h1>4. Algebraic-integer counting lemmas</h1>
+<p>We now record the elementary estimates used to control sumsets and product sets.</p>
+<p>Let \(K\) be totally real of degree \(n\), with embeddings</p>
+<div class="math-block">\[
+\sigma_1,\dots,\sigma_n:K\hookrightarrow\mathbb R.
+\]</div>
+<p>For \(x\in K\), write</p>
+<div class="math-block">\[
+\|x\|_\infty:=\max_{1\le j\le n}|\sigma_j(x)|.
+\]</div>
+<hr>
+<h2>Lemma 4.1: Algebraic integers in boxes</h2>
+<p>Let \(X_1,\dots,X_n\ge1\). Then</p>
+<div class="math-block">\[
+\left|
+\left\{
+a\in\mathcal O_K:
+|\sigma_j(a)|\le X_j\text{ for all }j
+\right\}
+\right|
+\le
+\prod_{j=1}^n 4X_j.
+\]</div>
+<p>In particular,</p>
+<div class="math-block">\[
+|\{a\in\mathcal O_K:\|a\|_\infty\le X\}|
+\le
+(4X)^n
+\]</div>
+<p>for \(X\ge1\).</p>
+<h3>Proof</h3>
+<p>Partition each interval \([-X_j,X_j]\) into at most \(4X_j\) half-open intervals of length \(&lt;1\). This partitions the box</p>
+<div class="math-block">\[
+\prod_{j=1}^n[-X_j,X_j]
+\]</div>
+<p>into at most \(\prod_j 4X_j\) smaller boxes, each of side length \(&lt;1\).</p>
+<p>If two distinct algebraic integers \(a,b\in\mathcal O_K\) lie in the same small box, then</p>
+<div class="math-block">\[
+|\sigma_j(a-b)|&lt;1
+\]</div>
+<p>for every \(j\). Since \(a-b\neq0\) is an algebraic integer,</p>
+<div class="math-block">\[
+N_{K/\mathbb Q}(a-b)=\prod_{j=1}^n\sigma_j(a-b)
+\]</div>
+<p>is a nonzero integer. But</p>
+<div class="math-block">\[
+|N_{K/\mathbb Q}(a-b)|
+=
+\prod_{j=1}^n|\sigma_j(a-b)|&lt;1,
+\]</div>
+<p>impossible. Thus each small box contains at most one algebraic integer. ∎</p>
+<hr>
+<h2>Lemma 4.2: A large bounded additive reservoir</h2>
+<p>Let \(R\ge1\). There exists a finite set</p>
+<div class="math-block">\[
+B\subset\mathcal O_K
+\]</div>
+<p>such that</p>
+<ol>
+<li>\(\|b\|_\infty\le R\) for every \(b\in B\);</li>
+<li><div class="math-block">\[
+|B|\ge R^n|\Delta_K|^{-1/2}.
+\]</div></li>
+</ol>
+<h3>Proof</h3>
+<p>Let</p>
+<div class="math-block">\[
+\sigma:\mathcal O_K\hookrightarrow\mathbb R^n
+\]</div>
+<p>be the Minkowski embedding. Since \(K\) is totally real, the lattice \(\sigma(\mathcal O_K)\) has covolume</p>
+<div class="math-block">\[
+|\Delta_K|^{1/2}.
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+Q:=[0,R)^n.
+\]</div>
+<p>By Blichfeldt’s theorem, some translate \(x+Q\) contains at least</p>
+<div class="math-block">\[
+\frac{\operatorname{vol}(Q)}{|\Delta_K|^{1/2}}
+=
+R^n|\Delta_K|^{-1/2}
+\]</div>
+<p>points of \(\sigma(\mathcal O_K)\).</p>
+<p>Let those lattice points be</p>
+<div class="math-block">\[
+y_1,\dots,y_m\in \sigma(\mathcal O_K),
+\qquad
+m\ge R^n|\Delta_K|^{-1/2}.
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+B:=\{\sigma^{-1}(y_i-y_1):1\le i\le m\}.
+\]</div>
+<p>Then \(B\subset\mathcal O_K\), \(|B|=m\), and since \(y_i,y_1\in x+Q\),</p>
+<div class="math-block">\[
+y_i-y_1\in Q-Q\subset[-R,R]^n.
+\]</div>
+<p>Hence \(\|b\|_\infty\le R\) for every \(b\in B\). ∎</p>
+<hr>
+<h2>Lemma 4.3: Intersections of unit-dilates of \(B\)</h2>
+<p>Let \(B\subset\mathcal O_K\) satisfy</p>
+<div class="math-block">\[
+\|b\|_\infty\le R
+\]</div>
+<p>for every \(b\in B\). Let \(u,v\in\mathcal O_K^\times\) be units satisfying</p>
+<div class="math-block">\[
+|\log|\sigma_j(u)||\le T,
+\qquad
+|\log|\sigma_j(v)||\le T
+\]</div>
+<p>for every \(j\). Assume</p>
+<div class="math-block">\[
+R e^{-T}\ge 1.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+|uB\cap vB|
+\le
+(4R)^n
+\exp\left(-\frac12\|\lambda(u)-\lambda(v)\|_1\right).
+\]</div>
+<h3>Proof</h3>
+<p>If \(x\in uB\cap vB\), then</p>
+<div class="math-block">\[
+x=ub_1=vb_2
+\]</div>
+<p>for some \(b_1,b_2\in B\). Therefore</p>
+<div class="math-block">\[
+|\sigma_j(x)|
+\le
+R\min(|\sigma_j(u)|,|\sigma_j(v)|)
+\]</div>
+<p>for every \(j\).</p>
+<p>Since \(R e^{-T}\ge1\), every radius</p>
+<div class="math-block">\[
+R\min(|\sigma_j(u)|,|\sigma_j(v)|)
+\]</div>
+<p>is at least \(1\). By Lemma 4.1,</p>
+<div class="math-block">\[
+|uB\cap vB|
+\le
+\prod_{j=1}^n 4R\min(|\sigma_j(u)|,|\sigma_j(v)|).
+\]</div>
+<p>Write</p>
+<div class="math-block">\[
+a_j:=\log|\sigma_j(u)|,
+\qquad
+b_j:=\log|\sigma_j(v)|.
+\]</div>
+<p>Because \(u\) and \(v\) are units,</p>
+<div class="math-block">\[
+\sum_j a_j=\sum_j b_j=0.
+\]</div>
+<p>Also,</p>
+<div class="math-block">\[
+\log\min(e^{a_j},e^{b_j})
+=
+\frac{a_j+b_j-|a_j-b_j|}{2}.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+\sum_{j=1}^n
+\log\min(|\sigma_j(u)|,|\sigma_j(v)|)
+=
+-\frac12\sum_{j=1}^n|a_j-b_j|
+=
+-\frac12\|\lambda(u)-\lambda(v)\|_1.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+\prod_{j=1}^n\min(|\sigma_j(u)|,|\sigma_j(v)|)
+=
+\exp\left(-\frac12\|\lambda(u)-\lambda(v)\|_1\right).
+\]</div>
+<p>The desired bound follows. ∎</p>
+<hr>
+<h1>5. Parameter choice</h1>
+<p>We now choose constants once and for all.</p>
+<p>From Proposition 3.1, for given \(T,\eta\), define</p>
+<div class="math-block">\[
+D_\eta:=\log\left(1+\frac{2\eta}{\mu}\right),
+\]</div>
+<p>and set</p>
+<div class="math-block">\[
+s_-:=\log T-C_0-D_\eta,
+\tag{5.1}
+\]</div>
+<div class="math-block">\[
+s_+:=\log T+C_1,
+\tag{5.2}
+\]</div>
+<div class="math-block">\[
+\kappa:=\log 9+D_\eta.
+\tag{5.3}
+\]</div>
+<p>We will choose \(T\) very large, then choose \(\eta\) as a slowly growing function of \(T\). Put</p>
+<div class="math-block">\[
+\eta
+:=
+3\log T+2(C_1+q+\log4+1).
+\tag{5.4}
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+\frac{\eta}{2}
+=
+\frac32\log T+C_1+q+\log4+1.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+\frac{\eta}{2}-s_+-q-\log4
+=
+\frac12\log T+1.
+\tag{5.5}
+\]</div>
+<p>In particular, for all \(T\ge1\),</p>
+<div class="math-block">\[
+\frac{\eta}{2}&gt;s_++q+\log4.
+\]</div>
+<p>Next compute the product-set slack at exponent \(2\). Using (5.1), (5.2), and (5.3),</p>
+<div class="math-block">\[
+2s_- -s_+-\kappa-2q-\log4
+=
+\log T
+-
+3D_\eta
+-
+(2C_0+C_1+\log9+2q+\log4).
+\tag{5.6}
+\]</div>
+<p>Since</p>
+<div class="math-block">\[
+D_\eta=\log\left(1+\frac{2\eta}{\mu}\right)
+=
+O(\log\log T),
+\]</div>
+<p>the quantity in (5.6) tends to \(+\infty\) as \(T\to\infty\).</p>
+<p>Choose \(T\) large enough so that</p>
+<ol>
+<li>\(s_-&gt;0\);</li>
+<li>\(\eta&lt;T\);</li>
+<li><p>the number</p>
+<div class="math-block">\[
+S_\Pi:=
+2s_- -s_+-\kappa-2q-\log4
+\tag{5.7}
+\]</div>
+<p>is positive.</p></li>
+</ol>
+<p>Now choose</p>
+<div class="math-block">\[
+r:=2T+2q+\log8+1.
+\tag{5.8}
+\]</div>
+<p>Then \(r&gt;T\), and if</p>
+<div class="math-block">\[
+a:=s_-+r-q,
+\tag{5.9}
+\]</div>
+<p>then \(a&gt;0\).</p>
+<p>Define also the sum-set slack</p>
+<div class="math-block">\[
+S_\Sigma:=
+2a-(r+T+\log8).
+\]</div>
+<p>Using (5.8) and (5.9),</p>
+<div class="math-block">\[
+S_\Sigma
+=
+r+2s_- -2q-T-\log8
+=
+T+1+2s_-&gt;0.
+\tag{5.10}
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+S:=\min(S_\Pi,S_\Sigma)&gt;0.
+\]</div>
+<p>Finally choose</p>
+<div class="math-block">\[
+\delta:=\frac{S}{4a}&gt;0.
+\tag{5.11}
+\]</div>
+<p>This \(\delta\) is an absolute positive constant, because all quantities above were fixed independently of \(K\) and independently of \(n\).</p>
+<hr>
+<h1>6. Construction of the sets \(A\)</h1>
+<p>Let \(K\) be a sufficiently large member of the chosen tower, with degree \(n\).</p>
+<p>By Proposition 3.1, applied with the fixed \(T\) and \(\eta\), there exists a set of totally positive units</p>
+<div class="math-block">\[
+U\subset E_K^+
+\]</div>
+<p>such that</p>
+<div class="math-block">\[
+|\log\sigma_j(u)|\le T
+\tag{6.1}
+\]</div>
+<p>for every \(u\in U\) and every \(j\),</p>
+<div class="math-block">\[
+|U|\ge e^{s_-n},
+\tag{6.2}
+\]</div>
+<div class="math-block">\[
+|U|\le e^{s_+n},
+\tag{6.3}
+\]</div>
+<div class="math-block">\[
+|UU|\le e^{\kappa n}|U|,
+\tag{6.4}
+\]</div>
+<p>and for distinct \(u,v\in U\),</p>
+<div class="math-block">\[
+\|\lambda(u)-\lambda(v)\|_1\ge \eta n.
+\tag{6.5}
+\]</div>
+<p>Now set</p>
+<div class="math-block">\[
+R:=e^r.
+\]</div>
+<p>By Lemma 4.2, choose</p>
+<div class="math-block">\[
+B\subset\mathcal O_K
+\]</div>
+<p>such that</p>
+<div class="math-block">\[
+\|b\|_\infty\le R
+\tag{6.6}
+\]</div>
+<p>for every \(b\in B\), and</p>
+<div class="math-block">\[
+|B|\ge R^n|\Delta_K|^{-1/2}.
+\]</div>
+<p>Since</p>
+<div class="math-block">\[
+|\Delta_K|^{1/(2n)}\le e^q,
+\]</div>
+<p>we have</p>
+<div class="math-block">\[
+|B|\ge e^{(r-q)n}.
+\tag{6.7}
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+A_K:=UB=\{ub:u\in U,\ b\in B\}\subset K.
+\]</div>
+<p>We will show that \(A_K\) has small sumset and product set inside \(K\). Then we will embed \(K\hookrightarrow\mathbb R\).</p>
+<hr>
+<h1>7. Lower bound for \(|A_K|\)</h1>
+<p>The sets \(uB\), \(u\in U\), may overlap, so we estimate their union.</p>
+<p>For \(x\in K\), define</p>
+<div class="math-block">\[
+m(x):=\#\{u\in U:x\in uB\}.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+\sum_x m(x)=|U||B|.
+\tag{7.1}
+\]</div>
+<p>We estimate</p>
+<div class="math-block">\[
+\sum_x m(x)^2
+=
+\sum_{u,v\in U}|uB\cap vB|.
+\tag{7.2}
+\]</div>
+<p>If \(u=v\), then</p>
+<div class="math-block">\[
+|uB\cap vB|=|B|.
+\]</div>
+<p>Suppose \(u\ne v\). Since \(r&gt;T\), we have</p>
+<div class="math-block">\[
+Re^{-T}\ge1.
+\]</div>
+<p>Therefore Lemma 4.3 applies. Using (6.5),</p>
+<div class="math-block">\[
+|uB\cap vB|
+\le
+(4R)^n e^{-\eta n/2}.
+\]</div>
+<p>Using (6.7),</p>
+<div class="math-block">\[
+R^n
+\le
+e^{qn}|B|.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|uB\cap vB|
+\le
+e^{(\log4+q-\eta/2)n}|B|.
+\tag{7.3}
+\]</div>
+<p>By (5.5),</p>
+<div class="math-block">\[
+\eta/2-s_+-q-\log4
+=
+\frac12\log T+1.
+\]</div>
+<p>Set</p>
+<div class="math-block">\[
+\gamma:=\frac12\log T+1&gt;0.
+\]</div>
+<p>Then (7.3) becomes</p>
+<div class="math-block">\[
+|uB\cap vB|
+\le
+e^{-(s_++\gamma)n}|B|.
+\tag{7.4}
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+\sum_x m(x)^2
+\le
+|U||B|
++
+|U|^2 e^{-(s_++\gamma)n}|B|.
+\]</div>
+<p>Using \(|U|\le e^{s_+n}\),</p>
+<div class="math-block">\[
+|U|^2 e^{-(s_++\gamma)n}|B|
+\le
+e^{-\gamma n}|U||B|.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+\sum_x m(x)^2
+\le
+(1+e^{-\gamma n})|U||B|.
+\tag{7.5}
+\]</div>
+<p>By Cauchy–Schwarz,</p>
+<div class="math-block">\[
+|A_K|
+=
+|\operatorname{supp} m|
+\ge
+\frac{(\sum_x m(x))^2}{\sum_x m(x)^2}.
+\]</div>
+<p>Using (7.1) and (7.5),</p>
+<div class="math-block">\[
+|A_K|
+\ge
+\frac{|U|^2|B|^2}{(1+e^{-\gamma n})|U||B|}
+=
+\frac{|U||B|}{1+e^{-\gamma n}}.
+\]</div>
+<p>For all sufficiently large \(n\),</p>
+<div class="math-block">\[
+|A_K|\ge \frac12|U||B|.
+\]</div>
+<p>Combining this with (6.2) and (6.7),</p>
+<div class="math-block">\[
+|A_K|
+\ge
+\frac12 e^{(s_-+r-q)n}.
+\]</div>
+<p>Recalling \(a=s_-+r-q\), we have</p>
+<div class="math-block">\[
+|A_K|\ge \frac12 e^{an}.
+\tag{7.6}
+\]</div>
+<hr>
+<h1>8. Sumset bound</h1>
+<p>Let \(x\in A_K\). Then \(x=ub\) for some \(u\in U\), \(b\in B\). By (6.1) and (6.6),</p>
+<div class="math-block">\[
+|\sigma_j(x)|
+=
+\sigma_j(u)|\sigma_j(b)|
+\le
+e^T R
+=
+e^{T+r}
+\]</div>
+<p>for every \(j\).</p>
+<p>Therefore, if \(x,y\in A_K\),</p>
+<div class="math-block">\[
+|\sigma_j(x+y)|
+\le
+2e^{T+r}.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+A_K+A_K
+\subset
+\{z\in\mathcal O_K:\|z\|_\infty\le 2e^{T+r}\}.
+\]</div>
+<p>By Lemma 4.1,</p>
+<div class="math-block">\[
+|A_K+A_K|
+\le
+(8e^{T+r})^n
+=
+e^{(r+T+\log8)n}.
+\tag{8.1}
+\]</div>
+<p>By definition,</p>
+<div class="math-block">\[
+S_\Sigma
+=
+2a-(r+T+\log8).
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+r+T+\log8
+=
+2a-S_\Sigma
+\le
+2a-S.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|A_K+A_K|
+\le
+e^{(2a-S)n}.
+\tag{8.2}
+\]</div>
+<hr>
+<h1>9. Product-set bound</h1>
+<p>We have</p>
+<div class="math-block">\[
+A_KA_K
+=
+(UB)(UB)
+\subset
+(UU)(BB).
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+|A_KA_K|
+\le
+|UU|\,|BB|.
+\tag{9.1}
+\]</div>
+<p>By (6.4) and (6.3),</p>
+<div class="math-block">\[
+|UU|
+\le
+e^{\kappa n}|U|
+\le
+e^{(\kappa+s_+)n}.
+\tag{9.2}
+\]</div>
+<p>Since every \(b\in B\) satisfies \(\|b\|_\infty\le R\), every element of \(BB\) satisfies \(\|\cdot\|_\infty\le R^2\). Thus Lemma 4.1 gives</p>
+<div class="math-block">\[
+|BB|\le (4R^2)^n=e^{(2r+\log4)n}.
+\tag{9.3}
+\]</div>
+<p>Combining (9.1), (9.2), and (9.3),</p>
+<div class="math-block">\[
+|A_KA_K|
+\le
+e^{(2r+s_++\kappa+\log4)n}.
+\tag{9.4}
+\]</div>
+<p>Now</p>
+<div class="math-block">\[
+S_\Pi
+=
+2s_- -s_+-\kappa-2q-\log4.
+\]</div>
+<p>Using \(a=s_-+r-q\),</p>
+<div class="math-block">\[
+2a
+=
+2s_-+2r-2q.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+2a-S_\Pi
+=
+2r+s_++\kappa+\log4.
+\]</div>
+<p>So (9.4) becomes</p>
+<div class="math-block">\[
+|A_KA_K|
+\le
+e^{(2a-S_\Pi)n}
+\le
+e^{(2a-S)n}.
+\tag{9.5}
+\]</div>
+<hr>
+<h1>10. Comparison with \(|A_K|^{2-\delta}\)</h1>
+<p>From (7.6),</p>
+<div class="math-block">\[
+|A_K|\ge \frac12e^{an}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|A_K|^{2-\delta}
+\ge
+2^{-(2-\delta)}e^{(2-\delta)an}.
+\tag{10.1}
+\]</div>
+<p>By our definition</p>
+<div class="math-block">\[
+\delta=\frac{S}{4a},
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+(2-\delta)a
+=
+2a-\frac S4.
+\]</div>
+<p>Meanwhile, both (8.2) and (9.5) give the stronger bound</p>
+<div class="math-block">\[
+|A_K+A_K|,\ |A_KA_K|
+\le
+e^{(2a-S)n}.
+\]</div>
+<p>Since</p>
+<div class="math-block">\[
+2a-S
+=
+(2-\delta)a-\frac{3S}{4},
+\]</div>
+<p>we have</p>
+<div class="math-block">\[
+e^{(2a-S)n}
+=
+e^{((2-\delta)a-3S/4)n}.
+\]</div>
+<p>For all sufficiently large \(n\), the exponential saving \(e^{-3Sn/4}\) dominates the fixed factor \(2^{-(2-\delta)}\) in (10.1). Hence, for all sufficiently large \(n\),</p>
+<div class="math-block">\[
+|A_K+A_K|
+\le
+|A_K|^{2-\delta},
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|A_KA_K|
+\le
+|A_K|^{2-\delta}.
+\]</div>
+<hr>
+<h1>11. Embedding into \(\mathbb R\)</h1>
+<p>Finally choose one real embedding</p>
+<div class="math-block">\[
+\sigma_1:K\hookrightarrow\mathbb R.
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+A:=\sigma_1(A_K)\subset\mathbb R.
+\]</div>
+<p>Because \(\sigma_1\) is an injective field homomorphism,</p>
+<div class="math-block">\[
+|A|=|A_K|,
+\]</div>
+<div class="math-block">\[
+|A+A|=|A_K+A_K|,
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|AA|=|A_KA_K|.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+\max(|A+A|,|AA|)
+\le
+|A|^{2-\delta}.
+\]</div>
+<p>Applying this construction to all sufficiently large fields \(K_i\) in the tower gives an infinite sequence</p>
+<div class="math-block">\[
+A_i\subset\mathbb R.
+\]</div>
+<p>Since</p>
+<div class="math-block">\[
+|A_i|\ge \frac12 e^{a n_i}
+\]</div>
+<p>and \(a&gt;0\), while \(n_i\to\infty\), we have</p>
+<div class="math-block">\[
+|A_i|\to\infty.
+\]</div>
+<p>This proves the theorem. ∎</p>
+<hr>
+<h1>Round 3</h1>
+<h2>User</h2>
+<blockquote><p>Critically examine the proof you constructed to identify and resolve any errors or logical gaps. Then, present a complete, rigorous, step-by-step proof. Clearly justify each step with sufficient detail so that an expert can verify your reasoning without needing to fill in any gaps.</p></blockquote>
+<h2>Assistant</h2>
+<h2>Critical fixes to the previous proof</h2>
+<p>The earlier proof strategy is sound, but several points needed rigorous repair:</p>
+<ol>
+<li><p><strong>Unit-selection was the main gap.</strong> We now prove it using Blichfeldt’s theorem, a covering argument, and a uniform separation bound for totally positive units.</p></li>
+<li><p><strong>Schinzel’s theorem is unnecessary.</strong> A simple norm argument shows that if \(u\neq v\) are totally positive units in a totally real field of degree \(n\), then</p>
+<div class="math-block">\[
+\|\lambda(u)-\lambda(v)\|_1\gg n.
+\]</div></li>
+<li><p><strong>The logarithmic unit lattice covolume must be controlled.</strong> This follows from bounded root discriminant plus the analytic class number formula and Landau’s residue bound.</p></li>
+<li><p><strong>All exponential constants must be tracked.</strong> We choose parameters explicitly so that both sumset and product-set exponents are strictly below \(2\log |A|\).</p></li>
+</ol>
+<p>We now give the complete proof.</p>
+<hr>
+<h1>Proof</h1>
+<p>We use two classical arithmetic inputs.</p>
+<p>First, by Martinet’s construction, there exists an infinite sequence of totally real number fields</p>
+<div class="math-block">\[
+K_i/\mathbb Q
+\]</div>
+<p>with degrees</p>
+<div class="math-block">\[
+n_i=[K_i:\mathbb Q]\to\infty
+\]</div>
+<p>and with uniformly bounded root discriminant:</p>
+<div class="math-block">\[
+|\Delta_{K_i}|^{1/n_i}\le \rho
+\]</div>
+<p>for some absolute constant \(\rho&gt;1\).</p>
+<p>Fix such a tower and put</p>
+<div class="math-block">\[
+q:=\frac12\log \rho.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|\Delta_K|^{1/2}\le e^{qn}
+\]</div>
+<p>for every field \(K\) in the tower.</p>
+<p>Second, for such fields, the regulator satisfies</p>
+<div class="math-block">\[
+R_K\le e^{C_R n}
+\]</div>
+<p>for some constant \(C_R\) depending only on \(\rho\). This follows from the analytic class-number formula and Landau’s residue bound.</p>
+<p>Let</p>
+<div class="math-block">\[
+E_K^+:=\{u\in\mathcal O_K^\times:\sigma_j(u)&gt;0\text{ for all real embeddings }\sigma_j\}
+\]</div>
+<p>be the group of totally positive units. Define the logarithmic embedding</p>
+<div class="math-block">\[
+\lambda:E_K^+\to H_n,
+\qquad
+\lambda(u):=(\log\sigma_1(u),\dots,\log\sigma_n(u)),
+\]</div>
+<p>where</p>
+<div class="math-block">\[
+H_n:=\left\{x\in\mathbb R^n:\sum_{j=1}^n x_j=0\right\}.
+\]</div>
+<p>The image</p>
+<div class="math-block">\[
+\Lambda_K^+:=\lambda(E_K^+)
+\]</div>
+<p>is a full lattice in \(H_n\). Since \(E_K^+\) has index at most \(2^n\) in \(\mathcal O_K^\times\), and since the Euclidean covolume of the full logarithmic unit lattice is \(\sqrt n R_K\), there is a constant \(C_\Lambda\) such that</p>
+<div class="math-block">\[
+\operatorname{covol}_{H_n}(\Lambda_K^+)\le e^{C_\Lambda n}.
+\tag{1}
+\]</div>
+<hr>
+<h2>1. Uniform separation of totally positive units</h2>
+<p>We prove an elementary separation lemma.</p>
+<h3>Lemma 1.1</h3>
+<p>There exists an absolute constant \(\mu&gt;0\) such that for every totally real field \(K\) of degree \(n\), and every nontrivial totally positive unit \(w\in E_K^+\), one has</p>
+<div class="math-block">\[
+\|\lambda(w)\|_1\ge \mu n.
+\]</div>
+<p>Consequently, for distinct \(u,v\in E_K^+\),</p>
+<div class="math-block">\[
+\|\lambda(u)-\lambda(v)\|_1\ge \mu n.
+\]</div>
+<h3>Proof</h3>
+<p>Choose \(\mu&gt;0\) so small that</p>
+<div class="math-block">\[
+\mu e^\mu&lt;1.
+\]</div>
+<p>For example, \(\mu=1/4\) works.</p>
+<p>Let</p>
+<div class="math-block">\[
+x_j:=\log\sigma_j(w).
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+\sigma_j(w)=e^{x_j}.
+\]</div>
+<p>Since \(w\neq1\), the algebraic integer \(w-1\) is nonzero. Hence</p>
+<div class="math-block">\[
+|N_{K/\mathbb Q}(w-1)|
+=
+\prod_{j=1}^n |e^{x_j}-1|
+\ge 1.
+\]</div>
+<p>On the other hand,</p>
+<div class="math-block">\[
+|e^x-1|\le e^{|x|}|x|
+\]</div>
+<p>for every real \(x\). Thus, writing</p>
+<div class="math-block">\[
+S:=\sum_{j=1}^n |x_j|=\|\lambda(w)\|_1,
+\]</div>
+<p>we get</p>
+<div class="math-block">\[
+1
+\le
+\prod_{j=1}^n |e^{x_j}-1|
+\le
+e^S\prod_{j=1}^n |x_j|
+\le
+e^S\left(\frac Sn\right)^n
+=
+\left(e^{S/n}\frac Sn\right)^n.
+\]</div>
+<p>If \(S\le \mu n\), then</p>
+<div class="math-block">\[
+\left(e^{S/n}\frac Sn\right)^n
+\le
+(\mu e^\mu)^n&lt;1,
+\]</div>
+<p>a contradiction. Therefore \(S&gt;\mu n\), proving the claim.</p>
+<p>For distinct \(u,v\in E_K^+\), apply this to \(w=uv^{-1}\neq1\). ∎</p>
+<hr>
+<h2>2. Geometry of the logarithmic lattice</h2>
+<p>For \(L&gt;0\), define</p>
+<div class="math-block">\[
+C_L:=\{x\in H_n:\|x\|_\infty\le L\}.
+\]</div>
+<p>We need three elementary facts.</p>
+<h3>Lemma 2.1</h3>
+<p>There is an absolute constant \(c&gt;0\) such that</p>
+<div class="math-block">\[
+\operatorname{vol}_{H_n}(C_L)\ge (cL)^{n-1}.
+\]</div>
+<p>In particular,</p>
+<div class="math-block">\[
+\operatorname{vol}_{H_n}(C_L)\ge \frac{(2L)^{n-1}}{\sqrt n}.
+\]</div>
+<h3>Proof</h3>
+<p>For \(L=1\), \(C_1\) is the central hyperplane section of the cube \([-1,1]^n\). By the coarea formula,</p>
+<div class="math-block">\[
+2^n
+=
+\frac1{\sqrt n}\int_{-n}^n
+\operatorname{vol}_{n-1}\{x\in[-1,1]^n:\sum x_j=t\}\,dt.
+\]</div>
+<p>The central section is maximal by Brunn–Minkowski symmetry, so</p>
+<div class="math-block">\[
+2^n
+\le
+\frac{2n}{\sqrt n}\operatorname{vol}_{H_n}(C_1)
+=
+2\sqrt n\,\operatorname{vol}_{H_n}(C_1).
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+\operatorname{vol}_{H_n}(C_1)\ge \frac{2^{n-1}}{\sqrt n}.
+\]</div>
+<p>Scaling gives the result. ∎</p>
+<hr>
+<h3>Lemma 2.2</h3>
+<p>If \(K\) is a centrally symmetric convex body in a real vector space of dimension \(d\), then \(4K\) can be covered by at most \(9^d\) translates of \(K\).</p>
+<h3>Proof</h3>
+<p>Take a maximal set \(Y\subset4K\) such that the translates</p>
+<div class="math-block">\[
+y+\frac12K,\qquad y\in Y,
+\]</div>
+<p>are pairwise disjoint. These translates lie inside</p>
+<div class="math-block">\[
+4K+\frac12K=\frac92K.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|Y|\operatorname{vol}\left(\frac12K\right)
+\le
+\operatorname{vol}\left(\frac92K\right),
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+|Y|\le 9^d.
+\]</div>
+<p>By maximality,</p>
+<div class="math-block">\[
+4K\subset Y+K.
+\]</div>
+<p>∎</p>
+<hr>
+<h3>Lemma 2.3</h3>
+<p>Let \(\Lambda=\Lambda_K^+\subset H_n\). Every \(\ell^1\)-ball in \(H_n\) of radius \(\eta n\) contains at most</p>
+<div class="math-block">\[
+\left(1+\frac{2\eta}{\mu}\right)^{n-1}
+\]</div>
+<p>points of any coset of \(\Lambda\).</p>
+<h3>Proof</h3>
+<p>Distinct points in a coset of \(\Lambda\) differ by a nonzero element of \(\Lambda\), so by Lemma 1.1 they are separated by at least \(\mu n\) in \(\ell^1\).</p>
+<p>If \(m\) such points lie in an \(\ell^1\)-ball of radius \(\eta n\), then the \(\ell^1\)-balls of radius \(\mu n/2\) around them are disjoint and lie inside an \(\ell^1\)-ball of radius</p>
+<div class="math-block">\[
+\eta n+\frac{\mu n}{2}.
+\]</div>
+<p>Since volumes scale by the \((n-1)\)-st power in \(H_n\),</p>
+<div class="math-block">\[
+m\le
+\left(
+\frac{\eta+\mu/2}{\mu/2}
+\right)^{n-1}
+=
+\left(1+\frac{2\eta}{\mu}\right)^{n-1}.
+\]</div>
+<p>∎</p>
+<hr>
+<h2>3. Construction of many bounded-height units</h2>
+<p>Fix \(T\ge2\) and \(\eta&gt;0\). Let</p>
+<div class="math-block">\[
+D_\eta:=\log\left(1+\frac{2\eta}{\mu}\right).
+\]</div>
+<h3>Proposition 3.1</h3>
+<p>For all sufficiently large fields \(K\) in the tower, there exists a finite set</p>
+<div class="math-block">\[
+U\subset E_K^+
+\]</div>
+<p>such that:</p>
+<ol>
+<li><p>for all \(u\in U\) and all embeddings \(\sigma_j\),</p>
+<div class="math-block">\[
+|\log\sigma_j(u)|\le T;
+\]</div></li>
+<li><p>for constants \(C_0,C_1\) independent of \(T,\eta,K\),</p>
+<div class="math-block">\[
+|U|\ge
+\exp\bigl((\log T-C_0-D_\eta)n\bigr);
+\tag{2}
+\]</div></li>
+<li><p>also</p>
+<div class="math-block">\[
+|U|\le
+\exp\bigl((\log T+C_1)n\bigr);
+\tag{3}
+\]</div></li>
+<li><p>and</p>
+<div class="math-block">\[
+|UU|\le
+\exp\bigl((\log9+D_\eta)n\bigr)|U|;
+\tag{4}
+\]</div></li>
+<li><p>moreover, for distinct \(u,v\in U\),</p>
+<div class="math-block">\[
+\|\lambda(u)-\lambda(v)\|_1\ge \eta n.
+\tag{5}
+\]</div></li>
+</ol>
+<h3>Proof</h3>
+<p>Let</p>
+<div class="math-block">\[
+\Lambda:=\Lambda_K^+\subset H_n.
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+M:=\max_{x\in H_n}|\Lambda\cap(x+C_{T/2})|.
+\]</div>
+<p>By Blichfeldt’s theorem,</p>
+<div class="math-block">\[
+M\ge
+\frac{\operatorname{vol}_{H_n}(C_{T/2})}{\operatorname{covol}(\Lambda)}.
+\]</div>
+<p>Using Lemma 2.1 and (1),</p>
+<div class="math-block">\[
+M
+\ge
+\frac{T^{n-1}/\sqrt n}{e^{C_\Lambda n}}.
+\]</div>
+<p>For fixed \(T\), after discarding finitely many fields, this gives</p>
+<div class="math-block">\[
+M\ge \exp((\log T-C_0)n)
+\tag{6}
+\]</div>
+<p>for some constant \(C_0\).</p>
+<p>Choose \(x\) attaining \(M\), and set</p>
+<div class="math-block">\[
+S:=\Lambda\cap(x+C_{T/2}).
+\]</div>
+<p>Choose \(\lambda_0\in S\), and define</p>
+<div class="math-block">\[
+P_0:=S-\lambda_0.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+P_0\subset \Lambda\cap C_T
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|P_0|=M.
+\]</div>
+<p>Now</p>
+<div class="math-block">\[
+P_0+P_0\subset \Lambda\cap C_{2T}.
+\]</div>
+<p>But</p>
+<div class="math-block">\[
+C_{2T}=4C_{T/2}.
+\]</div>
+<p>By Lemma 2.2, \(C_{2T}\) can be covered by at most \(9^{n-1}\) translates of \(C_{T/2}\). Each translate contains at most \(M\) lattice points by the definition of \(M\). Hence</p>
+<div class="math-block">\[
+|P_0+P_0|\le 9^{n-1}M.
+\tag{7}
+\]</div>
+<p>Next choose a maximal subset</p>
+<div class="math-block">\[
+P\subset P_0
+\]</div>
+<p>with pairwise \(\ell^1\)-distances at least \(\eta n\). Then the \(\ell^1\)-balls of radius \(\eta n\) around \(P\) cover \(P_0\). By Lemma 2.3, each such ball contains at most</p>
+<div class="math-block">\[
+\left(1+\frac{2\eta}{\mu}\right)^{n-1}
+\]</div>
+<p>points of \(P_0\). Therefore</p>
+<div class="math-block">\[
+|P|
+\ge
+\frac{M}{(1+2\eta/\mu)^{n-1}}
+\ge
+\exp\bigl((\log T-C_0-D_\eta)n\bigr).
+\]</div>
+<p>Also \(P\subset C_T\), so \(P\) lies inside an \(\ell^1\)-ball of radius \(Tn\). By Lemma 2.3,</p>
+<div class="math-block">\[
+|P|\le
+\left(1+\frac{2T}{\mu}\right)^{n-1}
+\le
+\exp((\log T+C_1)n)
+\]</div>
+<p>for some absolute \(C_1\).</p>
+<p>Finally,</p>
+<div class="math-block">\[
+|P+P|
+\le
+|P_0+P_0|
+\le
+9^{n-1}M
+\le
+9^{n-1}
+\left(1+\frac{2\eta}{\mu}\right)^{n-1}|P|.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|P+P|
+\le
+\exp((\log9+D_\eta)n)|P|.
+\]</div>
+<p>Since \(\lambda:E_K^+\to\Lambda_K^+\) is injective, let \(U\subset E_K^+\) be the unique set with</p>
+<div class="math-block">\[
+\lambda(U)=P.
+\]</div>
+<p>Then all desired properties follow. ∎</p>
+<hr>
+<h2>4. Algebraic-integer counting lemmas</h2>
+<p>For \(x\in K\), write</p>
+<div class="math-block">\[
+\|x\|_\infty:=\max_j|\sigma_j(x)|.
+\]</div>
+<h3>Lemma 4.1</h3>
+<p>If \(X_1,\dots,X_n\ge1\), then</p>
+<div class="math-block">\[
+\left|
+\{a\in\mathcal O_K:|\sigma_j(a)|\le X_j\text{ for all }j\}
+\right|
+\le
+\prod_{j=1}^n 4X_j.
+\]</div>
+<h3>Proof</h3>
+<p>Partition each interval \([-X_j,X_j]\) into at most \(4X_j\) intervals of length \(&lt;1\). If two distinct algebraic integers \(a,b\) lie in the same small box, then</p>
+<div class="math-block">\[
+|\sigma_j(a-b)|&lt;1
+\]</div>
+<p>for all \(j\). Hence</p>
+<div class="math-block">\[
+0&lt;|N_{K/\mathbb Q}(a-b)|&lt;1,
+\]</div>
+<p>impossible because the norm is a nonzero integer. ∎</p>
+<hr>
+<h3>Lemma 4.2</h3>
+<p>For every \(R\ge1\), there exists \(B\subset\mathcal O_K\) such that</p>
+<div class="math-block">\[
+\|b\|_\infty\le R
+\]</div>
+<p>for all \(b\in B\), and</p>
+<div class="math-block">\[
+|B|\ge R^n|\Delta_K|^{-1/2}.
+\]</div>
+<h3>Proof</h3>
+<p>Under the Minkowski embedding,</p>
+<div class="math-block">\[
+\sigma(\mathcal O_K)\subset\mathbb R^n
+\]</div>
+<p>is a lattice of covolume \(|\Delta_K|^{1/2}\).</p>
+<p>By Blichfeldt’s theorem, some translate of \([0,R)^n\) contains at least</p>
+<div class="math-block">\[
+R^n|\Delta_K|^{-1/2}
+\]</div>
+<p>lattice points. Subtract one of those points from all the others. The resulting differences correspond to algebraic integers lying in \([-R,R]^n\). ∎</p>
+<hr>
+<h3>Lemma 4.3</h3>
+<p>Let \(B\subset\mathcal O_K\) satisfy \(\|b\|_\infty\le R\). Let \(u,v\in E_K^+\) satisfy</p>
+<div class="math-block">\[
+|\log\sigma_j(u)|,\ |\log\sigma_j(v)|\le T
+\]</div>
+<p>for all \(j\), and assume</p>
+<div class="math-block">\[
+Re^{-T}\ge1.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+|uB\cap vB|
+\le
+(4R)^n
+\exp\left(-\frac12\|\lambda(u)-\lambda(v)\|_1\right).
+\]</div>
+<h3>Proof</h3>
+<p>If \(z\in uB\cap vB\), then</p>
+<div class="math-block">\[
+z=ub_1=vb_2
+\]</div>
+<p>for some \(b_1,b_2\in B\). Therefore</p>
+<div class="math-block">\[
+|\sigma_j(z)|
+\le
+R\min(\sigma_j(u),\sigma_j(v)).
+\]</div>
+<p>Since \(Re^{-T}\ge1\), all these radii are at least \(1\). Lemma 4.1 gives</p>
+<div class="math-block">\[
+|uB\cap vB|
+\le
+\prod_{j=1}^n 4R\min(\sigma_j(u),\sigma_j(v)).
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+a_j:=\log\sigma_j(u),
+\qquad
+b_j:=\log\sigma_j(v).
+\]</div>
+<p>Because \(u,v\) are units,</p>
+<div class="math-block">\[
+\sum_j a_j=\sum_j b_j=0.
+\]</div>
+<p>Also</p>
+<div class="math-block">\[
+\log\min(e^{a_j},e^{b_j})
+=
+\frac{a_j+b_j-|a_j-b_j|}{2}.
+\]</div>
+<p>Summing over \(j\),</p>
+<div class="math-block">\[
+\sum_j \log\min(\sigma_j(u),\sigma_j(v))
+=
+-\frac12\sum_j|a_j-b_j|.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+\prod_j\min(\sigma_j(u),\sigma_j(v))
+=
+\exp\left(-\frac12\|\lambda(u)-\lambda(v)\|_1\right),
+\]</div>
+<p>as required. ∎</p>
+<hr>
+<h2>5. Choice of parameters</h2>
+<p>From Proposition 3.1, define</p>
+<div class="math-block">\[
+s_-:=\log T-C_0-D_\eta,
+\]</div>
+<div class="math-block">\[
+s_+:=\log T+C_1,
+\]</div>
+<div class="math-block">\[
+\kappa:=\log9+D_\eta.
+\]</div>
+<p>Now choose</p>
+<div class="math-block">\[
+\eta:=3\log T+2(C_1+q+\log4+1).
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+\frac\eta2-s_+-q-\log4
+=
+\frac12\log T+1.
+\tag{8}
+\]</div>
+<p>Since</p>
+<div class="math-block">\[
+D_\eta=\log\left(1+\frac{2\eta}{\mu}\right)=O(\log\log T),
+\]</div>
+<p>we have</p>
+<div class="math-block">\[
+2s_- -s_+-\kappa-2q-\log4
+=
+\log T-3D_\eta-O(1)\to\infty
+\]</div>
+<p>as \(T\to\infty\). Therefore choose \(T\) sufficiently large so that</p>
+<div class="math-block">\[
+s_-&gt;0,
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+S_\Pi:=2s_- -s_+-\kappa-2q-\log4&gt;0.
+\tag{9}
+\]</div>
+<p>Also choose \(T\) large enough that \(\eta&lt;T\).</p>
+<p>Now set</p>
+<div class="math-block">\[
+r:=2T+2q+\log8+1,
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+a:=s_-+r-q.
+\]</div>
+<p>Then \(a&gt;0\) and \(r&gt;T\).</p>
+<p>Define the sumset slack</p>
+<div class="math-block">\[
+S_\Sigma:=2a-(r+T+\log8).
+\]</div>
+<p>Using the definition of \(r\),</p>
+<div class="math-block">\[
+S_\Sigma
+=
+T+1+2s_-&gt;0.
+\tag{10}
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+S:=\min(S_\Pi,S_\Sigma)&gt;0.
+\]</div>
+<p>Finally define</p>
+<div class="math-block">\[
+\delta:=\frac{S}{4a}&gt;0.
+\tag{11}
+\]</div>
+<p>This is now a fixed absolute constant.</p>
+<hr>
+<h2>6. Construction of \(A_K\)</h2>
+<p>Let \(K\) be a sufficiently large field in the tower, with degree \(n\).</p>
+<p>By Proposition 3.1, choose \(U\subset E_K^+\) such that</p>
+<div class="math-block">\[
+|U|\ge e^{s_-n},
+\tag{12}
+\]</div>
+<div class="math-block">\[
+|U|\le e^{s_+n},
+\tag{13}
+\]</div>
+<div class="math-block">\[
+|UU|\le e^{\kappa n}|U|,
+\tag{14}
+\]</div>
+<div class="math-block">\[
+|\log\sigma_j(u)|\le T
+\tag{15}
+\]</div>
+<p>for all \(u\in U\), and</p>
+<div class="math-block">\[
+\|\lambda(u)-\lambda(v)\|_1\ge \eta n
+\tag{16}
+\]</div>
+<p>for distinct \(u,v\in U\).</p>
+<p>Let</p>
+<div class="math-block">\[
+R:=e^r.
+\]</div>
+<p>By Lemma 4.2, choose \(B\subset\mathcal O_K\) such that</p>
+<div class="math-block">\[
+\|b\|_\infty\le R
+\tag{17}
+\]</div>
+<p>for all \(b\in B\), and</p>
+<div class="math-block">\[
+|B|\ge R^n|\Delta_K|^{-1/2}.
+\]</div>
+<p>Since \(|\Delta_K|^{1/2}\le e^{qn}\),</p>
+<div class="math-block">\[
+|B|\ge e^{(r-q)n}.
+\tag{18}
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+A_K:=UB=\{ub:u\in U,\ b\in B\}\subset K.
+\]</div>
+<hr>
+<h2>7. Lower bound for \(|A_K|\)</h2>
+<p>For \(x\in K\), let</p>
+<div class="math-block">\[
+m(x):=\#\{u\in U:x\in uB\}.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+\sum_x m(x)=|U||B|.
+\tag{19}
+\]</div>
+<p>Also</p>
+<div class="math-block">\[
+\sum_x m(x)^2
+=
+\sum_{u,v\in U}|uB\cap vB|.
+\tag{20}
+\]</div>
+<p>For \(u=v\), the intersection has size \(|B|\). For \(u\ne v\), Lemma 4.3 applies because \(r&gt;T\), so \(Re^{-T}\ge1\). Using (16),</p>
+<div class="math-block">\[
+|uB\cap vB|
+\le
+(4R)^n e^{-\eta n/2}.
+\]</div>
+<p>By (18),</p>
+<div class="math-block">\[
+R^n\le e^{qn}|B|.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+|uB\cap vB|
+\le
+e^{(\log4+q-\eta/2)n}|B|.
+\]</div>
+<p>Using (8), this becomes</p>
+<div class="math-block">\[
+|uB\cap vB|
+\le
+e^{-(s_++\gamma)n}|B|,
+\]</div>
+<p>where</p>
+<div class="math-block">\[
+\gamma:=\frac12\log T+1&gt;0.
+\]</div>
+<p>Therefore, using (13),</p>
+<div class="math-block">\[
+\sum_x m(x)^2
+\le
+|U||B|+|U|^2e^{-(s_++\gamma)n}|B|
+\le
+(1+e^{-\gamma n})|U||B|.
+\]</div>
+<p>By Cauchy–Schwarz,</p>
+<div class="math-block">\[
+|A_K|
+\ge
+\frac{(\sum_x m(x))^2}{\sum_xm(x)^2}
+\ge
+\frac{|U||B|}{1+e^{-\gamma n}}.
+\]</div>
+<p>For all sufficiently large \(n\),</p>
+<div class="math-block">\[
+|A_K|\ge \frac12|U||B|.
+\]</div>
+<p>Using (12) and (18),</p>
+<div class="math-block">\[
+|A_K|\ge \frac12 e^{(s_-+r-q)n}
+=
+\frac12 e^{an}.
+\tag{21}
+\]</div>
+<hr>
+<h2>8. Sumset bound</h2>
+<p>Every \(x\in A_K\) has the form \(x=ub\), with \(u\in U\), \(b\in B\). By (15) and (17),</p>
+<div class="math-block">\[
+|\sigma_j(x)|
+\le
+e^T R
+=
+e^{T+r}.
+\]</div>
+<p>Thus every element of \(A_K+A_K\) has all conjugates bounded by</p>
+<div class="math-block">\[
+2e^{T+r}.
+\]</div>
+<p>By Lemma 4.1,</p>
+<div class="math-block">\[
+|A_K+A_K|
+\le
+(8e^{T+r})^n
+=
+e^{(r+T+\log8)n}.
+\]</div>
+<p>By definition of \(S_\Sigma\),</p>
+<div class="math-block">\[
+r+T+\log8
+=
+2a-S_\Sigma.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|A_K+A_K|
+\le
+e^{(2a-S)n}.
+\tag{22}
+\]</div>
+<hr>
+<h2>9. Product-set bound</h2>
+<p>We have</p>
+<div class="math-block">\[
+A_KA_K\subset (UU)(BB).
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+|A_KA_K|\le |UU|\,|BB|.
+\]</div>
+<p>By (14) and (13),</p>
+<div class="math-block">\[
+|UU|\le e^{(\kappa+s_+)n}.
+\]</div>
+<p>Also, by (17),</p>
+<div class="math-block">\[
+BB\subset\{x\in\mathcal O_K:\|x\|_\infty\le R^2\}.
+\]</div>
+<p>Lemma 4.1 gives</p>
+<div class="math-block">\[
+|BB|\le (4R^2)^n=e^{(2r+\log4)n}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|A_KA_K|
+\le
+e^{(2r+s_++\kappa+\log4)n}.
+\]</div>
+<p>Using</p>
+<div class="math-block">\[
+a=s_-+r-q,
+\]</div>
+<p>we compute</p>
+<div class="math-block">\[
+2a-(2r+s_++\kappa+\log4)
+=
+2s_- -s_+-\kappa-2q-\log4
+=
+S_\Pi.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+|A_KA_K|
+\le
+e^{(2a-S_\Pi)n}
+\le
+e^{(2a-S)n}.
+\tag{23}
+\]</div>
+<hr>
+<h2>10. Comparison with \(|A_K|^{2-\delta}\)</h2>
+<p>From (21),</p>
+<div class="math-block">\[
+|A_K|\ge \frac12e^{an}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|A_K|^{2-\delta}
+\ge
+2^{-(2-\delta)}e^{(2-\delta)an}.
+\]</div>
+<p>Since \(\delta=S/(4a)\),</p>
+<div class="math-block">\[
+(2-\delta)a
+=
+2a-\frac S4.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+e^{(2a-S)n}
+=
+e^{((2-\delta)a-\frac34S)n}.
+\]</div>
+<p>For all sufficiently large \(n\), the factor \(e^{-3Sn/4}\) dominates the fixed constant \(2^{-(2-\delta)}\). Therefore, using (22) and (23),</p>
+<div class="math-block">\[
+|A_K+A_K|\le |A_K|^{2-\delta},
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|A_KA_K|\le |A_K|^{2-\delta}.
+\]</div>
+<hr>
+<h2>11. Embedding into \(\mathbb R\)</h2>
+<p>Choose one real embedding</p>
+<div class="math-block">\[
+\sigma_1:K\hookrightarrow\mathbb R.
+\]</div>
+<p>Set</p>
+<div class="math-block">\[
+A:=\sigma_1(A_K)\subset\mathbb R.
+\]</div>
+<p>Because \(\sigma_1\) is an injective field homomorphism,</p>
+<div class="math-block">\[
+|A|=|A_K|,
+\qquad
+|A+A|=|A_K+A_K|,
+\qquad
+|AA|=|A_KA_K|.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+\max(|A+A|,|AA|)
+\le
+|A|^{2-\delta}.
+\]</div>
+<p>Applying this construction to infinitely many sufficiently large fields in the tower gives finite sets</p>
+<div class="math-block">\[
+A_i\subset\mathbb R
+\]</div>
+<p>with</p>
+<div class="math-block">\[
+|A_i|\ge \frac12e^{a n_i}\to\infty
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\max(|A_i+A_i|,|A_iA_i|)
+\le
+|A_i|^{2-\delta}.
+\]</div>
+<p>This proves the theorem. ∎</p>
+<hr>
+</main>
+</body>
+</html>

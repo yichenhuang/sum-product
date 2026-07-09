@@ -1,0 +1,2684 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Transcript</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <style>
+    body {
+      margin: 0;
+      background: #f7f7f4;
+      color: #1f2328;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.62;
+    }
+    main {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 40px 28px 80px;
+      background: #fff;
+      min-height: 100vh;
+      box-shadow: 0 0 0 1px #e4e4df;
+    }
+    h1, h2, h3 { line-height: 1.25; margin-top: 1.7em; }
+    h1 { font-size: 30px; }
+    h2 { font-size: 24px; border-bottom: 1px solid #e5e5e0; padding-bottom: 4px; }
+    h3 { font-size: 19px; }
+    p { margin: 0 0 1em; }
+    blockquote {
+      border-left: 4px solid #b8c4d6;
+      margin: 1.2em 0;
+      padding: 0.2em 1em;
+      background: #f7f9fc;
+    }
+    pre {
+      overflow-x: auto;
+      background: #f2f2ee;
+      padding: 12px;
+      border-radius: 6px;
+    }
+    code {
+      background: #f2f2ee;
+      padding: 1px 4px;
+      border-radius: 4px;
+    }
+    pre code {
+      background: none;
+      padding: 0;
+    }
+    .math-block {
+      overflow-x: auto;
+      margin: 1.1em 0;
+      padding: 0.2em 0;
+    }
+    mjx-container {
+      overflow-x: auto;
+      overflow-y: hidden;
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Transcript</h1>
+<h2>System prompt</h2>
+<blockquote><p>The provided theorem was recently proved, and the result is now accepted by the mathematical community. Your task is to independently construct a proof.</p></blockquote>
+<hr>
+<h1>Round 1</h1>
+<h2>User</h2>
+<blockquote><p><strong>Theorem.</strong> There exist an absolute constant $\delta &gt; 0$ and an infinite sequence $\{A_i\}$ of finite subsets of $\mathbb{R}$ such that $|A_i| \to \infty$ and $\max(|A_i+A_i|, |A_iA_i|) \le |A_i|^{2-\delta}$ for all $i$, where $A_i+A_i = \{ a+b : a,b \in A_i \}$ and $A_iA_i = \{ ab : a,b \in A_i \}$ are the sumset and product set of $A_i$, respectively.</p>
+<p><strong>Remark.</strong> This result disproves the Erdős–Szemerédi Sum-Product Conjecture over $\mathbb{R}$.</p>
+<hr>
+<p>As a first step toward a complete proof, identify the most promising approach and develop it as far as possible. Present a step-by-step proof plan. Prove any intermediate claims you can. For each remaining gap, state it precisely and assess whether it can plausibly be closed within the approach or poses a serious obstruction. Include enough detail for the next round to continue from where you leave off.</p></blockquote>
+<h2>Assistant</h2>
+<p>Below is the approach I would pursue first.  It is not the “usual” smooth-number/integer-multiplication-table approach; that approach seems unable to give a fixed power saving.  The more promising mechanism is:</p>
+<blockquote><p><strong>Use high-degree totally real number fields with many small units.</strong>   Units give multiplicative collisions, while algebraic-integer boxes give additive density.</p></blockquote>
+<p>I will develop this quite far.  In fact, modulo a few standard number-theoretic inputs — especially the existence of infinite totally real towers of bounded root discriminant — the argument below already gives the theorem.  I will state those inputs precisely and isolate them as the main remaining gaps if one wants a fully self-contained proof.</p>
+<hr>
+<h1>1. Core idea</h1>
+<p>Suppose \(K/\mathbb Q\) is totally real of degree \(d\), with embeddings</p>
+<div class="math-block">\[
+\sigma_1,\dots,\sigma_d:K\hookrightarrow \mathbb R.
+\]</div>
+<p>Let \(\mathcal O_K\) be its ring of integers.  We will construct a finite set</p>
+<div class="math-block">\[
+A\subset \mathcal O_K
+\]</div>
+<p>and then view it as a subset of \(\mathbb R\) through one fixed embedding, say \(\sigma_1\).</p>
+<p>The construction has two pieces:</p>
+<ol>
+<li><p>A set \(U\) of <strong>small totally positive units</strong>:</p>
+<div class="math-block">\[
+U\subset \mathcal O_K^{\times,+},
+\]</div>
+<p>where “small” means</p>
+<div class="math-block">\[
+e^{-L}\le \sigma_j(u)\le e^L
+\qquad \text{for all } j=1,\dots,d.
+\]</div>
+<p>In high-degree fields with bounded root discriminant, there are exponentially many such units in \(d\), and their product set is still only exponentially larger:</p>
+<div class="math-block">\[
+|U|\ge \exp(c_1 d),\qquad |UU|\le \exp(c_2 d)|U|.
+\]</div>
+<p>More quantitatively, one gets \(|U|\asymp L^d\) and \(|UU|\ll (2L)^d\), so \(|UU|\ll |U|^2/L^d\), giving a power saving.</p></li>
+<li><p>A dense additive box \(B\subset \mathcal O_K\), shifted far away from the origin:</p>
+<div class="math-block">\[
+B=T+C,\qquad C=\{c\in \mathcal O_K: |\sigma_j(c)|\le R\ \forall j\}.
+\]</div>
+<p>The shift \(T\in \mathbb Z\) is chosen large compared to \(R\), so that the translates \(uB\), \(u\in U\), are disjoint.</p></li>
+</ol>
+<p>Then define</p>
+<div class="math-block">\[
+A:=UB=\{u b: u\in U,\ b\in B\}.
+\]</div>
+<p>The key estimates are:</p>
+<ul>
+<li>Because the sets \(uB\) are disjoint,</li>
+</ul>
+<div class="math-block">  \[
+  |A|=|U||B|.
+  \]</div>
+<ul>
+<li>The product set is controlled by</li>
+</ul>
+<div class="math-block">  \[
+  AA\subset (UU)(BB),
+  \]</div>
+<p>  hence</p>
+<div class="math-block">  \[
+  |AA|\le |UU||BB|\le |UU||B|^2.
+  \]</div>
+<p>  Since \(|A|^2=|U|^2|B|^2\), we save roughly a factor \(|U|^2/|UU|\), which is exponential in \(d\).</p>
+<ul>
+<li>The sumset is controlled because \(A\) lies in an archimedean box:</li>
+</ul>
+<div class="math-block">  \[
+  |\sigma_j(a)|\le e^L(T+R),
+  \]</div>
+<p>  so</p>
+<div class="math-block">  \[
+  A+A\subset \{x\in \mathcal O_K: |\sigma_j(x)|\le 2e^L(T+R)\ \forall j\}.
+  \]</div>
+<p>  Algebraic integers in such a box are separated in sup-norm, so this gives an upper bound of the shape</p>
+<div class="math-block">  \[
+  |A+A|\le \exp(Cd).
+  \]</div>
+<p>Choosing the constants \(L,R,T\) carefully gives</p>
+<div class="math-block">\[
+|A+A|,\ |AA|\le |A|^{2-\delta}
+\]</div>
+<p>for an absolute \(\delta&gt;0\).</p>
+<hr>
+<h1>2. Number-theoretic inputs</h1>
+<p>The approach needs the following standard inputs.</p>
+<h2>Input 1: Totally real bounded-root-discriminant tower</h2>
+<p>There exists an absolute constant \(\rho&gt;1\) and infinitely many totally real fields \(K_i/\mathbb Q\) with degrees</p>
+<div class="math-block">\[
+d_i=[K_i:\mathbb Q]\to\infty
+\]</div>
+<p>such that</p>
+<div class="math-block">\[
+|D_{K_i}|^{1/d_i}\le \rho.
+\]</div>
+<p>This is known from Martinet’s construction of infinite totally real class-field towers.  For the purposes of this proof plan, I will take it as an external input.</p>
+<hr>
+<h2>Input 2: Regulator bound in bounded-root-discriminant towers</h2>
+<p>For those fields \(K_i\), the regulator satisfies</p>
+<div class="math-block">\[
+R_{K_i}\le C_{\mathrm{reg}}^{d_i}
+\]</div>
+<p>for some absolute constant \(C_{\mathrm{reg}}\).</p>
+<p>This follows from the analytic class number formula plus a standard Landau-type upper bound for the residue of \(\zeta_K(s)\) at \(s=1\).  I spell out the argument below in §3.3.</p>
+<hr>
+<h2>Input 3: Schinzel’s height lower bound for totally real units</h2>
+<p>There is an absolute constant \(c_{\mathrm{Sch}}&gt;0\) such that if \(K\) is totally real and \(u\in \mathcal O_K^\times\) is a nontrivial unit, then</p>
+<div class="math-block">\[
+\max_{1\le j\le d} |\log |\sigma_j(u)||\ge c_{\mathrm{Sch}}.
+\]</div>
+<p>One may take, for example,</p>
+<div class="math-block">\[
+c_{\mathrm{Sch}}=\frac12\log\varphi,
+\qquad \varphi=\frac{1+\sqrt5}{2},
+\]</div>
+<p>up to harmless changes in constants.  This is a theorem of Schinzel: a totally real algebraic integer \(\alpha\notin\{-1,0,1\}\) has Mahler measure at least \(\varphi^{\deg(\alpha)/2}\).</p>
+<p>This gives a uniform separation property for the logarithmic unit lattice.</p>
+<hr>
+<h1>3. Preliminary lemmas</h1>
+<p>We now prove the elementary pieces needed for the construction.</p>
+<hr>
+<h2>3.1. Minkowski embedding and algebraic-integer separation</h2>
+<p>Let \(K/\mathbb Q\) be totally real of degree \(d\).  Write</p>
+<div class="math-block">\[
+\Phi:K\hookrightarrow \mathbb R^d,
+\qquad
+\Phi(x)=(\sigma_1(x),\dots,\sigma_d(x)).
+\]</div>
+<p>The image \(\Phi(\mathcal O_K)\) is a lattice in \(\mathbb R^d\) of covolume</p>
+<div class="math-block">\[
+\operatorname{covol}(\Phi(\mathcal O_K))=\sqrt{|D_K|}.
+\]</div>
+<p>We will use the sup-norm</p>
+<div class="math-block">\[
+\|x\|_\infty=\max_j |x_j|.
+\]</div>
+<h3>Lemma 3.1: Algebraic integers are sup-norm separated</h3>
+<p>If \(x,y\in \mathcal O_K\) and \(x\ne y\), then</p>
+<div class="math-block">\[
+\|\Phi(x)-\Phi(y)\|_\infty\ge 1.
+\]</div>
+<h3>Proof</h3>
+<p>Let \(\alpha=x-y\in \mathcal O_K\setminus\{0\}\).  Then</p>
+<div class="math-block">\[
+N_{K/\mathbb Q}(\alpha)=\prod_{j=1}^d \sigma_j(\alpha)
+\]</div>
+<p>is a nonzero integer, so</p>
+<div class="math-block">\[
+|N_{K/\mathbb Q}(\alpha)|\ge 1.
+\]</div>
+<p>If \(|\sigma_j(\alpha)|&lt;1\) for all \(j\), then the product would have absolute value \(&lt;1\), contradiction.  Hence some \(j\) satisfies \(|\sigma_j(\alpha)|\ge 1\).  Therefore</p>
+<div class="math-block">\[
+\|\Phi(x)-\Phi(y)\|_\infty\ge 1.
+\]</div>
+<p>\(\square\)</p>
+<hr>
+<h2>3.2. Counting lattice points in symmetric convex bodies</h2>
+<p>We need a lower bound of van der Corput type.</p>
+<h3>Lemma 3.2: van der Corput lower bound</h3>
+<p>Let \(\Lambda\subset \mathbb R^n\) be a lattice of covolume \(\det\Lambda\), and let \(K\subset \mathbb R^n\) be centrally symmetric and convex.  Then</p>
+<div class="math-block">\[
+|\Lambda\cap K|
+\ge
+\frac{\operatorname{vol}(K)}{2^n\det\Lambda}.
+\]</div>
+<p>Up to harmless floor/constant issues, this is the usual van der Corput lemma.</p>
+<h3>Proof sketch</h3>
+<p>Average the number of lattice points in translates of \(\frac12 K\) over the torus \(\mathbb R^n/\Lambda\).  The average is</p>
+<div class="math-block">\[
+\frac{\operatorname{vol}(K/2)}{\det\Lambda}
+=
+\frac{\operatorname{vol}(K)}{2^n\det\Lambda}.
+\]</div>
+<p>Thus some translate \(x+\frac12K\) contains at least this many lattice points.  Fix one such point \(p\).  Differences between the other points and \(p\) are distinct elements of \(\Lambda\cap K\), since</p>
+<div class="math-block">\[
+(x+\tfrac12K)-(x+\tfrac12K)\subset K.
+\]</div>
+<p>This gives the claimed lower bound. \(\square\)</p>
+<hr>
+<h2>3.3. Regulator bound from bounded root discriminant</h2>
+<p>Let \(K\) be totally real of degree \(d\), discriminant \(D_K\), regulator \(R_K\), class number \(h_K\), and residue</p>
+<div class="math-block">\[
+\kappa_K=\operatorname*{Res}_{s=1}\zeta_K(s).
+\]</div>
+<p>The analytic class number formula gives</p>
+<div class="math-block">\[
+\kappa_K
+=
+\frac{2^{d-1}h_KR_K}{\sqrt{|D_K|}}.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+R_K
+\le h_KR_K
+=
+\frac{\kappa_K\sqrt{|D_K|}}{2^{d-1}}.
+\]</div>
+<p>A standard Landau bound gives</p>
+<div class="math-block">\[
+\kappa_K
+\le
+\left(\frac{e\log |D_K|}{2(d-1)}\right)^{d-1}
+\]</div>
+<p>for \(d\ge 2\).  If \(|D_K|^{1/d}\le \rho\), then</p>
+<div class="math-block">\[
+\log |D_K|\le d\log \rho,
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+\kappa_K\le C_\rho^d
+\]</div>
+<p>for some constant \(C_\rho\).  Also</p>
+<div class="math-block">\[
+\sqrt{|D_K|}\le \rho^{d/2}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+R_K\le C_{\mathrm{reg}}^d
+\]</div>
+<p>for some absolute constant \(C_{\mathrm{reg}}\) depending only on \(\rho\).</p>
+<p>Now let</p>
+<div class="math-block">\[
+\mathcal O_K^{\times,+}
+=
+\{u\in \mathcal O_K^\times:\sigma_j(u)&gt;0\ \forall j\}
+\]</div>
+<p>be the group of totally positive units.  Its logarithmic embedding is</p>
+<div class="math-block">\[
+\ell:\mathcal O_K^{\times,+}\to H_d,
+\qquad
+\ell(u)=(\log\sigma_1(u),\dots,\log\sigma_d(u)),
+\]</div>
+<p>where</p>
+<div class="math-block">\[
+H_d=\left\{x\in \mathbb R^d:\sum_{j=1}^d x_j=0\right\}.
+\]</div>
+<p>The lattice</p>
+<div class="math-block">\[
+\Lambda_K^+:=\ell(\mathcal O_K^{\times,+})
+\subset H_d
+\]</div>
+<p>has rank \(d-1\).  Its covolume is at most \(2^d\sqrt d\,R_K\), because the totally positive units form a sublattice of index at most \(2^d\) in the full unit lattice.  Thus, after enlarging constants,</p>
+<div class="math-block">\[
+\operatorname{covol}(\Lambda_K^+)\le C_0^d
+\]</div>
+<p>for some absolute \(C_0\).</p>
+<hr>
+<h2>3.4. Volume of cube sections</h2>
+<p>Let</p>
+<div class="math-block">\[
+Q_d(L):=H_d\cap [-L,L]^d.
+\]</div>
+<p>There are absolute constants \(c_\square,C_\square&gt;0\) such that</p>
+<div class="math-block">\[
+(c_\square L)^{d-1}
+\le
+\operatorname{vol}_{H_d}(Q_d(L))
+\le
+(C_\square L)^{d-1}.
+\]</div>
+<p>This is a standard estimate for central hyperplane sections of cubes.  One way to see it is to identify the section volume with the density at \(0\) of the sum of \(d\) independent uniform random variables on \([-L,L]\), up to a factor \(\sqrt d\), and then use the local central limit theorem.  Ball’s cube-slicing theorem also gives this directly.</p>
+<p>For our purposes, the precise constants are irrelevant.</p>
+<hr>
+<h2>3.5. Counting small totally positive units</h2>
+<p>For \(L\ge 1\), define</p>
+<div class="math-block">\[
+U_K(L)
+:=
+\{u\in \mathcal O_K^{\times,+}: \|\ell(u)\|_\infty\le L\}.
+\]</div>
+<h3>Lemma 3.3: Lower and upper bounds for \(U_K(L)\)</h3>
+<p>There exist absolute constants \(a,b&gt;0\), depending only on the bounded-root-discriminant tower, such that for all sufficiently large \(L\) and all \(K\) in the tower,</p>
+<div class="math-block">\[
+|U_K(L)|\ge (aL)^d,
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|U_K(2L)|\le (bL)^d.
+\]</div>
+<h3>Proof</h3>
+<p><strong>Lower bound.</strong>  Apply Lemma 3.2 to the lattice \(\Lambda_K^+\subset H_d\) and the symmetric convex body \(Q_d(L)\).  Since</p>
+<div class="math-block">\[
+\operatorname{covol}(\Lambda_K^+)\le C_0^d
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\operatorname{vol}(Q_d(L))\ge (c_\square L)^{d-1},
+\]</div>
+<p>we get</p>
+<div class="math-block">\[
+|U_K(L)|
+=
+|\Lambda_K^+\cap Q_d(L)|
+\ge
+\frac{(c_\square L)^{d-1}}{2^{d-1}C_0^d}.
+\]</div>
+<p>After changing constants and assuming \(L\) is large enough, this gives</p>
+<div class="math-block">\[
+|U_K(L)|\ge (aL)^d.
+\]</div>
+<p><strong>Upper bound.</strong>  By Schinzel’s theorem, if \(u\in \mathcal O_K^{\times,+}\) is nontrivial, then</p>
+<div class="math-block">\[
+\|\ell(u)\|_\infty\ge c_{\mathrm{Sch}}.
+\]</div>
+<p>Therefore distinct points of the lattice \(\Lambda_K^+\) are separated by at least \(c_{\mathrm{Sch}}\) in sup-norm.</p>
+<p>Hence the translates</p>
+<div class="math-block">\[
+x+Q_d(c_{\mathrm{Sch}}/2),
+\qquad x\in \Lambda_K^+\cap Q_d(2L),
+\]</div>
+<p>have disjoint interiors and all lie in</p>
+<div class="math-block">\[
+Q_d(2L+c_{\mathrm{Sch}}/2).
+\]</div>
+<p>Using the cube-section volume estimates,</p>
+<div class="math-block">\[
+|U_K(2L)|
+\le
+\frac{\operatorname{vol}(Q_d(2L+c_{\mathrm{Sch}}/2))}
+{\operatorname{vol}(Q_d(c_{\mathrm{Sch}}/2))}
+\le
+(bL)^d
+\]</div>
+<p>for some absolute \(b&gt;0\). \(\square\)</p>
+<hr>
+<h2>3.6. Counting algebraic integers in archimedean boxes</h2>
+<p>For \(R\ge 1\), define</p>
+<div class="math-block">\[
+C_K(R):=\{c\in \mathcal O_K: \|\Phi(c)\|_\infty\le R\}.
+\]</div>
+<h3>Lemma 3.4: Size of \(C_K(R)\)</h3>
+<p>If \(|D_K|^{1/d}\le \rho\), then</p>
+<div class="math-block">\[
+|C_K(R)|\ge \left(\frac{R}{\sqrt\rho}\right)^d.
+\]</div>
+<p>Also,</p>
+<div class="math-block">\[
+|C_K(R)|\le (3R)^d.
+\]</div>
+<h3>Proof</h3>
+<p>The lower bound follows from Lemma 3.2 applied to \(\Phi(\mathcal O_K)\subset \mathbb R^d\) and the cube \([-R,R]^d\).  Since the covolume is \(\sqrt{|D_K|}\le \rho^{d/2}\),</p>
+<div class="math-block">\[
+|C_K(R)|
+\ge
+\frac{(2R)^d}{2^d\sqrt{|D_K|}}
+\ge
+\left(\frac{R}{\sqrt\rho}\right)^d.
+\]</div>
+<p>For the upper bound, use Lemma 3.1.  Distinct algebraic integers are separated by at least \(1\) in sup-norm.  Thus the closed cubes of side length \(1\) centered at the points of \(\Phi(C_K(R))\) have disjoint interiors and lie inside \([-R-1/2,R+1/2]^d\).  Hence</p>
+<div class="math-block">\[
+|C_K(R)|\le (2R+1)^d\le (3R)^d
+\]</div>
+<p>for \(R\ge 1\). \(\square\)</p>
+<hr>
+<h1>4. The construction inside one field</h1>
+<p>Fix one field \(K\) in the tower, of degree \(d\).</p>
+<p>Let \(L\ge 1\) and \(R\ge 1\) be constants to be chosen later, independently of \(K\).  Put</p>
+<div class="math-block">\[
+U:=U_K(L)
+=
+\{u\in \mathcal O_K^{\times,+}: \|\ell(u)\|_\infty\le L\}.
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+C:=C_K(R)
+=
+\{c\in \mathcal O_K: \|\Phi(c)\|_\infty\le R\}.
+\]</div>
+<p>We will shift \(C\) by a large rational integer \(T\).</p>
+<p>Let</p>
+<div class="math-block">\[
+\alpha:=1-e^{-c_{\mathrm{Sch}}}&gt;0.
+\]</div>
+<p>Choose</p>
+<div class="math-block">\[
+\kappa:=\frac{2(1+e^{2L})}{\alpha}
+\]</div>
+<p>and take an integer</p>
+<div class="math-block">\[
+T\ge \kappa R.
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+B:=T+C=\{T+c:c\in C\}.
+\]</div>
+<p>Finally define</p>
+<div class="math-block">\[
+A_K:=UB=\{u(T+c):u\in U,\ c\in C\}\subset \mathcal O_K.
+\]</div>
+<p>Later we set</p>
+<div class="math-block">\[
+A:=\sigma_1(A_K)\subset \mathbb R.
+\]</div>
+<p>Because \(\sigma_1\) is injective and preserves \(+\) and \(\cdot\), all cardinality estimates for \(A_K\) carry over to \(A\).</p>
+<hr>
+<h1>5. Disjointness of the unit translates</h1>
+<p>We need</p>
+<div class="math-block">\[
+|A_K|=|U||C|.
+\]</div>
+<p>For that it suffices to prove that the sets</p>
+<div class="math-block">\[
+uB,\qquad u\in U,
+\]</div>
+<p>are disjoint.</p>
+<h3>Lemma 5.1: The translates \(uB\) are disjoint</h3>
+<p>If \(u,v\in U\) and \(uB\cap vB\ne \varnothing\), then \(u=v\).</p>
+<h3>Proof</h3>
+<p>Suppose</p>
+<div class="math-block">\[
+u(T+c)=v(T+c&#x27;)
+\]</div>
+<p>for some \(c,c'\in C\).  If \(u=v\), then \(c=c'\).  Suppose \(u\ne v\).  Then \(w:=u/v\) is a nontrivial totally positive unit.</p>
+<p>By Schinzel’s separation,</p>
+<div class="math-block">\[
+\|\ell(w)\|_\infty\ge c_{\mathrm{Sch}}.
+\]</div>
+<p>Thus for some embedding \(j\),</p>
+<div class="math-block">\[
+|\log\sigma_j(w)|\ge c_{\mathrm{Sch}}.
+\]</div>
+<p>Since \(w\) is totally positive,</p>
+<div class="math-block">\[
+|\sigma_j(w)-1|\ge \alpha.
+\]</div>
+<p>Also, because \(u,v\in U_K(L)\),</p>
+<div class="math-block">\[
+e^{-2L}\le \sigma_j(w)\le e^{2L}.
+\]</div>
+<p>Apply \(\sigma_j\) to the equality \(u(T+c)=v(T+c')\) and divide by \(\sigma_j(v)\).  We get</p>
+<div class="math-block">\[
+\sigma_j(w)(T+\sigma_j(c))=T+\sigma_j(c&#x27;).
+\]</div>
+<p>Rearranging,</p>
+<div class="math-block">\[
+(\sigma_j(w)-1)T
+=
+\sigma_j(c&#x27;)-\sigma_j(w)\sigma_j(c).
+\]</div>
+<p>Taking absolute values,</p>
+<div class="math-block">\[
+\alpha T
+\le
+|\sigma_j(w)-1|T
+\le
+|\sigma_j(c&#x27;)|+|\sigma_j(w)||\sigma_j(c)|
+\le
+R+e^{2L}R
+=
+(1+e^{2L})R.
+\]</div>
+<p>But \(T\ge \kappa R\), and</p>
+<div class="math-block">\[
+\kappa=\frac{2(1+e^{2L})}{\alpha},
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+\alpha T
+\ge
+2(1+e^{2L})R,
+\]</div>
+<p>a contradiction.  Therefore \(u=v\). \(\square\)</p>
+<p>Thus</p>
+<div class="math-block">\[
+|A_K|=|U||C|.
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+N:=|A_K|.
+\]</div>
+<p>By Lemmas 3.3 and 3.4,</p>
+<div class="math-block">\[
+N=|U||C|
+\ge
+(aL)^d\left(\frac{R}{\sqrt\rho}\right)^d
+=
+\left(\frac{aLR}{\sqrt\rho}\right)^d.
+\]</div>
+<p>Also,</p>
+<div class="math-block">\[
+N
+\le
+|U_K(2L)|\,|C|
+\le
+(bL)^d(3R)^d
+=
+(3bLR)^d.
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+n_-:=\log\left(\frac{aLR}{\sqrt\rho}\right),
+\qquad
+n_+:=\log(3bLR).
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+e^{n_-d}\le N\le e^{n_+d}.
+\]</div>
+<hr>
+<h1>6. Sumset estimate</h1>
+<p>Every element of \(A_K\) has the form</p>
+<div class="math-block">\[
+u(T+c),
+\qquad u\in U,\ c\in C.
+\]</div>
+<p>For every embedding \(\sigma_j\),</p>
+<div class="math-block">\[
+|\sigma_j(u(T+c))|
+\le
+e^L(T+R).
+\]</div>
+<p>Since \(T\le \kappa R+1\), and \(R\ge 1\), we may absorb constants and write</p>
+<div class="math-block">\[
+T+R\le (\kappa+2)R.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|\sigma_j(a)|\le e^L(\kappa+2)R
+\qquad \forall a\in A_K,\ \forall j.
+\]</div>
+<p>Therefore for \(a,a'\in A_K\),</p>
+<div class="math-block">\[
+|\sigma_j(a+a&#x27;)|
+\le
+2e^L(\kappa+2)R.
+\]</div>
+<p>By Lemma 3.1, the number of algebraic integers whose conjugates all have absolute value at most \(S\) is at most \((2S+1)^d\).  Taking</p>
+<div class="math-block">\[
+S=2e^L(\kappa+2)R,
+\]</div>
+<p>we get</p>
+<div class="math-block">\[
+|A_K+A_K|
+\le
+\left(4e^L(\kappa+2)R+1\right)^d.
+\]</div>
+<p>For simplicity, define</p>
+<div class="math-block">\[
+s:=\log\left(5e^L(\kappa+2)R\right).
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+|A_K+A_K|\le e^{sd}.
+\]</div>
+<p>Since \(N\ge e^{n_-d}\), we get</p>
+<div class="math-block">\[
+|A_K+A_K|
+\le
+N^{s/n_-}.
+\]</div>
+<p>Thus, if we choose \(R\) so that</p>
+<div class="math-block">\[
+\frac{s}{n_-}&lt;2,
+\]</div>
+<p>then the sumset satisfies a power saving.</p>
+<p>Equivalently, we need</p>
+<div class="math-block">\[
+5e^L(\kappa+2)R
+&lt;
+\left(\frac{aLR}{\sqrt\rho}\right)^2.
+\]</div>
+<p>For fixed \(L\), the left-hand side grows linearly in \(R\), while the right-hand side grows quadratically in \(R\).  Therefore this inequality holds for all sufficiently large constant \(R\).</p>
+<p>Define</p>
+<div class="math-block">\[
+\delta_+:=2-\frac{s}{n_-}&gt;0.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+|A_K+A_K|\le N^{2-\delta_+}.
+\]</div>
+<hr>
+<h1>7. Product-set estimate</h1>
+<p>We have</p>
+<div class="math-block">\[
+A_KA_K\subset (UU)(BB).
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|A_KA_K|\le |UU|\,|BB|.
+\]</div>
+<p>Since \(UU\subset U_K(2L)\),</p>
+<div class="math-block">\[
+|UU|\le |U_K(2L)|\le (bL)^d.
+\]</div>
+<p>Also trivially</p>
+<div class="math-block">\[
+|BB|\le |B|^2=|C|^2.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+|A_KA_K|
+\le
+(bL)^d |C|^2.
+\]</div>
+<p>But</p>
+<div class="math-block">\[
+N=|U||C|
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|U|\ge (aL)^d.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+N^2
+=
+|U|^2|C|^2
+\ge
+(aL)^{2d}|C|^2.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|A_KA_K|
+\le
+N^2\left(\frac{bL}{(aL)^2}\right)^d.
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+\gamma:=2\log(aL)-\log(bL)
+=
+\log\left(\frac{(aL)^2}{bL}\right).
+\]</div>
+<p>If \(L\) is chosen large enough, then</p>
+<div class="math-block">\[
+\gamma&gt;0.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+|A_KA_K|\le N^2e^{-\gamma d}.
+\]</div>
+<p>Since \(N\le e^{n_+d}\), we have</p>
+<div class="math-block">\[
+e^{-\gamma d}\le N^{-\gamma/n_+}.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|A_KA_K|
+\le
+N^{2-\delta_\times},
+\]</div>
+<p>where</p>
+<div class="math-block">\[
+\delta_\times:=\frac{\gamma}{n_+}&gt;0.
+\]</div>
+<hr>
+<h1>8. Choice of parameters</h1>
+<p>We now choose constants once and for all.</p>
+<ol>
+<li><p>Choose \(L\ge 1\) so large that</p>
+<div class="math-block">\[
+\gamma=2\log(aL)-\log(bL)&gt;0.
+\]</div>
+<p>This is possible because</p>
+<div class="math-block">\[
+\gamma=\log L + O(1)\to\infty.
+\]</div></li>
+<li><p>With this \(L\), define</p>
+<div class="math-block">\[
+\alpha:=1-e^{-c_{\mathrm{Sch}}},
+\qquad
+\kappa:=\frac{2(1+e^{2L})}{\alpha}.
+\]</div></li>
+<li><p>Choose \(R\ge 1\) sufficiently large that</p>
+<div class="math-block">\[
+s=\log(5e^L(\kappa+2)R)
+&lt;
+2\log\left(\frac{aLR}{\sqrt\rho}\right)
+=
+2n_-.
+\]</div>
+<p>This is possible because as \(R\to\infty\),</p>
+<div class="math-block">\[
+\frac{s}{n_-}\to 1.
+\]</div></li>
+</ol>
+<p>Then define</p>
+<div class="math-block">\[
+\delta:=\min\left(\delta_+,\delta_\times\right)&gt;0.
+\]</div>
+<p>This \(\delta\) is absolute because \(L,R,a,b,\rho\) are absolute constants.</p>
+<hr>
+<h1>9. Passing to infinitely many real sets</h1>
+<p>Let \(K_i\) be the infinite sequence of totally real fields from Input 1, with degrees \(d_i\to\infty\).  For each \(K_i\), construct \(A_{K_i}\subset \mathcal O_{K_i}\) as above.</p>
+<p>Fix one real embedding</p>
+<div class="math-block">\[
+\sigma_{i,1}:K_i\hookrightarrow \mathbb R
+\]</div>
+<p>and define</p>
+<div class="math-block">\[
+A_i:=\sigma_{i,1}(A_{K_i})\subset \mathbb R.
+\]</div>
+<p>Because \(\sigma_{i,1}\) is an injective ring homomorphism, we have</p>
+<div class="math-block">\[
+|A_i|=|A_{K_i}|,
+\]</div>
+<div class="math-block">\[
+|A_i+A_i|=|A_{K_i}+A_{K_i}|,
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|A_iA_i|=|A_{K_i}A_{K_i}|.
+\]</div>
+<p>From the construction,</p>
+<div class="math-block">\[
+|A_i|\ge e^{n_-d_i}\to\infty.
+\]</div>
+<p>Also,</p>
+<div class="math-block">\[
+|A_i+A_i|\le |A_i|^{2-\delta},
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|A_iA_i|\le |A_i|^{2-\delta}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+\max(|A_i+A_i|,\ |A_iA_i|)
+\le
+|A_i|^{2-\delta}
+\]</div>
+<p>for all \(i\).</p>
+<p>This proves the theorem, modulo the standard number-theoretic inputs listed above.</p>
+<hr>
+<h1>10. Step-by-step proof plan for completion</h1>
+<p>Here is the distilled proof plan.</p>
+<hr>
+<h2>Step 1: Obtain a totally real bounded-root-discriminant tower</h2>
+<p>Prove or cite:</p>
+<blockquote><p>There exist totally real fields \(K_i\) with degrees \(d_i\to\infty\) and \(|D_{K_i}|^{1/d_i}\le \rho\).</p></blockquote>
+<p>This is known from Martinet’s class-field-tower construction.</p>
+<p><strong>Status:</strong> Standard external input.   <strong>Obstruction level:</strong> Not a conceptual obstruction to the sum-product construction; proving it self-contained would require substantial algebraic number theory.</p>
+<hr>
+<h2>Step 2: Bound regulators in the tower</h2>
+<p>Using the analytic class number formula and Landau’s residue bound, prove:</p>
+<div class="math-block">\[
+R_{K_i}\le C_{\mathrm{reg}}^{d_i}.
+\]</div>
+<p>Then for the totally positive unit lattice</p>
+<div class="math-block">\[
+\Lambda_i^+=\ell(\mathcal O_{K_i}^{\times,+})\subset H_{d_i},
+\]</div>
+<p>show</p>
+<div class="math-block">\[
+\operatorname{covol}(\Lambda_i^+)\le C_0^{d_i}.
+\]</div>
+<p><strong>Status:</strong> Essentially proved above.   <strong>Obstruction level:</strong> Routine analytic number theory.</p>
+<hr>
+<h2>Step 3: Count small totally positive units</h2>
+<p>For</p>
+<div class="math-block">\[
+U_i(L)=\{u\in \mathcal O_{K_i}^{\times,+}: \|\ell(u)\|_\infty\le L\},
+\]</div>
+<p>prove</p>
+<div class="math-block">\[
+|U_i(L)|\ge (aL)^{d_i},
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|U_i(2L)|\le (bL)^{d_i}.
+\]</div>
+<p>The lower bound uses van der Corput and the regulator bound.   The upper bound uses Schinzel’s separation theorem for totally real units.</p>
+<p><strong>Status:</strong> Proved modulo Schinzel’s theorem and the cube-section volume estimate.   <strong>Obstruction level:</strong> Standard; no serious obstruction.</p>
+<hr>
+<h2>Step 4: Count algebraic integers in boxes</h2>
+<p>For</p>
+<div class="math-block">\[
+C_i(R)=\{c\in \mathcal O_{K_i}: \|\Phi_i(c)\|_\infty\le R\},
+\]</div>
+<p>prove</p>
+<div class="math-block">\[
+|C_i(R)|\ge (R/\sqrt\rho)^{d_i},
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|C_i(R)|\le (3R)^{d_i}.
+\]</div>
+<p><strong>Status:</strong> Proved above.   <strong>Obstruction level:</strong> None.</p>
+<hr>
+<h2>Step 5: Build the set</h2>
+<p>Choose constants \(L,R,T\) as above and define</p>
+<div class="math-block">\[
+A_{K_i}:=
+\{u(T+c):u\in U_i(L),\ c\in C_i(R)\}.
+\]</div>
+<p>Prove the translates \(u(T+C_i(R))\) are disjoint using Schinzel separation and the choice \(T\gg e^{2L}R\).  Hence</p>
+<div class="math-block">\[
+|A_{K_i}|=|U_i(L)|\,|C_i(R)|.
+\]</div>
+<p><strong>Status:</strong> Proved above.   <strong>Obstruction level:</strong> None.</p>
+<hr>
+<h2>Step 6: Sumset bound</h2>
+<p>Use the archimedean box containment:</p>
+<div class="math-block">\[
+A_{K_i}+A_{K_i}
+\subset
+\{x\in \mathcal O_{K_i}: |\sigma_j(x)|\le 2e^L(T+R)\ \forall j\}.
+\]</div>
+<p>Then use algebraic-integer separation to bound the size by \(\exp(sd_i)\).  Choose \(R\) large enough so</p>
+<div class="math-block">\[
+s&lt;2n_-,
+\]</div>
+<p>where</p>
+<div class="math-block">\[
+n_-=\log(aLR/\sqrt\rho).
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+|A_{K_i}+A_{K_i}|
+\le
+|A_{K_i}|^{2-\delta_+}.
+\]</div>
+<p><strong>Status:</strong> Proved above.   <strong>Obstruction level:</strong> None.</p>
+<hr>
+<h2>Step 7: Product-set bound</h2>
+<p>Use</p>
+<div class="math-block">\[
+A_{K_i}A_{K_i}\subset U_i(2L)\cdot (B_iB_i).
+\]</div>
+<p>Since \(|B_iB_i|\le |B_i|^2\),</p>
+<div class="math-block">\[
+|A_{K_i}A_{K_i}|
+\le
+|U_i(2L)|\,|B_i|^2.
+\]</div>
+<p>But</p>
+<div class="math-block">\[
+|A_{K_i}|=|U_i(L)|\,|B_i|.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|A_{K_i}A_{K_i}|
+\le
+|A_{K_i}|^2
+\frac{|U_i(2L)|}{|U_i(L)|^2}.
+\]</div>
+<p>The unit estimates give</p>
+<div class="math-block">\[
+\frac{|U_i(2L)|}{|U_i(L)|^2}
+\le
+\exp(-\gamma d_i)
+\]</div>
+<p>for \(L\) large.  Therefore</p>
+<div class="math-block">\[
+|A_{K_i}A_{K_i}|
+\le
+|A_{K_i}|^{2-\delta_\times}.
+\]</div>
+<p><strong>Status:</strong> Proved above.   <strong>Obstruction level:</strong> None.</p>
+<hr>
+<h1>11. Remaining gaps and assessment</h1>
+<p>The main remaining gaps, if one wants a completely self-contained proof, are these.</p>
+<hr>
+<h2>Gap 1: Totally real bounded-root-discriminant tower</h2>
+<p>Precise statement needed:</p>
+<blockquote><p>There exists \(\rho&lt;\infty\) and infinitely many totally real fields \(K_i\) with \(d_i\to\infty\) and \(|D_{K_i}|^{1/d_i}\le \rho\).</p></blockquote>
+<p>This is a known theorem of Martinet, using Golod–Shafarevich class-field towers.</p>
+<p><strong>Assessment:</strong> This is a substantial but standard input.  It is not a serious obstruction to the present approach, because such towers are known.  If the goal is to make the proof fully self-contained, this is the longest external component.</p>
+<hr>
+<h2>Gap 2: Landau residue bound and regulator control</h2>
+<p>Precise statement needed:</p>
+<blockquote><p>If \(K\) is totally real of degree \(d\) with \(|D_K|^{1/d}\le \rho\), then \(R_K\le C^d\).</p></blockquote>
+<p>This follows from the analytic class number formula and standard upper bounds for \(\operatorname{Res}_{s=1}\zeta_K(s)\).</p>
+<p><strong>Assessment:</strong> Routine.  No serious obstruction.</p>
+<hr>
+<h2>Gap 3: Schinzel separation for totally real units</h2>
+<p>Precise statement needed:</p>
+<blockquote><p>There exists \(c&gt;0\) such that for every totally real number field \(K\) and every nontrivial unit \(u\in \mathcal O_K^\times\),</p>
+<div class="math-block">\[
+\max_j |\log|\sigma_j(u)||\ge c.
+\]</div></blockquote>
+<p>This follows from Schinzel’s lower bound for the Mahler measure of totally real algebraic integers.</p>
+<p><strong>Assessment:</strong> Standard.  No serious obstruction.</p>
+<hr>
+<h2>Gap 4: Cube-section volume estimates</h2>
+<p>Precise statement needed:</p>
+<blockquote><p>For \(H_d=\{x\in \mathbb R^d:\sum x_j=0\}\) and \(Q_d(L)=H_d\cap[-L,L]^d\), there are absolute constants \(c,C&gt;0\) such that</p>
+<div class="math-block">\[
+(cL)^{d-1}\le \operatorname{vol}_{H_d}(Q_d(L))\le (CL)^{d-1}.
+\]</div></blockquote>
+<p>This follows from standard estimates for hyperplane sections of cubes.</p>
+<p><strong>Assessment:</strong> Elementary/standard.  No serious obstruction.</p>
+<hr>
+<h1>12. Summary</h1>
+<p>The most promising approach is to exploit high-degree totally real fields with many small units.  The construction is:</p>
+<div class="math-block">\[
+A_i
+=
+\sigma_{i,1}\Bigl(\{u(T+c):u\in U_i(L),\ c\in C_i(R)\}\Bigr)
+\subset \mathbb R,
+\]</div>
+<p>where</p>
+<div class="math-block">\[
+U_i(L)=\{u\in \mathcal O_{K_i}^{\times,+}: \|\ell(u)\|_\infty\le L\}
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+C_i(R)=\{c\in \mathcal O_{K_i}: \|\Phi_i(c)\|_\infty\le R\}.
+\]</div>
+<p>The set \(U_i(L)\) supplies multiplicative structure; the set \(C_i(R)\) supplies additive density.  The shift \(T\) ensures the unit translates are disjoint, so</p>
+<div class="math-block">\[
+|A_i|=|U_i(L)|\,|C_i(R)|.
+\]</div>
+<p>Then:</p>
+<div class="math-block">\[
+|A_i+A_i|
+\le
+|A_i|^{2-\delta_+},
+\]</div>
+<p>because \(A_i+A_i\) lies inside a controlled archimedean box of algebraic integers, and</p>
+<div class="math-block">\[
+|A_iA_i|
+\le
+|A_i|^{2-\delta_\times},
+\]</div>
+<p>because</p>
+<div class="math-block">\[
+A_iA_i\subset U_i(2L)\cdot (B_iB_i)
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|U_i(2L)|\ll |U_i(L)|^2 e^{-\gamma d_i}.
+\]</div>
+<p>Choosing \(L,R,T\) as above yields an absolute</p>
+<div class="math-block">\[
+\delta=\min(\delta_+,\delta_\times)&gt;0.
+\]</div>
+<p>The remaining inputs are standard number-theoretic facts, especially the existence of totally real bounded-root-discriminant towers.  Once those are supplied, the construction gives the desired infinite sequence of finite real sets.</p>
+<hr>
+<h1>Round 2</h1>
+<h2>User</h2>
+<blockquote><p>Construct a complete and rigorous proof, adapting your approach as needed.</p></blockquote>
+<h2>Assistant</h2>
+<h1>Complete proof</h1>
+<p>We prove the theorem using high-degree totally real number fields of bounded root discriminant and many small units.  The construction is exactly of the type outlined earlier, but I will now keep all constants and rank-\((d-1)\) issues explicit.</p>
+<p>Throughout, if \(K/\mathbb Q\) is totally real of degree \(d\), write its real embeddings as</p>
+<div class="math-block">\[
+\sigma_1,\dots,\sigma_d:K\hookrightarrow \mathbb R,
+\]</div>
+<p>and write</p>
+<div class="math-block">\[
+\Phi:K\hookrightarrow \mathbb R^d,\qquad
+\Phi(x)=(\sigma_1(x),\dots,\sigma_d(x)).
+\]</div>
+<p>We also write</p>
+<div class="math-block">\[
+\|x\|_\infty=\max_j |x_j|
+\]</div>
+<p>for the sup norm on \(\mathbb R^d\).</p>
+<p>We shall use the following three standard number-theoretic facts.</p>
+<hr>
+<h2>1. Standard number-theoretic inputs</h2>
+<h3>1.1. Martinet’s totally real bounded-root-discriminant tower</h3>
+<p>There exists an absolute constant \(\rho&gt;1\) and an infinite sequence of totally real number fields \(K_i/\mathbb Q\) with degrees</p>
+<div class="math-block">\[
+d_i=[K_i:\mathbb Q]\to\infty
+\]</div>
+<p>such that</p>
+<div class="math-block">\[
+|D_{K_i}|^{1/d_i}\le \rho
+\]</div>
+<p>for every \(i\).</p>
+<p>This is a theorem of Martinet, obtained using Golod–Shafarevich class-field towers.  The precise numerical value of \(\rho\) is irrelevant.</p>
+<hr>
+<h3>1.2. Regulator bound in such a tower</h3>
+<p>For every field \(K_i\) in this tower, its regulator satisfies</p>
+<div class="math-block">\[
+R_{K_i}\le C_{\mathrm{reg}}^{d_i}
+\]</div>
+<p>for some absolute constant \(C_{\mathrm{reg}}\).</p>
+<p>Indeed, let \(K\) be totally real of degree \(d\), discriminant \(D_K\), class number \(h_K\), regulator \(R_K\), and residue</p>
+<div class="math-block">\[
+\kappa_K=\operatorname*{Res}_{s=1}\zeta_K(s).
+\]</div>
+<p>The analytic class number formula gives</p>
+<div class="math-block">\[
+\kappa_K=\frac{2^{d-1}h_KR_K}{\sqrt{|D_K|}}.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+R_K\le h_KR_K
+=\frac{\kappa_K\sqrt{|D_K|}}{2^{d-1}}.
+\]</div>
+<p>Landau’s residue bound gives, for an absolute constant \(C_L\),</p>
+<div class="math-block">\[
+\kappa_K\le
+C_L^d
+\left(1+\frac{\log |D_K|}{d}\right)^d.
+\]</div>
+<p>Since \(|D_K|^{1/d}\le \rho\), we have \(\log |D_K|\le d\log \rho\), so</p>
+<div class="math-block">\[
+\kappa_K\le C_\rho^d
+\]</div>
+<p>for some absolute constant \(C_\rho\).  Also</p>
+<div class="math-block">\[
+\sqrt{|D_K|}\le \rho^{d/2}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+R_K\le C_{\mathrm{reg}}^d
+\]</div>
+<p>for a suitable absolute constant \(C_{\mathrm{reg}}\).</p>
+<p>Now let</p>
+<div class="math-block">\[
+\mathcal O_K^{\times,+}
+=
+\{u\in \mathcal O_K^\times:\sigma_j(u)&gt;0\ \forall j\}
+\]</div>
+<p>be the group of totally positive units.  Define the logarithmic embedding</p>
+<div class="math-block">\[
+\ell:\mathcal O_K^{\times,+}\to H_d,
+\qquad
+\ell(u)=(\log\sigma_1(u),\dots,\log\sigma_d(u)),
+\]</div>
+<p>where</p>
+<div class="math-block">\[
+H_d=\left\{x\in \mathbb R^d:\sum_{j=1}^d x_j=0\right\}.
+\]</div>
+<p>The image</p>
+<div class="math-block">\[
+\Lambda_K^+:=\ell(\mathcal O_K^{\times,+})
+\]</div>
+<p>is a full lattice in \(H_d\) of rank \(d-1\).  With the usual Euclidean measure on \(H_d\), the full unit lattice has covolume \(\sqrt d\,R_K\), and the totally positive unit lattice has index at most \(2^d\) in it.  Hence</p>
+<div class="math-block">\[
+\operatorname{covol}(\Lambda_K^+)
+\le
+2^d\sqrt d\,R_K
+\le
+M^d
+\]</div>
+<p>for some absolute constant \(M\), after enlarging \(M\) if necessary.</p>
+<p>Thus we have:</p>
+<div class="math-block">\[
+\boxed{\operatorname{covol}(\Lambda_K^+)\le M^d}
+\tag{1}
+\]</div>
+<p>for every field \(K\) in the tower.</p>
+<hr>
+<h3>1.3. Schinzel’s lower bound for totally real units</h3>
+<p>Schinzel’s theorem says that if \(\alpha\) is a totally real algebraic integer with \(\alpha\notin\{-1,0,1\}\), then its Mahler measure satisfies</p>
+<div class="math-block">\[
+M(\alpha)\ge \varphi^{\deg(\alpha)/2},
+\qquad
+\varphi=\frac{1+\sqrt5}{2}.
+\]</div>
+<p>We need the following consequence.</p>
+<h3>Lemma 1.1: Uniform separation of totally positive units</h3>
+<p>There is an absolute constant \(\eta&gt;0\) such that for every totally real field \(K\) and every nontrivial totally positive unit \(u\in \mathcal O_K^{\times,+}\),</p>
+<div class="math-block">\[
+\|\ell(u)\|_\infty\ge \eta.
+\]</div>
+<p>One may take</p>
+<div class="math-block">\[
+\eta=\frac12\log\varphi.
+\]</div>
+<h4>Proof</h4>
+<p>Let \(u\in\mathcal O_K^{\times,+}\), \(u\neq 1\).  Let \(m=\deg(u)\).  Since \(u\) is a unit,</p>
+<div class="math-block">\[
+\log M(u)=\sum_{\tau:u\hookrightarrow \mathbb R}
+\max(0,\log|\tau(u)|).
+\]</div>
+<p>Schinzel gives</p>
+<div class="math-block">\[
+\log M(u)\ge \frac m2\log\varphi=m\eta.
+\]</div>
+<p>Therefore at least one conjugate \(\tau(u)\) satisfies</p>
+<div class="math-block">\[
+|\log|\tau(u)||\ge \eta.
+\]</div>
+<p>All conjugates of \(u\) occur among the numbers \(\sigma_j(u)\), possibly with repetitions.  Since \(u\) is totally positive, \(|\sigma_j(u)|=\sigma_j(u)\).  Hence</p>
+<div class="math-block">\[
+\max_j |\log\sigma_j(u)|\ge \eta.
+\]</div>
+<p>So</p>
+<div class="math-block">\[
+\|\ell(u)\|_\infty\ge \eta.
+\]</div>
+<p>\(\square\)</p>
+<p>We shall also use the number</p>
+<div class="math-block">\[
+\alpha:=1-e^{-\eta}&gt;0.
+\tag{2}
+\]</div>
+<p>If \(x&gt;0\) and \(|\log x|\ge \eta\), then</p>
+<div class="math-block">\[
+|x-1|\ge \alpha.
+\tag{3}
+\]</div>
+<hr>
+<h1>2. Geometric and lattice-counting lemmas</h1>
+<p>We need several elementary geometric estimates.</p>
+<hr>
+<h2>2.1. Algebraic integers are separated in sup norm</h2>
+<h3>Lemma 2.1</h3>
+<p>Let \(K/\mathbb Q\) be totally real of degree \(d\).  If \(x,y\in\mathcal O_K\) and \(x\neq y\), then</p>
+<div class="math-block">\[
+\|\Phi(x)-\Phi(y)\|_\infty\ge 1.
+\]</div>
+<h4>Proof</h4>
+<p>Let \(\beta=x-y\in\mathcal O_K\setminus\{0\}\).  Then</p>
+<div class="math-block">\[
+N_{K/\mathbb Q}(\beta)
+=
+\prod_{j=1}^d \sigma_j(\beta)
+\]</div>
+<p>is a nonzero integer, so</p>
+<div class="math-block">\[
+|N_{K/\mathbb Q}(\beta)|\ge 1.
+\]</div>
+<p>If \(|\sigma_j(\beta)|&lt;1\) for every \(j\), then the product would have absolute value \(&lt;1\), contradiction.  Hence for some \(j\),</p>
+<div class="math-block">\[
+|\sigma_j(\beta)|\ge 1.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+\|\Phi(x)-\Phi(y)\|_\infty\ge 1.
+\]</div>
+<p>\(\square\)</p>
+<hr>
+<h2>2.2. A van der Corput lattice-point lower bound</h2>
+<h3>Lemma 2.2</h3>
+<p>Let \(\Lambda\subset\mathbb R^n\) be a lattice, and let \(K\subset\mathbb R^n\) be centrally symmetric and convex.  Then</p>
+<div class="math-block">\[
+|\Lambda\cap K|
+\ge
+\frac{\operatorname{vol}(K)}{2^n\operatorname{covol}(\Lambda)}.
+\]</div>
+<h4>Proof</h4>
+<p>Average the function</p>
+<div class="math-block">\[
+x\mapsto |\Lambda\cap(x+\tfrac12 K)|
+\]</div>
+<p>over the torus \(\mathbb R^n/\Lambda\).  Its average equals</p>
+<div class="math-block">\[
+\frac{\operatorname{vol}(\tfrac12K)}{\operatorname{covol}(\Lambda)}
+=
+\frac{\operatorname{vol}(K)}{2^n\operatorname{covol}(\Lambda)}.
+\]</div>
+<p>So there is some translate \(x+\tfrac12K\) containing at least that many lattice points.  If those points are \(\lambda_1,\dots,\lambda_m\), then fixing \(\lambda_1\), the differences</p>
+<div class="math-block">\[
+\lambda_j-\lambda_1
+\]</div>
+<p>are distinct elements of \(\Lambda\cap K\), since</p>
+<div class="math-block">\[
+(x+\tfrac12K)-(x+\tfrac12K)\subset K
+\]</div>
+<p>by convexity and central symmetry.  Therefore</p>
+<div class="math-block">\[
+|\Lambda\cap K|\ge m
+\ge
+\frac{\operatorname{vol}(K)}{2^n\operatorname{covol}(\Lambda)}.
+\]</div>
+<p>\(\square\)</p>
+<hr>
+<h2>2.3. Volumes of central cube sections</h2>
+<p>For \(L&gt;0\), define</p>
+<div class="math-block">\[
+Q_d(L):=H_d\cap[-L,L]^d,
+\qquad
+H_d=\left\{x\in\mathbb R^d:\sum_{j=1}^d x_j=0\right\}.
+\]</div>
+<p>We use Euclidean \((d-1)\)-dimensional volume on \(H_d\).</p>
+<h3>Lemma 2.3</h3>
+<p>For every \(d\ge 2\) and every \(L&gt;0\),</p>
+<div class="math-block">\[
+L^{d-1}
+\le
+\operatorname{vol}_{H_d}(Q_d(L))
+\le
+(4L)^{d-1}.
+\]</div>
+<h4>Proof</h4>
+<p>Let</p>
+<div class="math-block">\[
+n=\frac1{\sqrt d}(1,\dots,1).
+\]</div>
+<p>For \(t\in[-L\sqrt d,L\sqrt d]\), let</p>
+<div class="math-block">\[
+V(t)
+=
+\operatorname{vol}_{d-1}
+\left(
+[-L,L]^d\cap\{x\cdot n=t\}
+\right).
+\]</div>
+<p>By Brunn–Minkowski, \(V(t)^{1/(d-1)}\) is concave in \(t\), and by symmetry \(V(t)=V(-t)\).  Hence \(V(t)\) is maximized at \(t=0\).  Therefore</p>
+<div class="math-block">\[
+\operatorname{vol}_{H_d}(Q_d(L))
+=
+V(0)
+\ge
+\frac1{2L\sqrt d}\int_{-L\sqrt d}^{L\sqrt d}V(t)\,dt.
+\]</div>
+<p>The integral is just the volume of the cube \([-L,L]^d\), namely \((2L)^d\).  Hence</p>
+<div class="math-block">\[
+V(0)\ge
+\frac{(2L)^d}{2L\sqrt d}
+=
+\frac{2^{d-1}}{\sqrt d}L^{d-1}.
+\]</div>
+<p>Since \(2^{d-1}\ge \sqrt d\) for \(d\ge 2\),</p>
+<div class="math-block">\[
+V(0)\ge L^{d-1}.
+\]</div>
+<p>This proves the lower bound.</p>
+<p>For the upper bound, project \(H_d\) to the first \(d-1\) coordinates.  The inverse map is</p>
+<div class="math-block">\[
+(x_1,\dots,x_{d-1})
+\mapsto
+(x_1,\dots,x_{d-1},-(x_1+\cdots+x_{d-1})).
+\]</div>
+<p>Its Jacobian is \(\sqrt d\).  Since the projection of \(Q_d(L)\) is contained in \([-L,L]^{d-1}\), we get</p>
+<div class="math-block">\[
+\operatorname{vol}_{H_d}(Q_d(L))
+\le
+\sqrt d\,(2L)^{d-1}.
+\]</div>
+<p>For \(d\ge 2\),</p>
+<div class="math-block">\[
+\sqrt d\,2^{d-1}\le 4^{d-1},
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+\operatorname{vol}_{H_d}(Q_d(L))
+\le
+(4L)^{d-1}.
+\]</div>
+<p>\(\square\)</p>
+<hr>
+<h1>3. Counting small units and algebraic integers</h1>
+<p>Let \(K\) be one of the fields in Martinet’s tower, of degree \(d\ge 2\).</p>
+<p>For \(L\ge 1\), define</p>
+<div class="math-block">\[
+U_K(L)
+:=
+\{u\in\mathcal O_K^{\times,+}:\|\ell(u)\|_\infty\le L\}.
+\]</div>
+<p>Equivalently,</p>
+<div class="math-block">\[
+U_K(L)=\ell^{-1}(\Lambda_K^+\cap Q_d(L)).
+\]</div>
+<p>For \(R\ge 1\), define</p>
+<div class="math-block">\[
+E_K(R)
+:=
+\{c\in\mathcal O_K:\|\Phi(c)\|_\infty\le R\}.
+\]</div>
+<hr>
+<h2>3.1. Unit-counting estimates</h2>
+<h3>Lemma 3.1</h3>
+<p>There are absolute constants \(a,b&gt;0\) such that for every \(K\) in the tower, every \(L\ge 1\), and every \(d\ge \lceil \log_2 L\rceil+1\),</p>
+<div class="math-block">\[
+|U_K(L)|\ge (aL)^d,
+\tag{4}
+\]</div>
+<p>and for every \(d\ge 2\),</p>
+<div class="math-block">\[
+|U_K(2L)|\le (bL)^d.
+\tag{5}
+\]</div>
+<h4>Proof</h4>
+<p>Let \(M\) be the constant from (1), so</p>
+<div class="math-block">\[
+\operatorname{covol}(\Lambda_K^+)\le M^d.
+\]</div>
+<p>By Lemma 2.2 and Lemma 2.3,</p>
+<div class="math-block">\[
+|U_K(L)|
+=
+|\Lambda_K^+\cap Q_d(L)|
+\ge
+\frac{\operatorname{vol}_{H_d}(Q_d(L))}
+{2^{d-1}\operatorname{covol}(\Lambda_K^+)}
+\ge
+\frac{L^{d-1}}{2^{d-1}M^d}.
+\tag{6}
+\]</div>
+<p>Set</p>
+<div class="math-block">\[
+a:=\frac1{4M}.
+\tag{7}
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+\frac{L^{d-1}}{2^{d-1}M^d}
+=
+\frac{2^{d+1}}{L}(aL)^d.
+\]</div>
+<p>If \(d\ge \lceil\log_2 L\rceil+1\), then \(2^{d+1}\ge L\), so (6) gives</p>
+<div class="math-block">\[
+|U_K(L)|\ge (aL)^d.
+\]</div>
+<p>This proves (4).</p>
+<p>For the upper bound, Lemma 1.1 says that distinct points of the lattice \(\Lambda_K^+\) are separated by at least \(\eta\) in sup norm.  Therefore the translates</p>
+<div class="math-block">\[
+x+Q_d(\eta/2),
+\qquad
+x\in \Lambda_K^+\cap Q_d(2L),
+\]</div>
+<p>have disjoint interiors, and all lie inside \(Q_d(2L+\eta/2)\).  Hence</p>
+<div class="math-block">\[
+|U_K(2L)|
+\le
+\frac{\operatorname{vol}_{H_d}(Q_d(2L+\eta/2))}
+{\operatorname{vol}_{H_d}(Q_d(\eta/2))}.
+\]</div>
+<p>Using Lemma 2.3 again,</p>
+<div class="math-block">\[
+|U_K(2L)|
+\le
+\frac{(4(2L+\eta/2))^{d-1}}{(\eta/2)^{d-1}}
+=
+\left(\frac{8(2L+\eta/2)}{\eta}\right)^{d-1}.
+\]</div>
+<p>Since \(L\ge 1\),</p>
+<div class="math-block">\[
+2L+\eta/2\le (2+\eta/2)L.
+\]</div>
+<p>Thus for a sufficiently large absolute constant \(b\),</p>
+<div class="math-block">\[
+|U_K(2L)|\le (bL)^d.
+\]</div>
+<p>\(\square\)</p>
+<hr>
+<h2>3.2. Algebraic-integer box estimates</h2>
+<h3>Lemma 3.2</h3>
+<p>For every \(K\) in the tower and every \(R\ge 1\),</p>
+<div class="math-block">\[
+|E_K(R)|\ge \left(\frac{R}{\sqrt\rho}\right)^d,
+\tag{8}
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|E_K(R)|\le (3R)^d.
+\tag{9}
+\]</div>
+<h4>Proof</h4>
+<p>The lattice \(\Phi(\mathcal O_K)\subset\mathbb R^d\) has covolume</p>
+<div class="math-block">\[
+\sqrt{|D_K|}.
+\]</div>
+<p>Applying Lemma 2.2 to the cube \([-R,R]^d\), we get</p>
+<div class="math-block">\[
+|E_K(R)|
+\ge
+\frac{(2R)^d}{2^d\sqrt{|D_K|}}
+=
+\frac{R^d}{\sqrt{|D_K|}}.
+\]</div>
+<p>Since \(|D_K|^{1/d}\le\rho\),</p>
+<div class="math-block">\[
+\sqrt{|D_K|}\le \rho^{d/2},
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+|E_K(R)|\ge \left(\frac{R}{\sqrt\rho}\right)^d.
+\]</div>
+<p>This proves (8).</p>
+<p>For the upper bound, Lemma 2.1 says that distinct points of \(\Phi(\mathcal O_K)\) are separated by at least \(1\) in sup norm.  Hence the unit cubes centered at the points of \(\Phi(E_K(R))\) have disjoint interiors and are contained in</p>
+<div class="math-block">\[
+[-R-\tfrac12,R+\tfrac12]^d.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|E_K(R)|
+\le
+(2R+1)^d
+\le
+(3R)^d,
+\]</div>
+<p>since \(R\ge 1\).  This proves (9).</p>
+<p>\(\square\)</p>
+<hr>
+<h1>4. Choice of absolute parameters</h1>
+<p>We now fix constants once and for all.</p>
+<p>Let \(a,b,\rho,\eta\) be as above, with \(a,b&gt;0\), \(\rho&gt;1\), and</p>
+<div class="math-block">\[
+\eta&gt;0.
+\]</div>
+<p>Recall</p>
+<div class="math-block">\[
+\alpha=1-e^{-\eta}&gt;0.
+\]</div>
+<p>Choose \(L\ge 1\) so large that</p>
+<div class="math-block">\[
+\frac{b}{a^2L}&lt;1.
+\tag{10}
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+q:=\frac{b}{a^2L}.
+\tag{11}
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+0&lt;q&lt;1.
+\]</div>
+<p>Next define</p>
+<div class="math-block">\[
+\kappa:=\frac{2(1+e^{2L})}{\alpha}.
+\tag{12}
+\]</div>
+<p>Choose \(R\ge 1\) so large that, with</p>
+<div class="math-block">\[
+m:=\frac{aLR}{\sqrt\rho},
+\tag{13}
+\]</div>
+<p>we have</p>
+<div class="math-block">\[
+m&gt;1,
+\tag{14}
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+5e^L(\kappa+2)R&lt;m^2.
+\tag{15}
+\]</div>
+<p>This is possible because the left-hand side of (15) grows linearly in \(R\), while \(m^2\) grows quadratically in \(R\).</p>
+<p>Now define</p>
+<div class="math-block">\[
+\Sigma:=5e^L(\kappa+2)R.
+\tag{16}
+\]</div>
+<p>By (15),</p>
+<div class="math-block">\[
+\Sigma&lt;m^2.
+\tag{17}
+\]</div>
+<p>Finally define</p>
+<div class="math-block">\[
+P:=3bLR.
+\tag{18}
+\]</div>
+<p>Since \(P&gt;1\) and \(q&lt;1\), the number</p>
+<div class="math-block">\[
+\delta_\times:=\frac{\log(1/q)}{\log P}
+=
+\frac{\log(a^2L/b)}{\log(3bLR)}
+\tag{19}
+\]</div>
+<p>is positive.</p>
+<p>Also, by (14) and (17),</p>
+<div class="math-block">\[
+\delta_+:=
+2-\frac{\log \Sigma}{\log m}
+\tag{20}
+\]</div>
+<p>is positive.</p>
+<p>Set</p>
+<div class="math-block">\[
+\delta:=\min(\delta_+,\delta_\times)&gt;0.
+\tag{21}
+\]</div>
+<p>All of these constants are absolute.</p>
+<hr>
+<h1>5. Construction inside one field</h1>
+<p>Let \(K\) be one of the fields in the tower, of degree \(d\), with \(d\) sufficiently large so that Lemma 3.1 applies to our fixed \(L\).  In particular, we assume</p>
+<div class="math-block">\[
+d\ge \lceil\log_2 L\rceil+1.
+\tag{22}
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+U:=U_K(L)
+=
+\{u\in\mathcal O_K^{\times,+}:\|\ell(u)\|_\infty\le L\},
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+E:=E_K(R)
+=
+\{c\in\mathcal O_K:\|\Phi(c)\|_\infty\le R\}.
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+T:=\lceil \kappa R\rceil\in\mathbb Z.
+\tag{23}
+\]</div>
+<p>Since \(R\ge 1\),</p>
+<div class="math-block">\[
+T\le \kappa R+1\le (\kappa+1)R.
+\tag{24}
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+B:=T+E
+=
+\{T+c:c\in E\}.
+\]</div>
+<p>Finally define</p>
+<div class="math-block">\[
+A_K:=UB
+=
+\{u(T+c):u\in U,\ c\in E\}
+\subset\mathcal O_K.
+\]</div>
+<p>We will later embed \(A_K\) into \(\mathbb R\) using one real embedding of \(K\).</p>
+<hr>
+<h1>6. The translates \(uB\) are disjoint</h1>
+<p>We first prove that</p>
+<div class="math-block">\[
+|A_K|=|U||E|.
+\]</div>
+<p>This is the key injectivity statement.</p>
+<h3>Lemma 6.1</h3>
+<p>If \(u,v\in U\) and</p>
+<div class="math-block">\[
+uB\cap vB\neq\varnothing,
+\]</div>
+<p>then \(u=v\).  Consequently,</p>
+<div class="math-block">\[
+|A_K|=|U||E|.
+\]</div>
+<h4>Proof</h4>
+<p>Suppose</p>
+<div class="math-block">\[
+u(T+c)=v(T+c&#x27;)
+\]</div>
+<p>with \(u,v\in U\) and \(c,c'\in E\).</p>
+<p>If \(u=v\), then \(c=c'\), so there is nothing to prove.  Suppose \(u\neq v\).  Put</p>
+<div class="math-block">\[
+w:=u/v.
+\]</div>
+<p>Then \(w\in\mathcal O_K^{\times,+}\), and \(w\neq 1\).  By Lemma 1.1, there is an embedding \(\sigma_j\) such that</p>
+<div class="math-block">\[
+|\log\sigma_j(w)|\ge \eta.
+\]</div>
+<p>Since \(w\) is totally positive, \(\sigma_j(w)&gt;0\), and by (3),</p>
+<div class="math-block">\[
+|\sigma_j(w)-1|\ge \alpha.
+\tag{25}
+\]</div>
+<p>Also, because \(u,v\in U=U_K(L)\),</p>
+<div class="math-block">\[
+|\log\sigma_j(u)|\le L,
+\qquad
+|\log\sigma_j(v)|\le L.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+\sigma_j(w)=\frac{\sigma_j(u)}{\sigma_j(v)}
+\le e^{2L}.
+\tag{26}
+\]</div>
+<p>Apply \(\sigma_j\) to</p>
+<div class="math-block">\[
+u(T+c)=v(T+c&#x27;)
+\]</div>
+<p>and divide by \(\sigma_j(v)&gt;0\).  We obtain</p>
+<div class="math-block">\[
+\sigma_j(w)(T+\sigma_j(c))
+=
+T+\sigma_j(c&#x27;).
+\]</div>
+<p>Rearranging,</p>
+<div class="math-block">\[
+(\sigma_j(w)-1)T
+=
+\sigma_j(c&#x27;)-\sigma_j(w)\sigma_j(c).
+\]</div>
+<p>Taking absolute values and using \(c,c'\in E\), we get</p>
+<div class="math-block">\[
+|\sigma_j(w)-1|T
+\le
+|\sigma_j(c&#x27;)|+\sigma_j(w)|\sigma_j(c)|
+\le
+R+e^{2L}R
+=
+(1+e^{2L})R.
+\tag{27}
+\]</div>
+<p>On the other hand, by (25), (12), and (23),</p>
+<div class="math-block">\[
+|\sigma_j(w)-1|T
+\ge
+\alpha T
+\ge
+\alpha\kappa R
+=
+2(1+e^{2L})R.
+\tag{28}
+\]</div>
+<p>The estimates (27) and (28) contradict each other.  Therefore \(u=v\), and then necessarily \(c=c'\).</p>
+<p>Thus the sets \(uB\), \(u\in U\), are pairwise disjoint.  Since \(|B|=|E|\), we get</p>
+<div class="math-block">\[
+|A_K|=|U||E|.
+\]</div>
+<p>\(\square\)</p>
+<p>Let</p>
+<div class="math-block">\[
+N:=|A_K|.
+\]</div>
+<p>Using Lemmas 3.1 and 3.2, and the definitions of \(m\) and \(P\), we have</p>
+<div class="math-block">\[
+N
+=
+|U||E|
+\ge
+(aL)^d\left(\frac{R}{\sqrt\rho}\right)^d
+=
+m^d,
+\tag{29}
+\]</div>
+<p>and also</p>
+<div class="math-block">\[
+N
+=
+|U||E|
+\le
+|U_K(2L)|\,|E|
+\le
+(bL)^d(3R)^d
+=
+P^d.
+\tag{30}
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+m^d\le N\le P^d.
+\tag{31}
+\]</div>
+<p>In particular, since \(m&gt;1\), \(N\to\infty\) as \(d\to\infty\).</p>
+<hr>
+<h1>7. Sumset estimate</h1>
+<p>We prove</p>
+<div class="math-block">\[
+|A_K+A_K|\le N^{2-\delta_+}.
+\]</div>
+<p>Every element \(a\in A_K\) has the form</p>
+<div class="math-block">\[
+a=u(T+c),
+\qquad u\in U,\ c\in E.
+\]</div>
+<p>For every embedding \(\sigma_j\),</p>
+<div class="math-block">\[
+|\sigma_j(u)|\le e^L
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|\sigma_j(T+c)|
+\le
+T+|\sigma_j(c)|
+\le
+T+R.
+\]</div>
+<p>By (24),</p>
+<div class="math-block">\[
+T+R
+\le
+(\kappa+2)R.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+|\sigma_j(a)|
+\le
+e^L(\kappa+2)R
+\]</div>
+<p>for every \(j\).  Therefore, for \(a,a'\in A_K\),</p>
+<div class="math-block">\[
+|\sigma_j(a+a&#x27;)|
+\le
+2e^L(\kappa+2)R.
+\]</div>
+<p>Thus \(A_K+A_K\) is contained in the set of algebraic integers \(x\in\mathcal O_K\) satisfying</p>
+<div class="math-block">\[
+|\sigma_j(x)|
+\le
+2e^L(\kappa+2)R
+\qquad
+\forall j.
+\]</div>
+<p>By Lemma 2.1, the number of such algebraic integers is at most</p>
+<div class="math-block">\[
+\left(4e^L(\kappa+2)R+1\right)^d.
+\]</div>
+<p>Since \(e^L(\kappa+2)R\ge 1\), this is at most</p>
+<div class="math-block">\[
+\left(5e^L(\kappa+2)R\right)^d
+=
+\Sigma^d.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|A_K+A_K|
+\le
+\Sigma^d.
+\tag{32}
+\]</div>
+<p>By the definition of \(\delta_+\),</p>
+<div class="math-block">\[
+\Sigma=m^{2-\delta_+}.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+|A_K+A_K|
+\le
+m^{(2-\delta_+)d}.
+\]</div>
+<p>Using \(N\ge m^d\), we obtain</p>
+<div class="math-block">\[
+|A_K+A_K|
+\le
+N^{2-\delta_+}.
+\tag{33}
+\]</div>
+<hr>
+<h1>8. Product-set estimate</h1>
+<p>We prove</p>
+<div class="math-block">\[
+|A_KA_K|\le N^{2-\delta_\times}.
+\]</div>
+<p>Since</p>
+<div class="math-block">\[
+A_K=UB,
+\]</div>
+<p>we have</p>
+<div class="math-block">\[
+A_KA_K
+\subset
+(UU)(BB).
+\]</div>
+<p>Because \(U=U_K(L)\), we have</p>
+<div class="math-block">\[
+UU\subset U_K(2L).
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|A_KA_K|
+\le
+|U_K(2L)|\,|BB|.
+\]</div>
+<p>Trivially,</p>
+<div class="math-block">\[
+|BB|\le |B|^2=|E|^2.
+\]</div>
+<p>Using Lemma 3.1,</p>
+<div class="math-block">\[
+|U_K(2L)|\le (bL)^d.
+\]</div>
+<p>So</p>
+<div class="math-block">\[
+|A_KA_K|
+\le
+(bL)^d|E|^2.
+\tag{34}
+\]</div>
+<p>On the other hand,</p>
+<div class="math-block">\[
+N=|U||E|
+\]</div>
+<p>and by Lemma 3.1,</p>
+<div class="math-block">\[
+|U|\ge (aL)^d.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+N^2
+=
+|U|^2|E|^2
+\ge
+(aL)^{2d}|E|^2.
+\]</div>
+<p>Combining this with (34), we get</p>
+<div class="math-block">\[
+|A_KA_K|
+\le
+N^2
+\frac{(bL)^d}{(aL)^{2d}}
+=
+N^2
+\left(\frac{b}{a^2L}\right)^d.
+\]</div>
+<p>By definition, the last factor is \(q^d\).  Thus</p>
+<div class="math-block">\[
+|A_KA_K|
+\le
+N^2q^d.
+\tag{35}
+\]</div>
+<p>Recall that</p>
+<div class="math-block">\[
+q=P^{-\delta_\times}.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+q^d=P^{-\delta_\times d}.
+\]</div>
+<p>Since \(N\le P^d\), we have</p>
+<div class="math-block">\[
+P^{-\delta_\times d}\le N^{-\delta_\times}.
+\]</div>
+<p>Therefore (35) gives</p>
+<div class="math-block">\[
+|A_KA_K|
+\le
+N^{2-\delta_\times}.
+\tag{36}
+\]</div>
+<hr>
+<h1>9. Passing to subsets of \(\mathbb R\)</h1>
+<p>We now use the infinite tower.</p>
+<p>Let \(K_i\) be the Martinet sequence, with degrees \(d_i\to\infty\).  Discard finitely many fields so that</p>
+<div class="math-block">\[
+d_i\ge \lceil\log_2 L\rceil+1
+\]</div>
+<p>for every remaining \(i\).  Renumber the remaining infinite sequence as \(K_1,K_2,\dots\).</p>
+<p>For each \(K_i\), construct \(A_{K_i}\subset\mathcal O_{K_i}\) as above.  Choose one real embedding</p>
+<div class="math-block">\[
+\tau_i:K_i\hookrightarrow\mathbb R.
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+A_i:=\tau_i(A_{K_i})\subset\mathbb R.
+\]</div>
+<p>Because \(\tau_i\) is an injective ring homomorphism,</p>
+<div class="math-block">\[
+|A_i|=|A_{K_i}|,
+\]</div>
+<p>and also</p>
+<div class="math-block">\[
+|A_i+A_i|
+=
+|A_{K_i}+A_{K_i}|,
+\]</div>
+<div class="math-block">\[
+|A_iA_i|
+=
+|A_{K_i}A_{K_i}|.
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+N_i:=|A_i|=|A_{K_i}|.
+\]</div>
+<p>By (29),</p>
+<div class="math-block">\[
+N_i\ge m^{d_i}.
+\]</div>
+<p>Since \(m&gt;1\) and \(d_i\to\infty\),</p>
+<div class="math-block">\[
+|A_i|=N_i\to\infty.
+\]</div>
+<p>Finally, by (33) and (36),</p>
+<div class="math-block">\[
+|A_i+A_i|
+\le
+N_i^{2-\delta_+},
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|A_iA_i|
+\le
+N_i^{2-\delta_\times}.
+\]</div>
+<p>Since</p>
+<div class="math-block">\[
+\delta=\min(\delta_+,\delta_\times)&gt;0,
+\]</div>
+<p>we have</p>
+<div class="math-block">\[
+|A_i+A_i|\le |A_i|^{2-\delta},
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|A_iA_i|\le |A_i|^{2-\delta}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+\max(|A_i+A_i|,\ |A_iA_i|)
+\le
+|A_i|^{2-\delta}
+\]</div>
+<p>for every \(i\).</p>
+<p>This proves the theorem. \(\square\)</p>
+<hr>
+<h1>Round 3</h1>
+<h2>User</h2>
+<blockquote><p>Critically examine the proof you constructed to identify and resolve any errors or logical gaps. Then, present a complete, rigorous, step-by-step proof. Clearly justify each step with sufficient detail so that an expert can verify your reasoning without needing to fill in any gaps.</p></blockquote>
+<h2>Assistant</h2>
+<p>Below I first point out the main places where the earlier proof needed tightening, and then give a complete step-by-step proof.</p>
+<p>The approach is sound, but the earlier version had a few gaps:</p>
+<ol>
+<li>The logarithmic unit lattice has rank \(d-1\), not \(d\). One must absorb this missing factor carefully when proving \(|U_K(L)|\ge (aL)^d\). This is harmless because \(L\) is fixed and the field degrees tend to infinity.</li>
+<li>The regulator bound must be stated precisely. We use the standard Landau–Louboutin residue bound together with the analytic class number formula to get an exponential-in-\(d\) upper bound for the regulator in a bounded-root-discriminant tower.</li>
+<li>The disjointness of the translates \(u(T+C)\) must be proved using a uniform separation theorem for totally real units. This follows from Schinzel’s lower bound for Mahler measure.</li>
+<li>The choices of \(L,R,T\) must be made in the right order to ensure both the sumset and product-set exponents are strictly below \(2\).</li>
+</ol>
+<p>We now give the full proof.</p>
+<hr>
+<h1>Proof</h1>
+<p>We use three standard facts from algebraic number theory.</p>
+<h2>1. Standard inputs</h2>
+<h3>Fact 1: Martinet’s totally real bounded-root-discriminant tower</h3>
+<p>There exists an absolute constant \(\rho&gt;1\) and infinitely many totally real number fields \(K_i/\mathbb Q\) such that, writing</p>
+<div class="math-block">\[
+d_i=[K_i:\mathbb Q],
+\]</div>
+<p>we have</p>
+<div class="math-block">\[
+d_i\to\infty
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|D_{K_i}|^{1/d_i}\le \rho
+\]</div>
+<p>for all \(i\).</p>
+<p>This is Martinet’s construction using Golod–Shafarevich class-field towers.</p>
+<hr>
+<h3>Fact 2: Exponential regulator bound in such a tower</h3>
+<p>Let \(K\) be totally real of degree \(d\). Let \(R_K\) be its regulator, \(h_K\) its class number, and</p>
+<div class="math-block">\[
+\kappa_K=\operatorname*{Res}_{s=1}\zeta_K(s).
+\]</div>
+<p>The analytic class number formula gives</p>
+<div class="math-block">\[
+\kappa_K=\frac{2^{d-1}h_KR_K}{\sqrt{|D_K|}}.
+\]</div>
+<p>A standard Landau–Louboutin residue bound gives an absolute constant \(C_L\) such that</p>
+<div class="math-block">\[
+\kappa_K\le C_L^d\left(1+\frac{\log |D_K|}{d}\right)^d.
+\]</div>
+<p>Therefore, if \(|D_K|^{1/d}\le \rho\), then</p>
+<div class="math-block">\[
+\kappa_K\le C_\rho^d
+\]</div>
+<p>for some absolute constant \(C_\rho\). Hence</p>
+<div class="math-block">\[
+R_K
+\le h_KR_K
+=
+\frac{\kappa_K\sqrt{|D_K|}}{2^{d-1}}
+\le C_{\mathrm{reg}}^d
+\]</div>
+<p>for some absolute constant \(C_{\mathrm{reg}}\).</p>
+<p>Now let</p>
+<div class="math-block">\[
+\mathcal O_K^{\times,+}
+=
+\{u\in\mathcal O_K^\times:\sigma(u)&gt;0\text{ for every real embedding }\sigma:K\hookrightarrow\mathbb R\}
+\]</div>
+<p>be the group of totally positive units. Define</p>
+<div class="math-block">\[
+H_d=\left\{x=(x_1,\dots,x_d)\in\mathbb R^d:\sum_{j=1}^d x_j=0\right\}
+\]</div>
+<p>and the logarithmic embedding</p>
+<div class="math-block">\[
+\ell:\mathcal O_K^{\times,+}\to H_d,
+\qquad
+\ell(u)=(\log\sigma_1(u),\dots,\log\sigma_d(u)).
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+\Lambda_K^+:=\ell(\mathcal O_K^{\times,+}).
+\]</div>
+<p>This is a full lattice in \(H_d\). The usual logarithmic unit lattice has Euclidean covolume \(\sqrt d\,R_K\), and the totally positive unit lattice has index at most \(2^d\) in it. Thus, after enlarging constants if necessary, there is an absolute constant \(M_0\) such that</p>
+<div class="math-block">\[
+\operatorname{covol}_{H_d}(\Lambda_K^+)\le M_0^d
+\tag{1}
+\]</div>
+<p>for every field \(K\) in Martinet’s tower.</p>
+<hr>
+<h3>Fact 3: Schinzel’s lower bound for totally real units</h3>
+<p>Schinzel proved that if \(\alpha\) is a totally real algebraic integer with \(\alpha\notin\{-1,0,1\}\), then its Mahler measure satisfies</p>
+<div class="math-block">\[
+M(\alpha)\ge \varphi^{\deg(\alpha)/2},
+\qquad
+\varphi=\frac{1+\sqrt5}{2}.
+\]</div>
+<p>We need the following consequence.</p>
+<p>There is an absolute constant \(\eta&gt;0\) such that for every totally real field \(K\) and every nontrivial totally positive unit \(u\in\mathcal O_K^{\times,+}\),</p>
+<div class="math-block">\[
+\|\ell(u)\|_\infty\ge \eta.
+\tag{2}
+\]</div>
+<p>Indeed, one may take \(\eta=\frac12\log\varphi\). If all conjugates of \(u\) had \(|\log|\tau(u)||&lt;\eta\), then \(\log M(u)&lt;\deg(u)\eta\), contradicting Schinzel.</p>
+<p>Set</p>
+<div class="math-block">\[
+\alpha_0:=1-e^{-\eta}&gt;0.
+\tag{3}
+\]</div>
+<p>Then whenever \(x&gt;0\) and \(|\log x|\ge \eta\), we have</p>
+<div class="math-block">\[
+|x-1|\ge \alpha_0.
+\tag{4}
+\]</div>
+<hr>
+<h1>2. Geometric lemmas</h1>
+<p>Let \(K/\mathbb Q\) be totally real of degree \(d\), with real embeddings</p>
+<div class="math-block">\[
+\sigma_1,\dots,\sigma_d.
+\]</div>
+<p>Define the Minkowski embedding</p>
+<div class="math-block">\[
+\Phi:K\hookrightarrow \mathbb R^d,
+\qquad
+\Phi(x)=(\sigma_1(x),\dots,\sigma_d(x)).
+\]</div>
+<h2>Lemma 2.1: Separation of algebraic integers</h2>
+<p>If \(x,y\in\mathcal O_K\) and \(x\neq y\), then</p>
+<div class="math-block">\[
+\|\Phi(x)-\Phi(y)\|_\infty\ge 1.
+\]</div>
+<h3>Proof</h3>
+<p>Let \(\beta=x-y\neq0\). Since \(\beta\in\mathcal O_K\),</p>
+<div class="math-block">\[
+N_{K/\mathbb Q}(\beta)=\prod_{j=1}^d \sigma_j(\beta)
+\]</div>
+<p>is a nonzero integer, so</p>
+<div class="math-block">\[
+|N_{K/\mathbb Q}(\beta)|\ge1.
+\]</div>
+<p>Thus at least one conjugate satisfies \(|\sigma_j(\beta)|\ge1\). Hence</p>
+<div class="math-block">\[
+\|\Phi(x)-\Phi(y)\|_\infty\ge1.
+\]</div>
+<p>\(\square\)</p>
+<hr>
+<h2>Lemma 2.2: van der Corput lattice-point lower bound</h2>
+<p>Let \(\Lambda\subset\mathbb R^n\) be a lattice and let \(B\subset\mathbb R^n\) be centrally symmetric and convex. Then</p>
+<div class="math-block">\[
+|\Lambda\cap B|
+\ge
+\frac{\operatorname{vol}(B)}{2^n\operatorname{covol}(\Lambda)}.
+\]</div>
+<h3>Proof</h3>
+<p>Average \(|\Lambda\cap(x+\frac12 B)|\) over \(x\in\mathbb R^n/\Lambda\). The average equals</p>
+<div class="math-block">\[
+\frac{\operatorname{vol}(\frac12B)}{\operatorname{covol}(\Lambda)}
+=
+\frac{\operatorname{vol}(B)}{2^n\operatorname{covol}(\Lambda)}.
+\]</div>
+<p>Thus some translate \(x+\frac12B\) contains at least this many lattice points. If those points are \(\lambda_1,\dots,\lambda_m\), then the differences</p>
+<div class="math-block">\[
+\lambda_j-\lambda_1
+\]</div>
+<p>are distinct points of \(\Lambda\cap B\), because</p>
+<div class="math-block">\[
+\frac12B-\frac12B\subset B
+\]</div>
+<p>by convexity and symmetry. Therefore \(|\Lambda\cap B|\ge m\), proving the claim.</p>
+<p>\(\square\)</p>
+<hr>
+<h2>Lemma 2.3: Volume of central cube sections</h2>
+<p>Let</p>
+<div class="math-block">\[
+Q_d(L):=H_d\cap[-L,L]^d.
+\]</div>
+<p>For every \(d\ge2\) and \(L&gt;0\),</p>
+<div class="math-block">\[
+L^{d-1}
+\le
+\operatorname{vol}_{H_d}(Q_d(L))
+\le
+(4L)^{d-1}.
+\tag{5}
+\]</div>
+<h3>Proof</h3>
+<p>Let</p>
+<div class="math-block">\[
+n=\frac1{\sqrt d}(1,\dots,1).
+\]</div>
+<p>For \(t\in[-L\sqrt d,L\sqrt d]\), define</p>
+<div class="math-block">\[
+V(t)
+=
+\operatorname{vol}_{d-1}
+\left([-L,L]^d\cap\{x\cdot n=t\}\right).
+\]</div>
+<p>By Brunn–Minkowski, \(V(t)^{1/(d-1)}\) is concave in \(t\). Since the cube is centrally symmetric, \(V(t)=V(-t)\), so \(V(t)\) is maximized at \(t=0\). Therefore</p>
+<div class="math-block">\[
+(2L)^d
+=
+\int_{-L\sqrt d}^{L\sqrt d}V(t)\,dt
+\le
+2L\sqrt d\,V(0).
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+V(0)\ge \frac{(2L)^d}{2L\sqrt d}
+=
+\frac{2^{d-1}}{\sqrt d}L^{d-1}
+\ge L^{d-1}
+\]</div>
+<p>for \(d\ge2\). This gives the lower bound.</p>
+<p>For the upper bound, project \(H_d\) to the first \(d-1\) coordinates. The inverse map is</p>
+<div class="math-block">\[
+(x_1,\dots,x_{d-1})
+\mapsto
+(x_1,\dots,x_{d-1},-(x_1+\cdots+x_{d-1})).
+\]</div>
+<p>Its Jacobian is \(\sqrt d\). The projection of \(Q_d(L)\) lies inside \([-L,L]^{d-1}\). Hence</p>
+<div class="math-block">\[
+\operatorname{vol}_{H_d}(Q_d(L))
+\le
+\sqrt d\,(2L)^{d-1}
+\le
+(4L)^{d-1}.
+\]</div>
+<p>\(\square\)</p>
+<hr>
+<h1>3. Counting small units and algebraic integers</h1>
+<p>For \(L\ge1\), define</p>
+<div class="math-block">\[
+U_K(L)
+=
+\{u\in\mathcal O_K^{\times,+}:\|\ell(u)\|_\infty\le L\}.
+\]</div>
+<p>For \(R\ge1\), define</p>
+<div class="math-block">\[
+C_K(R)
+=
+\{c\in\mathcal O_K:\|\Phi(c)\|_\infty\le R\}.
+\]</div>
+<h2>Lemma 3.1: Counting small totally positive units</h2>
+<p>There are absolute constants \(a,b&gt;0\) such that, for every \(K\) in Martinet’s tower and every \(L\ge1\), once \(d=[K:\mathbb Q]\) is sufficiently large depending only on \(L\), we have</p>
+<div class="math-block">\[
+|U_K(L)|\ge (aL)^d,
+\tag{6}
+\]</div>
+<p>and for all \(d\ge2\),</p>
+<div class="math-block">\[
+|U_K(2L)|\le (bL)^d.
+\tag{7}
+\]</div>
+<h3>Proof</h3>
+<p>Recall that</p>
+<div class="math-block">\[
+U_K(L)=\ell^{-1}(\Lambda_K^+\cap Q_d(L)).
+\]</div>
+<p>Using Lemma 2.2, Lemma 2.3, and the covolume bound (1), we get</p>
+<div class="math-block">\[
+|U_K(L)|
+=
+|\Lambda_K^+\cap Q_d(L)|
+\ge
+\frac{L^{d-1}}{2^{d-1}M_0^d}.
+\]</div>
+<p>Set</p>
+<div class="math-block">\[
+a:=\frac1{4M_0}.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+\frac{L^{d-1}}{2^{d-1}M_0^d}
+=
+\frac{2^{d+1}}{L}(aL)^d.
+\]</div>
+<p>For fixed \(L\), if \(d\) is large enough that \(2^{d+1}\ge L\), then</p>
+<div class="math-block">\[
+|U_K(L)|\ge (aL)^d.
+\]</div>
+<p>This proves (6).</p>
+<p>For the upper bound, Schinzel separation (2) implies that distinct points of \(\Lambda_K^+\) are separated by at least \(\eta\) in sup norm. Therefore the translates</p>
+<div class="math-block">\[
+x+Q_d(\eta/2),
+\qquad
+x\in \Lambda_K^+\cap Q_d(2L),
+\]</div>
+<p>have disjoint interiors and are all contained in \(Q_d(2L+\eta/2)\). Hence</p>
+<div class="math-block">\[
+|U_K(2L)|
+\le
+\frac{\operatorname{vol}_{H_d}(Q_d(2L+\eta/2))}
+{\operatorname{vol}_{H_d}(Q_d(\eta/2))}.
+\]</div>
+<p>Using Lemma 2.3,</p>
+<div class="math-block">\[
+|U_K(2L)|
+\le
+\left(\frac{8(2L+\eta/2)}{\eta}\right)^{d-1}.
+\]</div>
+<p>Since \(L\ge1\), this is at most \((bL)^d\) for a sufficiently large absolute constant \(b\). This proves (7).</p>
+<p>\(\square\)</p>
+<hr>
+<h2>Lemma 3.2: Counting algebraic integers in boxes</h2>
+<p>For every \(K\) in Martinet’s tower and every \(R\ge1\),</p>
+<div class="math-block">\[
+|C_K(R)|\ge \left(\frac{R}{\sqrt\rho}\right)^d,
+\tag{8}
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|C_K(R)|\le (3R)^d.
+\tag{9}
+\]</div>
+<h3>Proof</h3>
+<p>The lattice \(\Phi(\mathcal O_K)\subset\mathbb R^d\) has covolume \(\sqrt{|D_K|}\). Applying Lemma 2.2 to the cube \([-R,R]^d\), we get</p>
+<div class="math-block">\[
+|C_K(R)|
+\ge
+\frac{(2R)^d}{2^d\sqrt{|D_K|}}
+=
+\frac{R^d}{\sqrt{|D_K|}}.
+\]</div>
+<p>Since \(|D_K|^{1/d}\le\rho\),</p>
+<div class="math-block">\[
+\sqrt{|D_K|}\le \rho^{d/2},
+\]</div>
+<p>so</p>
+<div class="math-block">\[
+|C_K(R)|\ge \left(\frac{R}{\sqrt\rho}\right)^d.
+\]</div>
+<p>For the upper bound, Lemma 2.1 says that distinct points of \(\Phi(\mathcal O_K)\) are sup-norm separated by at least \(1\). Therefore the unit cubes centered at the points of \(\Phi(C_K(R))\) have disjoint interiors and lie inside</p>
+<div class="math-block">\[
+[-R-\tfrac12,R+\tfrac12]^d.
+\]</div>
+<p>Hence</p>
+<div class="math-block">\[
+|C_K(R)|\le (2R+1)^d\le (3R)^d.
+\]</div>
+<p>\(\square\)</p>
+<hr>
+<h1>4. Choice of absolute parameters</h1>
+<p>We now choose constants once and for all.</p>
+<p>Let \(a,b,\rho,\eta\) be as above. Choose \(L\ge1\) so large that</p>
+<div class="math-block">\[
+q:=\frac{b}{a^2L}&lt;1.
+\tag{10}
+\]</div>
+<p>Set</p>
+<div class="math-block">\[
+\alpha_0=1-e^{-\eta}.
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+\kappa:=\frac{2(1+e^{2L})}{\alpha_0}.
+\tag{11}
+\]</div>
+<p>Now choose \(R\ge1\) so large that</p>
+<div class="math-block">\[
+m:=\frac{aLR}{\sqrt\rho}&gt;1
+\tag{12}
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+\Sigma:=5e^L(\kappa+2)R&lt;m^2.
+\tag{13}
+\]</div>
+<p>This is possible because \(m^2\) grows quadratically in \(R\), while \(\Sigma\) grows only linearly in \(R\).</p>
+<p>Finally set</p>
+<div class="math-block">\[
+P:=3bLR.
+\tag{14}
+\]</div>
+<p>Since \(q&lt;1\) and \(P&gt;1\), define</p>
+<div class="math-block">\[
+\delta_\times:=\frac{\log(1/q)}{\log P}&gt;0.
+\tag{15}
+\]</div>
+<p>Also, by \(\Sigma&lt;m^2\) and \(m&gt;1\), define</p>
+<div class="math-block">\[
+\delta_+:=2-\frac{\log\Sigma}{\log m}&gt;0.
+\tag{16}
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+\delta:=\min(\delta_+,\delta_\times,1)&gt;0.
+\tag{17}
+\]</div>
+<p>All these constants are absolute.</p>
+<hr>
+<h1>5. Construction in one field</h1>
+<p>Let \(K\) be one of the fields in Martinet’s tower, with degree \(d\) sufficiently large that Lemma 3.1 gives</p>
+<div class="math-block">\[
+|U_K(L)|\ge (aL)^d.
+\]</div>
+<p>Define</p>
+<div class="math-block">\[
+U:=U_K(L),
+\qquad
+C:=C_K(R).
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+T:=\lceil \kappa R\rceil\in\mathbb Z.
+\]</div>
+<p>Then</p>
+<div class="math-block">\[
+T\le (\kappa+1)R,
+\]</div>
+<p>because \(R\ge1\). Define</p>
+<div class="math-block">\[
+B:=T+C=\{T+c:c\in C\}.
+\]</div>
+<p>Finally set</p>
+<div class="math-block">\[
+A_K:=UB
+=
+\{u(T+c):u\in U,\ c\in C\}
+\subset \mathcal O_K.
+\]</div>
+<p>We now estimate \(|A_K|\), \(|A_K+A_K|\), and \(|A_KA_K|\).</p>
+<hr>
+<h1>6. Size of \(A_K\)</h1>
+<p>We first prove that the representation \(u(T+c)\) is unique.</p>
+<h2>Lemma 6.1: Disjointness of the translates \(uB\)</h2>
+<p>If \(u,v\in U\) and</p>
+<div class="math-block">\[
+uB\cap vB\neq\varnothing,
+\]</div>
+<p>then \(u=v\). Consequently,</p>
+<div class="math-block">\[
+|A_K|=|U||C|.
+\tag{18}
+\]</div>
+<h3>Proof</h3>
+<p>Suppose</p>
+<div class="math-block">\[
+u(T+c)=v(T+c&#x27;)
+\]</div>
+<p>for some \(u,v\in U\) and \(c,c'\in C\).</p>
+<p>If \(u=v\), then since \(u\neq0\), we get \(c=c'\). So suppose \(u\neq v\). Put</p>
+<div class="math-block">\[
+w:=u/v.
+\]</div>
+<p>Then \(w\in\mathcal O_K^{\times,+}\) and \(w\neq1\). By Schinzel separation, there exists an embedding \(\sigma_j\) such that</p>
+<div class="math-block">\[
+|\log\sigma_j(w)|\ge \eta.
+\]</div>
+<p>Since \(w\) is totally positive, \(\sigma_j(w)&gt;0\), and therefore by (4),</p>
+<div class="math-block">\[
+|\sigma_j(w)-1|\ge \alpha_0.
+\tag{19}
+\]</div>
+<p>Also, since \(u,v\in U_K(L)\),</p>
+<div class="math-block">\[
+\sigma_j(w)=\frac{\sigma_j(u)}{\sigma_j(v)}\le e^{2L}.
+\tag{20}
+\]</div>
+<p>Applying \(\sigma_j\) to</p>
+<div class="math-block">\[
+u(T+c)=v(T+c&#x27;)
+\]</div>
+<p>and dividing by \(\sigma_j(v)&gt;0\), we get</p>
+<div class="math-block">\[
+\sigma_j(w)(T+\sigma_j(c))=T+\sigma_j(c&#x27;).
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+(\sigma_j(w)-1)T
+=
+\sigma_j(c&#x27;)-\sigma_j(w)\sigma_j(c).
+\]</div>
+<p>Taking absolute values and using \(c,c'\in C\), we obtain</p>
+<div class="math-block">\[
+|\sigma_j(w)-1|T
+\le
+R+e^{2L}R
+=
+(1+e^{2L})R.
+\tag{21}
+\]</div>
+<p>But by (19), \(T\ge\kappa R\), and the definition of \(\kappa\),</p>
+<div class="math-block">\[
+|\sigma_j(w)-1|T
+\ge
+\alpha_0\kappa R
+=
+2(1+e^{2L})R,
+\tag{22}
+\]</div>
+<p>contradicting (21). Therefore \(u=v\), and then \(c=c'\). Hence the sets \(uB\), \(u\in U\), are pairwise disjoint, so</p>
+<div class="math-block">\[
+|A_K|=|U||C|.
+\]</div>
+<p>\(\square\)</p>
+<p>Let</p>
+<div class="math-block">\[
+N:=|A_K|.
+\]</div>
+<p>Using Lemmas 3.1 and 3.2,</p>
+<div class="math-block">\[
+N
+=
+|U||C|
+\ge
+(aL)^d\left(\frac{R}{\sqrt\rho}\right)^d
+=
+m^d.
+\tag{23}
+\]</div>
+<p>Also, since \(U_K(L)\subset U_K(2L)\),</p>
+<div class="math-block">\[
+N
+\le
+|U_K(2L)|\,|C|
+\le
+(bL)^d(3R)^d
+=
+P^d.
+\tag{24}
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+m^d\le N\le P^d.
+\tag{25}
+\]</div>
+<hr>
+<h1>7. Sumset estimate</h1>
+<p>Every element \(a\in A_K\) has the form</p>
+<div class="math-block">\[
+a=u(T+c)
+\]</div>
+<p>with \(u\in U\), \(c\in C\). For every embedding \(\sigma_j\),</p>
+<div class="math-block">\[
+|\sigma_j(u)|\le e^L
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|\sigma_j(T+c)|
+\le
+T+|\sigma_j(c)|
+\le
+(\kappa+1)R+R
+=
+(\kappa+2)R.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|\sigma_j(a)|
+\le
+e^L(\kappa+2)R.
+\]</div>
+<p>Hence, for \(a,a'\in A_K\),</p>
+<div class="math-block">\[
+|\sigma_j(a+a&#x27;)|
+\le
+2e^L(\kappa+2)R.
+\]</div>
+<p>By Lemma 2.1, the number of algebraic integers \(x\in\mathcal O_K\) with</p>
+<div class="math-block">\[
+|\sigma_j(x)|\le 2e^L(\kappa+2)R
+\]</div>
+<p>for all \(j\) is at most</p>
+<div class="math-block">\[
+\left(4e^L(\kappa+2)R+1\right)^d
+\le
+\left(5e^L(\kappa+2)R\right)^d
+=
+\Sigma^d.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+|A_K+A_K|\le \Sigma^d.
+\tag{26}
+\]</div>
+<p>By definition of \(\delta_+\),</p>
+<div class="math-block">\[
+\Sigma=m^{2-\delta_+}.
+\]</div>
+<p>Using \(N\ge m^d\), we get</p>
+<div class="math-block">\[
+|A_K+A_K|
+\le
+m^{(2-\delta_+)d}
+\le
+N^{2-\delta_+}.
+\tag{27}
+\]</div>
+<hr>
+<h1>8. Product-set estimate</h1>
+<p>Since</p>
+<div class="math-block">\[
+A_K=UB,
+\]</div>
+<p>we have</p>
+<div class="math-block">\[
+A_KA_K\subset (UU)(BB).
+\]</div>
+<p>Because \(U=U_K(L)\),</p>
+<div class="math-block">\[
+UU\subset U_K(2L).
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|A_KA_K|
+\le
+|U_K(2L)|\,|BB|.
+\]</div>
+<p>Trivially,</p>
+<div class="math-block">\[
+|BB|\le |B|^2=|C|^2.
+\]</div>
+<p>Using Lemma 3.1,</p>
+<div class="math-block">\[
+|A_KA_K|
+\le
+(bL)^d |C|^2.
+\tag{28}
+\]</div>
+<p>On the other hand,</p>
+<div class="math-block">\[
+N=|U||C|
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|U|\ge (aL)^d.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+N^2
+=
+|U|^2|C|^2
+\ge
+(aL)^{2d}|C|^2.
+\]</div>
+<p>Combining with (28),</p>
+<div class="math-block">\[
+|A_KA_K|
+\le
+N^2
+\frac{(bL)^d}{(aL)^{2d}}
+=
+N^2
+\left(\frac{b}{a^2L}\right)^d
+=
+N^2q^d.
+\tag{29}
+\]</div>
+<p>By the definition of \(\delta_\times\),</p>
+<div class="math-block">\[
+q=P^{-\delta_\times}.
+\]</div>
+<p>Thus</p>
+<div class="math-block">\[
+q^d=P^{-\delta_\times d}.
+\]</div>
+<p>Since \(N\le P^d\), we have</p>
+<div class="math-block">\[
+P^{-\delta_\times d}\le N^{-\delta_\times}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+|A_KA_K|
+\le
+N^{2-\delta_\times}.
+\tag{30}
+\]</div>
+<hr>
+<h1>9. Embedding into \(\mathbb R\)</h1>
+<p>Now take the infinite sequence \(K_i\) from Martinet’s theorem. Discard finitely many terms so that the degree \(d_i\) is large enough for the lower bound in Lemma 3.1 with our fixed \(L\).</p>
+<p>For each remaining \(K_i\), construct \(A_{K_i}\subset\mathcal O_{K_i}\) as above. Choose one real embedding</p>
+<div class="math-block">\[
+\tau_i:K_i\hookrightarrow\mathbb R
+\]</div>
+<p>and define</p>
+<div class="math-block">\[
+A_i:=\tau_i(A_{K_i})\subset\mathbb R.
+\]</div>
+<p>Because \(\tau_i\) is an injective ring homomorphism,</p>
+<div class="math-block">\[
+|A_i|=|A_{K_i}|,
+\]</div>
+<p>and also</p>
+<div class="math-block">\[
+|A_i+A_i|=|A_{K_i}+A_{K_i}|,
+\]</div>
+<div class="math-block">\[
+|A_iA_i|=|A_{K_i}A_{K_i}|.
+\]</div>
+<p>Let</p>
+<div class="math-block">\[
+N_i:=|A_i|.
+\]</div>
+<p>From (23),</p>
+<div class="math-block">\[
+N_i\ge m^{d_i}.
+\]</div>
+<p>Since \(m&gt;1\) and \(d_i\to\infty\), we have</p>
+<div class="math-block">\[
+|A_i|=N_i\to\infty.
+\]</div>
+<p>By (27) and (30),</p>
+<div class="math-block">\[
+|A_i+A_i|
+\le
+N_i^{2-\delta_+},
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|A_iA_i|
+\le
+N_i^{2-\delta_\times}.
+\]</div>
+<p>Since</p>
+<div class="math-block">\[
+\delta=\min(\delta_+,\delta_\times,1)&gt;0,
+\]</div>
+<p>we conclude that</p>
+<div class="math-block">\[
+|A_i+A_i|\le |A_i|^{2-\delta}
+\]</div>
+<p>and</p>
+<div class="math-block">\[
+|A_iA_i|\le |A_i|^{2-\delta}.
+\]</div>
+<p>Therefore</p>
+<div class="math-block">\[
+\max(|A_i+A_i|,\ |A_iA_i|)
+\le
+|A_i|^{2-\delta}
+\]</div>
+<p>for every \(i\), with \(|A_i|\to\infty\).</p>
+<p>This proves the theorem. \(\square\)</p>
+<hr>
+</main>
+</body>
+</html>
